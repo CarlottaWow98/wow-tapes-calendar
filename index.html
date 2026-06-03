@@ -112,6 +112,7 @@ body{font-family:'Inter',sans-serif;background:var(--off-white);color:var(--blac
 .badge-over{background:#fff7ed;color:#c2410c}
 .badge-mp{background:#ede9fe;color:#5b21b6}
 .badge-sez{background:#f0f4ff;color:#1d4ed8;font-size:9px}
+.badge-ice{background:#e0f2fe;color:#0369a1;border:1px solid #bae6fd;font-size:9.5px}
 .event-name{font-size:14px;font-weight:700;color:var(--black);line-height:1.3;letter-spacing:-.2px}
 .event-meta{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--gray-600);font-weight:500}
 .ev-header-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
@@ -240,6 +241,12 @@ body{font-family:'Inter',sans-serif;background:var(--off-white);color:var(--blac
     <button class="filter-btn" data-val="mena">🌙 MENA</button>
     <button class="filter-btn" data-val="italy">🇮🇹 Italia</button>
     <button class="filter-btn" data-val="japan">🗾 Giappone</button>
+  </div>
+  <div class="filter-sep"></div>
+  <span class="filter-label">Partnership</span>
+  <div class="filter-group" id="fg-ice">
+    <button class="filter-btn active" data-val="all">Tutti</button>
+    <button class="filter-btn" data-val="ice" style="border-color:#bae6fd;color:#0369a1">🇮🇹 ICE Agenzia</button>
   </div>
   <div class="filter-row-break"></div>
   <span class="filter-label">Settore</span>
@@ -449,7 +456,7 @@ const EVENTS = [
  modalita:"Media partnership / Accredito stampa",
  costo:"Pass Industry $895 / Accredito press su domanda",
  mp_detail:"ALTO POTENZIALE. Proporre mini-documentari sui creativi vincitori — storie umane dietro le campagne.",
- contatti:{email:"press@clioawards.com",link:"https://clioawards.com",note:"Contattare 3 mesi prima per media accreditation"},
+ contatti:{email:"press@clioawards.com",link:"https://clios.com/",note:"Contattare 3 mesi prima per media accreditation"},
  script:"Mini-documentari sui creativi vincitori. Formato shareable e ad alto impatto per i social degli organizzatori.",
  deadline:"2026-06-22"},
 
@@ -485,11 +492,11 @@ const EVENTS = [
  modalita:"Iscrizione lavori al concorso / Partecipante / Media partnership",
  costo:"Entry fee per lavori £150-300 / Delegate Pass £395 / Press su domanda",
  mp_detail:"ALTO POTENZIALE. Festival piccolo e specializzato: molto più facile proporre una media partnership.",
- contatti:{email:"info@brandfilmfestival.com",link:"https://brandfilmfestival.com",note:"Verificare date esatte 2026 sul sito"},
+ contatti:{email:"info@brandfilmfestival.com",link:"https://www.brandfilmawards.com/",note:"Verificare date esatte 2026 sul sito"},
  script:"Duplice approccio: 1) iscrivere un lavoro; 2) proporsi come official video partner del festival.",
  deadline:"2026-08-14"},
 
-{id:13,s:"A",nome:"Annecy International Animation Film Festival",
+{id:13,s:"A",nome:"Annecy International Animation Film Festival",ice:true,
  ds:"2026-06-09",de:"2026-06-14",anno:2026,luogo:"Annecy, Francia",
  settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
  obiettivo:"Il principale festival mondiale dedicato al cinema d'animazione. 15.000+ accreditati, 3.000+ film. Mercato MIFA per co-produzioni. Brand creativi e studi internazionali presenti.",
@@ -497,7 +504,7 @@ const EVENTS = [
  modalita:"Accredito professionale / Media partnership / Iscrizione lavori",
  costo:"MIFA Badge €400 / Professional Badge €150 / Press su domanda",
  mp_detail:"MEDIO-ALTO POTENZIALE. Proporre un video documentario 'dietro le quinte' del festival con focus sui creator.",
- contatti:{email:"info@annecyfestival.com",link:"https://www.annecyfestival.com/en/take-part/accreditations/journalists-accreditation",note:"Accrediti: apertura Marzo/Aprile"},
+ contatti:{email:"info@annecyfestival.com",link:"https://www.annecyfestival.com/en/take-part/accreditations/journalists-accreditation",note:"Accrediti: apertura Marzo/Aprile. ICE ORGANIZZA PADIGLIONE ITALIA AL MIFA (mercato B2B, 23-26 giugno 2026): contattare audiovisivo@ice.it — Monica Tonus/Zaira Giunta, tel. 06 5992 7812 / 06 5992 6924. ICE event page: ice.it/it/area-clienti/eventi/dettaglio-evento/2022/L1/021"},
  script:"Angolo: il festival più magico del cinema. Proporre un aftermovie che cattura la magia dell'animazione 'dal vivo'.",
  deadline:"2026-03-09"},
 
@@ -529,7 +536,7 @@ const EVENTS = [
  script:"Presentarsi agli stand dei brand con tablet e showreel. Obiettivo: 5-10 incontri con CMO o Head of Marketing di brand tech.",
  deadline:"2026-09-01"},
 
-{id:17,s:"B",nome:"Tokyo Game Show",
+{id:17,s:"B",nome:"Tokyo Game Show",ice:true,
  ds:"2026-09-24",de:"2026-09-27",anno:2026,luogo:"Makuhari Messe, Chiba, Giappone",
  settore:"Tech/Gaming",sc:"tech",prio:"Medio",mp:true,budget:"over",
  obiettivo:"La più grande fiera mondiale dell'industria videoludica. 250.000+ visitatori, tutti i principali publisher e sviluppatori. Sony, Nintendo, Capcom, Bandai Namco presenti con stand enormi.",
@@ -537,7 +544,7 @@ const EVENTS = [
  modalita:"Accredito stampa / Media partnership",
  costo:"Industry Badge ¥3.000-5.000 / Press Badge su domanda",
  mp_detail:"MEDIO-ALTO POTENZIALE. Ogni publisher ha bisogno di video emozionali per i propri titoli. Proporre un aftermovie del TGS con focus sull'energia del gaming.",
- contatti:{email:"tgs2026_pr@su.co.jp",link:"https://events.nikkeibp.co.jp/tgs/2026/en/exhibitor/press/",note:"Press registration apre Agosto 2026. Contatto: SUNNY SIDE UP Inc. per TGS press"},
+ contatti:{email:"tgs2026_pr@su.co.jp",link:"https://events.nikkeibp.co.jp/tgs/2026/en/exhibitor/press/",note:"Press registration apre Agosto 2026. PARTECIPAZIONE COLLETTIVA ICE: scrivere a audiovisivo@ice.it (tel. 06-5992.6924/7812/6877) per informazioni sulla partecipazione con padiglione Italia."},
  script:"Angolo: il gaming come forma d'arte contemporanea. Un aftermovie del TGS con questo posizionamento differenzia Wow da tutti i video gaming tradizionali.",
  deadline:"2026-06-24"},
 
@@ -549,7 +556,7 @@ const EVENTS = [
  modalita:"Accredito stampa / Industry Badge",
  costo:"Industry Badge ¥15.000+ / Press su domanda",
  mp_detail:"MEDIO POTENZIALE. Proporre un video del festival con focus sulla cultura cinematografica giapponese.",
- contatti:{email:"press@tiff-jp.net",link:"https://tiff-jp.net/en/press",note:"Contattare ufficio stampa da Luglio/Agosto"},
+ contatti:{email:"press@tiff-jp.net",link:"https://2026.tiff-jp.net/en/",note:"Contattare ufficio stampa da Luglio/Agosto"},
  script:"Posizionarsi come produzione europea con interesse genuino per il cinema asiatico. Portare sottotitoli in giapponese per il portfolio.",
  deadline:"2026-07-28"},
 
@@ -743,7 +750,7 @@ const EVENTS = [
  modalita:"Accredito stampa / Networking",
  costo:"Accredito press GRATUITO / Industry Badge [da verificare]",
  mp_detail:"BASSO per media partnership.",
- contatti:{email:"info@fareastfilm.com",link:"https://fareastfilm.com/press",note:"Apertura accrediti: Febbraio/Marzo"},
+ contatti:{email:"info@fareastfilm.com",link:"https://www.fareastfilm.com/",note:"Apertura accrediti: Febbraio/Marzo"},
  script:"Festival di nicchia ma utile per costruire relazioni con il cinema asiatico se si sta pianificando espansione in Giappone o Corea.",
  deadline:"2026-02-24"},
 
@@ -805,7 +812,7 @@ const EVENTS = [
  modalita:"Iscrizione lavori / Accredito professionale / Networking",
  costo:"Professional Accreditation €50-100 / Iscrizione film €15-30",
  mp_detail:"BASSO per media partnership, ALTO per posizionamento short film.",
- contatti:{email:"pro@clermont-filmfest.com",link:"https://www.clermont-filmfest.com/en/pro",note:"Iscrizioni film: apertura Settembre/Ottobre anno precedente"},
+ contatti:{email:"pro@clermont-filmfest.com",link:"https://www.lecourt-clermont.org/en/pros/press/",note:"Iscrizioni film: apertura Settembre/Ottobre anno precedente"},
  script:"Iscrivere un cortometraggio o branded short. Presentarsi come agenzia creativa con forte competenza nel formato breve.",
  deadline:"2025-10-01"},
 
@@ -817,7 +824,7 @@ const EVENTS = [
  modalita:"Accredito stampa / Networking",
  costo:"Accredito press GRATUITO / Biglietti pubblico €5-12",
  mp_detail:"BASSO per media partnership diretta.",
- contatti:{email:"contact@institut-lumiere.org",link:"https://festival-lumiere.org/fr/presse",note:"Verificare date esatte 2026"},
+ contatti:{email:"contact@institut-lumiere.org",link:"https://www.festival-lumiere.org/en/presse/press-acccreditation.html",note:"Verificare date esatte 2026"},
  script:"Festival culturale di nicchia. Utile per connessioni con il mondo del cinema francese e dell'heritage brand.",
  deadline:"2026-08-10"},
 
@@ -1060,7 +1067,7 @@ const EVENTS = [
  modalita:"Media partnership / Accredito stampa",
  costo:"Accredito GRATUITO (registrazione) / Press su domanda",
  mp_detail:"ALTO POTENZIALE. Festival giovane con grandi budget e forte necessità di contenuti video di qualità. Meno competizione rispetto a Dubai.",
- contatti:{email:"info@saudidesignweek.com",link:"https://www.saudidesignweek.com/",note:"Verificare date esatte 2026 su sito ufficiale. Evento in rapida crescita."},
+ contatti:{email:"info@saudidesignweek.com",link:"https://www.downtowndesign.com/riyadh",note:"Verificare date esatte 2026 su sito ufficiale. Evento in rapida crescita."},
  script:"Angolo: la nascita di una nuova scena creativa nel cuore dell'Arabia Saudita. Un video che racconta questo momento storico ha enorme valore narrativo e mediatico.",
  deadline:"2026-09-10"},
 
@@ -1084,7 +1091,7 @@ const EVENTS = [
  modalita:"Accredito stampa / Media partnership / Networking",
  costo:"Industry Badge [da verificare su sito] / Press su domanda",
  mp_detail:"MEDIO POTENZIALE. Budget più limitati rispetto al Golfo, ma ottimo per connessioni nel cinema arabo e africano.",
- contatti:{email:"press@cairofilmfest.org",link:"https://cairofilmfest.org/en/press",note:"Verificare date esatte 2026. Generalmente si tiene a Novembre."},
+ contatti:{email:"press@ciff.org.eg",link:"https://www.ciff.org.eg/press-accreditation/",note:"Verificare date esatte 2026. Generalmente si tiene a Novembre."},
  script:"Presentarsi come produzione europea con interesse per il cinema e la cultura araba. Cairo è la porta per il mercato creativo nordafricano.",
  deadline:"2026-09-12"},
 
@@ -1180,7 +1187,7 @@ const EVENTS = [
  modalita:"Media partnership / Accredito stampa",
  costo:"Press GRATUITO (su domanda a Qatar Tourism) ✅",
  mp_detail:"ALTISSIMO POTENZIALE. Evento luxury di primo piano con forte attenzione all'immagine. Qatar Tourism è un interlocutore strutturato per le partnership media.",
- contatti:{email:"media@qatartourism.com",link:"https://djwe.qa/media",note:"Contattare Qatar Tourism per media partnership — risposta rapida"},
+ contatti:{email:"media@qatartourism.com",link:"https://www.djwe.qa/",note:"Contattare Qatar Tourism per media partnership — risposta rapida"},
  script:"Wow Tapes produces ultra-premium cinematic content for the world's most prestigious luxury brands. We would be honoured to create an official visual highlight of DJWE 2027, capturing the elegance and exclusivity of the event in our signature cinematic style. We propose a media partnership: press accreditation in exchange for a bespoke highlight film for Qatar Tourism and the exhibiting maisons.",
  deadline:"2026-11-01"},
 
@@ -1230,7 +1237,7 @@ const EVENTS = [
  modalita:"Media partnership / Accredito stampa",
  costo:"Accredito stampa GRATUITO ✅",
  mp_detail:"BUON POTENZIALE. Festival aperto a partnership con agenzie creative europee. La location storica di Sarajevo offre materiale visivo eccezionale.",
- contatti:{email:"press@sff.ba",link:"https://sff.ba/en/press",note:"Accrediti: apertura solitamente Giugno"},
+ contatti:{email:"press@sff.ba",link:"https://www.sff.ba/en",note:"Accrediti: apertura solitamente Giugno"},
  script:"Wow Tapes is a Rome-based European video production agency. We create artistic event films that capture the unique atmosphere of film festivals. We'd be honoured to document Sarajevo Film Festival 2026 through our cinematic lens — in exchange for press accreditation and co-promotion.",
  deadline:"2026-06-01"},
 
@@ -1352,7 +1359,7 @@ const EVENTS = [
  modalita:"Media partnership / Accredito stampa",
  costo:"Accredito stampa GRATUITO ✅",
  mp_detail:"BUON POTENZIALE. Il TIFF ha un ufficio media ben strutturato e una lunga tradizione di partnership con media internazionali.",
- contatti:{email:"press@tiff-jp.net",link:"https://tiff-jp.net/en/press",note:"Accrediti: apertura solitamente Luglio/Agosto"},
+ contatti:{email:"press@tiff-jp.net",link:"https://2026.tiff-jp.net/en/",note:"Accrediti: apertura solitamente Luglio/Agosto"},
  script:"Wow Tapes is a European creative agency with a growing presence in the Japanese market. We'd love to produce a cinematic highlight of Tokyo International Film Festival 2027, capturing the spirit of Asian cinema at one of its most prestigious stages.",
  deadline:"2027-07-01"},
 
@@ -1568,6 +1575,55 @@ const EVENTS = [
  script:"Tornare con il corto presentato nel 2026 più un nuovo lavoro. La continuità di presenza costruisce relazioni con il team festival e con i brand sponsor giapponesi — fondamentale per penetrare il mercato asiatico.",
  deadline:"2027-01-01"}
 
+
+,{id:110,s:"B",nome:"Gamescom Colonia 2026 (ICE)",ice:true,
+ ds:"2026-08-26",de:"2026-08-30",anno:2026,luogo:"Koelnmesse, Colonia, Germania",
+ settore:"Tech/Gaming",sc:"tech",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il più grande evento mondiale dedicato ai videogiochi. Edizione 2025: 357.000 visitatori da 128 paesi, 34.000+ visitatori professionali, 1.500+ espositori da 72 paesi. ICE Agenzia organizza il Padiglione Italia in collaborazione con IIDEA (Italian Interactive Digital Entertainment Association). Settori: videogiochi, sviluppo software, gaming entertainment.",
+ valore:"L'industria gaming è uno dei settori con maggiore domanda di contenuti video creativi ad alto impatto. Publisher e sviluppatori presenti con budget enormi per marketing e branded content. Il Padiglione Italia ICE è punto di aggregazione di tutti gli operatori italiani del gaming — contesto ideale per Wow Tapes per proporsi come partner di produzione video. 357.000 visitatori = visibilità enorme per un eventuale aftermovie.",
+ modalita:"Media partnership (video Padiglione Italia ICE) / Accredito stampa / Networking B2B",
+ costo:"Industry/Business Badge: [da verificare su gamescom.global 2026] ✅ stimato entro €200 / Partecipazione collettiva ICE: contattare audiovisivo@ice.it per condizioni. Scadenza adesioni ICE: aperta fino al 24 aprile (edizione 2026 — verificare se proroga disponibile)",
+ mp_detail:"BUON POTENZIALE. Contattare audiovisivo@ice.it per proporre la produzione del video ufficiale del Padiglione Italia in cambio di accredito e visibilità. Monica Tonus è il riferimento diretto.",
+ contatti:{email:"audiovisivo@ice.it",link:"https://www.gamescom.global/en",note:"ICE Referente: Monica Tonus / Zaira Giunta — tel 06 59926924 / 06 59927812. Pagina ICE evento: ice.it/it/area-clienti/eventi/dettaglio-evento/2025/Q1/004. Sito ufficiale Gamescom: gamescom.global/en"},
+ script:"Scrivere a audiovisivo@ice.it: 'Siamo Wow Tapes, agenzia di produzione video con sede a Roma. Siamo interessati a Gamescom 2026 e proponiamo la produzione del video del Padiglione Italia in cambio di accredito professionale. Il nostro portfolio: [link].'",
+ deadline:"2026-07-01"}
+
+,{id:107,s:"A",nome:"MIPCOM + MIPJUNIOR 2026 — Cannes (ICE)",ice:true,
+ ds:"2026-10-10",de:"2026-10-15",anno:2026,luogo:"Palais des Festivals, Cannes, Francia",
+ settore:"Audiovisivo / TV / Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Il principale mercato mondiale per la compravendita di diritti TV e audiovisivi. 42a edizione. MIPJUNIOR (animazione/kids) 10-11 ottobre, MIPCOM 12-15 ottobre. Oltre 10.000 partecipanti da 100+ paesi: broadcaster, produttori, distributori, streamer (Netflix, Disney+, Prime, Apple TV+). ICE Agenzia organizza la partecipazione collettiva italiana con padiglione dedicato.",
+ valore:"Concentrazione massima di buyer TV, broadcaster internazionali e produttori audiovisivi. Per Wow Tapes: accesso diretto a aziende che commissionano video per promozione di serie TV, documentari e format. Il padiglione Italia ICE è il punto di aggregazione dei produttori italiani — networking strategico con clienti potenziali. Possibilità di proporre video promozionali a produttori presenti.",
+ modalita:"Media partnership (video del padiglione Italia ICE) / Partecipazione collettiva ICE / Accredito stampa",
+ costo:"Pass acquisto diretto: €2.000–3.500 ⚠️ / Partecipazione con ICE: costi ridotti per aziende iscritte al padiglione. ADESIONI ICE APERTE DAL 20/05/2026.",
+ mp_detail:"ALTO POTENZIALE. Proporre ad ICE Audiovisivo la produzione del video ufficiale del Padiglione Italia in cambio di accredito. Ogni produttore presente al MIPCOM ha bisogno di un video di presentazione — intercettarli sul posto.",
+ contatti:{email:"audiovisivo@ice.it",link:"https://www.ice.it/it/settori/audiovisivo",note:"Tel: 06-5992.6924 / 7812 / 6877 — Referenti: Monica Tonus, Valentina Mulas. Sito ufficiale MIPCOM: mipcom.com. ADESIONI ICE APERTE — scrivere subito a audiovisivo@ice.it per partecipazione collettiva."},
+ script:"Contattare direttamente audiovisivo@ice.it scrivendo: 'Siamo Wow Tapes, agenzia di produzione video con base a Roma. Saremmo lieti di produrre il video ufficiale del Padiglione Italia al MIPCOM 2026 in cambio di accredito. Il nostro showreel: [link].'",
+ deadline:"2026-07-31"}
+
+,{id:108,s:"A",nome:"AFM — American Film Market 2026 (ICE)",ice:true,
+ ds:"2026-11-10",de:"2026-11-15",anno:2026,luogo:"Fairmont Century Plaza, Los Angeles, USA",
+ settore:"Cinema / Mercato Audiovisivo",sc:"cinema",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Il più grande mercato cinematografico del mondo per la vendita e l'acquisto di film. AFM26 torna al Fairmont Century Plaza di Los Angeles, 10-15 novembre 2026. Oltre 7.000 partecipanti da 70+ paesi: produttori, distributori, agenti di vendita, acquisitori. ICE Agenzia organizza la partecipazione collettiva italiana — pubblicizzazione prevista per giugno 2026.",
+ valore:"Presenza dei principali produttori e distributori cinematografici mondiali. Per Wow Tapes: accesso al mercato hollywoodiano e ai produttori internazionali che necessitano di video promozionali per i propri film. Il padiglione Italia ICE è punto di riferimento per le aziende italiane. Opportunità di proporre video trailer/promo a produttori indipendenti.",
+ modalita:"Partecipazione collettiva ICE / Accredito stampa / Media partnership",
+ costo:"Badge buyer/seller: $1.800–2.500 ⚠️ / Partecipazione collettiva ICE: [da confermare — contattare audiovisivo@ice.it quando apre iscrizioni giugno 2026]",
+ mp_detail:"ALTO POTENZIALE. Scrivere ad ICE a giugno 2026 quando apre la pubblicizzazione. Proporre produzione video del Padiglione Italia in cambio di accredito. Contattare anche produttori indipendenti italiani presenti al mercato.",
+ contatti:{email:"audiovisivo@ice.it",link:"https://americanfilmmarket.com/",note:"Tel ICE: 06-5992.6924 / 7812 / 6877. La pubblicizzazione ICE per AFM 2026 è prevista per GIUGNO 2026 — monitorare ice.it/it/settori/audiovisivo e contattare proattivamente. Sito ufficiale AFM: americanfilmmarket.com"},
+ script:"Contattare audiovisivo@ice.it a giugno 2026: 'Siamo Wow Tapes, agenzia di produzione video internazionale con sede a Roma. Siamo interessati a partecipare all'AFM 2026 con il padiglione ICE e proponiamo la produzione del video ufficiale del Padiglione Italia in cambio di accredito. Showreel: [link].'",
+ deadline:"2026-07-15"}
+
+,{id:109,s:"A",nome:"MIA — Mercato Internazionale Audiovisivo Roma 2026",ice:true,
+ ds:"2026-10-07",de:"2026-10-11",anno:2026,luogo:"Palazzo e Cinema Barberini, Roma, Italia",
+ settore:"Audiovisivo / Cinema / TV",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Principale mercato audiovisivo italiano e uno dei più importanti in Europa. 12a edizione. Organizzato da ANICA e APA, con il sostegno di ICE Agenzia. 5 giorni di B2B, market screening, workshop e conferenze dedicati a cinema, serie TV, documentari, animazione. Profili presenti: broadcaster internazionali, produttori, distributori, fondi di investimento.",
+ valore:"Mercato a Roma — logistica minima per Wow Tapes. Accesso diretto ai vertici dell'industria audiovisiva italiana e internazionale. ICE presente con forte attività di supporto. Opportunità ideale per proporre servizi video a produttori e broadcaster presenti. Budget contenuto grazie alla location italiana. Networking con ANICA e APA apre porte a commissioni future.",
+ modalita:"Media partnership (video ufficiale MIA in stile Wow) / Accredito professionale / Networking",
+ costo:"Industry Badge: [da verificare su sito miamarket.it 2026] stimato €100–300 ✅ / Accredito press: gratuito su domanda",
+ mp_detail:"ALTISSIMO POTENZIALE. Il MIA è l'evento audiovisivo italiano di riferimento — proporre la produzione del video/aftermovie ufficiale all'organizzazione (ANICA/APA) in cambio di accrediti. ICE Agenzia è partner istituzionale — contattare anche audiovisivo@ice.it per partecipare come azienda sostenuta da ICE.",
+ contatti:{email:"audiovisivo@ice.it",link:"https://www.miamarket.it/en/",note:"Organizzato da ANICA (www.anica.it) e APA (www.apaitalia.it). Contatto diretto MIA: info@miamarket.it. Tel ICE: 06-5992.6924 / 7812 / 6877. Accrediti stampa tipicamente aperti a settembre — monitorare miamarket.it."},
+ script:"Contattare info@miamarket.it: 'Siamo Wow Tapes, agenzia di produzione video con sede a Roma. Proponiamo la produzione del video aftermovie ufficiale del MIA 2026 in stile cinematografico, in cambio di accrediti professionali e visibilità sui canali del mercato. Il nostro portfolio: [link].'",
+ deadline:"2026-09-01"}
+
 ]; // END EVENTS
 
 // ═══════════════════════════════════════════════════════════
@@ -1587,7 +1643,7 @@ const _now = new Date();
 let view = 'calendar', cy = _now.getFullYear(), cm = _now.getMonth();
 let selDay = null;
 const expanded = new Set();
-let F = {year:'all',sez:'all',budget:'all',prio:'all',q:'',area:'all',settore:'all'};
+let F = {year:'all',sez:'all',budget:'all',prio:'all',q:'',area:'all',settore:'all',ice:'all'};
 const MENA_KEYS = ['UAE','Dubai','Abu Dhabi','Riyadh','Arabia Saudita','Jeddah','Doha','Qatar','Il Cairo','Egitto','MENA','Marocco','Marrakech','Casablanca','Tunisi','Beirut','Amman'];
 const ITALY_KEYS = ['Italia','Roma','Milano','Venezia','Torino','Napoli','Udine','Ischia','Giffoni'];
 const JAPAN_KEYS = ['Giappone','Tokyo','Makuhari','Osaka','Kyoto'];
@@ -1645,10 +1701,16 @@ function filtered(){
     }
     if(F.prio !== 'all' && e.prio !== F.prio) return false;
     if(F.settore !== 'all' && e.sc !== F.settore) return false;
+    if(F.ice === 'ice' && !e.ice) return false;
     if(F.q){
       const q = F.q.toLowerCase();
-      if(!e.nome.toLowerCase().includes(q) && !e.luogo.toLowerCase().includes(q) &&
-         !e.settore.toLowerCase().includes(q)) return false;
+      const haystack = [
+        e.nome, e.luogo, e.settore, e.obiettivo||'', e.valore||'',
+        e.modalita||'', e.costo||'', e.mp_detail||'', e.script||'',
+        e.contatti?.note||'', e.contatti?.email||'',
+        e.ice ? 'ICE agenzia ice.it padiglione italia' : ''
+      ].join(' ').toLowerCase();
+      if(!haystack.includes(q)) return false;
     }
     if(F.area !== 'all'){
       const loc = e.luogo;
@@ -1806,6 +1868,7 @@ function eventCard(e){
       <span class="badge ${e.budget==='ok'?'badge-ok':'badge-over'}">${e.budget==='ok'?'✅ ≤€600':'⚠️ >€600'}</span>
       <span class="badge" style="background:#f3f4f6;color:#374151">${e.settore}</span>
       ${e.mp?'<span class="badge badge-mp">MP</span>':''}
+      ${e.ice?'<span class="badge badge-ice">🇮🇹 ICE</span>':''}
       <span class="badge badge-sez">Sez.${e.s}</span>
     </div>
     <div class="ev-header-row">
@@ -1883,7 +1946,7 @@ function goToday(){
 // ═══════════════════════════════════════════════════════════
 // FILTERS SETUP
 // ═══════════════════════════════════════════════════════════
-[['fg-year','year'],['fg-sez','sez'],['fg-budget','budget'],['fg-prio','prio'],['fg-area','area'],['fg-settore','settore']].forEach(([gid,fk])=>{
+[['fg-year','year'],['fg-sez','sez'],['fg-budget','budget'],['fg-prio','prio'],['fg-area','area'],['fg-settore','settore'],['fg-ice','ice']].forEach(([gid,fk])=>{
   document.getElementById(gid).querySelectorAll('.filter-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
       document.getElementById(gid).querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
