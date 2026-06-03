@@ -1794,7 +1794,7 @@ function eventCard(e){
   const todayStr=new Date().toISOString().substring(0,10);
   const isPast=e.de<todayStr;
   const email=e.contatti.email&&!e.contatti.email.startsWith('[')?`<div>Email: <a class="contact-link" href="mailto:${e.contatti.email}">${e.contatti.email}</a></div>`:'';
-  const link=e.contatti.link?`<div>Link: <a class="contact-link" href="https://${e.contatti.link}" target="_blank">${e.contatti.link}</a></div>`:'';
+  const link=e.contatti.link?`<div>Link: <a class="contact-link" href="${e.contatti.link.startsWith('http')?e.contatti.link:'https://'+e.contatti.link}" target="_blank">${e.contatti.link}</a></div>`:'';
   const note=e.contatti.note?`<div style="font-size:11px;color:var(--gray-400);margin-top:4px">${e.contatti.note}</div>`:'';
   const deadline=e.deadline?`<div class="deadline-badge">⏰ Scadenza application: ${new Date(e.deadline+'T00:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'})}</div>`:'';
   return `
