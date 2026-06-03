@@ -1,0 +1,1852 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wow Tapes — Calendario Strategico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#0a0a0a;--white:#ffffff;--off-white:#f5f4f0;
+  --red:#e63946;--gray-100:#f5f5f5;--gray-200:#e8e8e8;--gray-400:#aaaaaa;--gray-600:#666;--gray-800:#222;
+  --sector-adv:#e63946;--sector-tech:#1d6fa4;--sector-cinema:#7c3aed;
+  --sector-fashion:#d4578a;--sector-design:#f77f00;--sector-hosp:#2a9d8f;
+  --sector-branded:#0891b2;--sector-music:#6d28d9;--sector-art:#b45309;--sector-other:#64748b;
+  --radius:10px;--shadow:0 2px 16px rgba(0,0,0,0.08);
+}
+body{font-family:'Inter',sans-serif;background:var(--off-white);color:var(--black);min-height:100vh;font-size:14px}
+
+/* ═══ HEADER ═══ */
+.header{background:var(--black);color:var(--white);padding:0;position:sticky;top:0;z-index:200}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 32px}
+.logo-area{display:flex;align-items:center;gap:20px}
+.logo-svg{height:44px;width:auto}
+.header-divider{width:1px;height:32px;background:rgba(255,255,255,0.15)}
+.header-tagline{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:2px;color:rgba(255,255,255,0.45);line-height:1.3}
+.header-right{display:flex;align-items:center;gap:12px}
+.last-updated{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:.3px}
+.view-toggle{display:flex;gap:2px;background:rgba(255,255,255,0.08);padding:3px;border-radius:7px}
+.view-btn{padding:6px 14px;border:none;border-radius:5px;cursor:pointer;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:rgba(255,255,255,0.5);background:transparent;transition:all .2s;letter-spacing:.3px}
+.view-btn.active{background:var(--white);color:var(--black)}
+
+/* ═══ FILTERS ═══ */
+.filters-bar{background:var(--white);border-bottom:1px solid var(--gray-200);padding:12px 32px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;position:sticky;top:73px;z-index:100}
+.filter-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.filter-label{font-size:10px;font-weight:700;color:var(--gray-400);text-transform:uppercase;letter-spacing:.8px;white-space:nowrap;margin-right:2px}
+.filter-btn{padding:4px 11px;border:1.5px solid var(--gray-200);border-radius:20px;background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:var(--gray-600);transition:all .15s;white-space:nowrap;letter-spacing:.2px}
+.filter-btn:hover{border-color:#999;color:var(--black)}
+.filter-btn.active{background:var(--black);border-color:var(--black);color:var(--white)}
+.filter-sep{width:1px;height:24px;background:var(--gray-200)}
+.filter-row-break{flex-basis:100%;height:0;border-top:1px solid var(--gray-200);margin:4px 0}
+.search-wrap{position:relative;margin-left:4px}
+.search-input{padding:6px 14px 6px 32px;border:1.5px solid var(--gray-200);border-radius:20px;font-family:'Inter',sans-serif;font-size:12px;outline:none;width:200px;color:var(--black);background:var(--white);transition:border .15s}
+.search-input:focus{border-color:var(--black)}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--gray-400);pointer-events:none}
+
+/* ═══ STATS ═══ */
+.stats-bar{padding:16px 32px;display:flex;gap:10px;flex-wrap:wrap;background:var(--off-white)}
+.stat-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);padding:12px 20px;min-width:105px;text-align:center}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--black);letter-spacing:1px;line-height:1}
+.stat-label{font-size:10px;color:var(--gray-400);margin-top:3px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+
+/* ═══ LEGEND ═══ */
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;padding:0 32px 12px;font-size:10px;color:var(--gray-600);align-items:center}
+.legend-title{font-weight:700;color:var(--gray-800);text-transform:uppercase;letter-spacing:.5px;font-size:10px}
+.legend-item{display:flex;align-items:center;gap:4px;font-weight:500}
+.legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+/* ═══ MAIN ═══ */
+.main{display:flex;gap:0;min-height:calc(100vh - 210px)}
+
+/* ═══ CALENDAR ═══ */
+.calendar-view{flex:1;padding:22px 32px;display:none}
+.calendar-view.active{display:block}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cal-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--black)}
+.cal-controls{display:flex;align-items:center;gap:10px}
+.cal-arrow{width:32px;height:32px;border:1.5px solid var(--gray-200);border-radius:7px;background:var(--white);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s;color:var(--black)}
+.cal-arrow:hover{background:var(--black);border-color:var(--black);color:var(--white)}
+.cal-today-btn{padding:5px 12px;border:1.5px solid var(--gray-200);border-radius:7px;background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--gray-600);transition:all .15s;letter-spacing:.3px}
+.cal-today-btn:hover{background:var(--black);border-color:var(--black);color:var(--white)}
+.cal-jump select{padding:5px 10px;border:1.5px solid var(--gray-200);border-radius:7px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--black)}
+.cal-grid{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);background:var(--black)}
+.cal-wd{text-align:center;padding:9px 4px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr)}
+.cal-day{min-height:88px;border-right:1px solid var(--gray-200);border-bottom:1px solid var(--gray-200);padding:6px 5px;cursor:pointer;transition:background .12s;position:relative;overflow:hidden}
+.cal-day:hover{background:#fafaf8}
+.cal-day.other-month{background:#fbfbf9}
+.cal-day.other-month .day-num{color:#ccc}
+.cal-day.today .day-num{background:var(--red);color:var(--white);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.cal-day.selected{background:#f0efeb;outline:2px solid var(--black);outline-offset:-2px}
+.day-num{font-size:12px;font-weight:700;color:var(--black);width:22px;height:22px;display:flex;align-items:center;justify-content:center;margin-bottom:3px}
+.day-dots{display:flex;flex-wrap:wrap;gap:2px;padding:1px 0}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.day-events-mini{display:flex;flex-direction:column;gap:2px;margin-top:2px}
+.mini-pill{font-size:8.5px;padding:1px 4px;border-radius:3px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;max-width:100%;letter-spacing:.1px}
+
+/* ═══ SIDE PANEL ═══ */
+.side-panel{width:390px;background:var(--white);border-left:1px solid var(--gray-200);position:sticky;top:130px;height:calc(100vh - 130px);overflow-y:auto;display:none;flex-direction:column;flex-shrink:0}
+.side-panel.open{display:flex}
+.panel-header{padding:18px 20px;border-bottom:1px solid var(--gray-200);position:sticky;top:0;background:var(--white);z-index:10}
+.panel-date{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:var(--black)}
+.panel-count{font-size:11px;color:var(--gray-400);margin-top:3px;font-weight:500}
+.panel-close{position:absolute;right:16px;top:16px;width:26px;height:26px;border:none;background:var(--gray-100);border-radius:5px;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;color:var(--gray-600)}
+.panel-close:hover{background:var(--gray-200)}
+.panel-body{padding:14px;flex:1}
+.panel-empty{padding:40px 16px;text-align:center;color:var(--gray-400);font-size:13px;line-height:1.6}
+
+/* ═══ EVENT CARDS ═══ */
+.event-card{border:1.5px solid var(--gray-200);border-radius:var(--radius);margin-bottom:9px;overflow:hidden;transition:border-color .15s,box-shadow .15s;background:var(--white)}
+.event-card:hover{border-color:#bbb;box-shadow:0 2px 12px rgba(0,0,0,.07)}
+.event-card.expanded{border-color:var(--black);box-shadow:0 3px 16px rgba(0,0,0,.1)}
+.event-header{padding:13px 14px;cursor:pointer;display:flex;flex-direction:column;gap:5px}
+.event-badges{display:flex;gap:4px;flex-wrap:wrap}
+.badge{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:10px;text-transform:uppercase;letter-spacing:.4px}
+.badge-alto{background:#d1fae5;color:#065f46}
+.badge-medio{background:#fef3c7;color:#92400e}
+.badge-basso{background:#f3f4f6;color:#6b7280}
+.badge-ok{background:#d1fae5;color:#065f46}
+.badge-over{background:#fff7ed;color:#c2410c}
+.badge-mp{background:#ede9fe;color:#5b21b6}
+.badge-sez{background:#f0f4ff;color:#1d4ed8;font-size:9px}
+.event-name{font-size:14px;font-weight:700;color:var(--black);line-height:1.3;letter-spacing:-.2px}
+.event-meta{display:flex;flex-wrap:wrap;gap:10px;font-size:11px;color:var(--gray-600);font-weight:500}
+.ev-header-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.chevron{font-size:11px;color:var(--gray-400);flex-shrink:0;margin-top:2px;transition:transform .2s}
+.event-card.expanded .chevron{transform:rotate(180deg)}
+.event-details{display:none;border-top:1px solid var(--gray-200);background:#fafaf8}
+.event-card.expanded .event-details{display:block}
+.detail-inner{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.dbox{background:var(--white);border:1px solid var(--gray-200);border-radius:8px;padding:11px}
+.dbox.full{grid-column:1/-1}
+.dbox-label{font-size:9px;font-weight:800;color:var(--gray-400);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
+.dbox-content{font-size:12px;color:var(--black);line-height:1.55}
+.contact-link{color:#1d6fa4;text-decoration:none;font-size:11px;display:block;margin-top:2px}
+.contact-link:hover{text-decoration:underline}
+.script-box{background:var(--off-white);border:1px solid var(--gray-200);border-radius:7px;padding:11px;font-style:italic;font-size:12px;color:var(--gray-600);line-height:1.55;margin-top:4px}
+.deadline-badge{display:inline-flex;align-items:center;gap:4px;background:#fef3c7;color:#92400e;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;margin-top:6px}
+.badge-past{background:#f3f4f6;color:#9ca3af}
+.past-event{opacity:0.65}
+.past-event .event-name{color:var(--gray-600)}
+.empty-month-banner{display:none;text-align:center;padding:18px 16px;background:#f9fafb;border-radius:10px;margin:8px 0;border:1px dashed var(--gray-200)}
+
+/* ═══ LIST VIEW ═══ */
+.list-view{flex:1;padding:22px 32px;display:none}
+.list-view.active{display:block}
+.sec-header{display:flex;align-items:center;gap:10px;padding:11px 16px;background:var(--black);border-radius:8px 8px 0 0;margin-top:22px}
+.sec-header:first-child{margin-top:0}
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:2px;color:var(--white)}
+.sec-count{font-size:11px;color:rgba(255,255,255,0.45);font-weight:500}
+.sec-events{border:1px solid var(--gray-200);border-top:none;border-radius:0 0 8px 8px;padding:10px;background:var(--white);margin-bottom:6px}
+.no-results{text-align:center;padding:60px 20px;color:var(--gray-400);font-size:14px;line-height:1.6}
+
+/* ═══ REMINDER STRIP ═══ */
+.reminder-strip{background:var(--black);border-bottom:1px solid rgba(255,255,255,.08);padding:0;overflow:hidden;max-height:0;transition:max-height .3s}
+.reminder-strip.show{max-height:50px}
+.reminder-inner{display:flex;align-items:center;gap:12px;padding:9px 32px;white-space:nowrap;overflow:hidden}
+.reminder-tag{background:var(--red);color:var(--white);font-size:10px;font-weight:800;padding:3px 8px;border-radius:4px;letter-spacing:.5px;flex-shrink:0}
+.reminder-items{display:flex;gap:20px;font-size:11px;color:rgba(255,255,255,.65);overflow:hidden}
+.reminder-item strong{color:var(--white);font-weight:700}
+.reminder-item-link{cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.35);padding-bottom:1px;transition:color .15s}
+.reminder-item-link:hover{color:var(--white)}
+.reminder-item-link:hover strong{text-decoration:underline}
+
+/* ═══ DEADLINE MODAL ═══ */
+.deadline-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;align-items:center;justify-content:center;padding:24px}
+.deadline-modal-overlay.open{display:flex}
+.deadline-modal-box{background:var(--white);border-radius:14px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;box-shadow:0 8px 48px rgba(0,0,0,.22)}
+.deadline-modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--gray-200);position:sticky;top:0;background:var(--white);z-index:2;border-radius:14px 14px 0 0}
+.deadline-modal-title{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:1.5px;color:var(--black)}
+.deadline-modal-close{width:28px;height:28px;border:none;background:var(--gray-100);border-radius:6px;cursor:pointer;font-size:13px;color:var(--gray-600);display:flex;align-items:center;justify-content:center}
+.deadline-modal-close:hover{background:var(--gray-200)}
+.deadline-modal-body{padding:14px}
+
+/* ═══ SCROLL ═══ */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <!-- DEADLINE REMINDER STRIP -->
+  <div class="reminder-strip" id="reminder-strip">
+    <div class="reminder-inner">
+      <div class="reminder-tag">⏰ SCADENZE IMMINENTI</div>
+      <div class="reminder-items" id="reminder-items"></div>
+    </div>
+  </div>
+  <div class="header-inner">
+    <div class="logo-area">
+      <!-- SVG LOGO Wow Tapes (sostituisci con <img src="logo.png"> se hai il file PNG nella stessa cartella) -->
+      <svg class="logo-svg" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg">
+        <text x="6" y="26" font-family="Pacifico,cursive" font-size="22" fill="white" letter-spacing="-0.5">Wow</text>
+        <line x1="4" y1="46" x2="95" y2="46" stroke="white" stroke-width="2.5"/>
+        <text x="4" y="44" font-family="Pacifico,cursive" font-size="22" fill="white" letter-spacing="-0.5">Tapes</text>
+      </svg>
+      <div class="header-divider"></div>
+      <div class="header-tagline">CALENDARIO<br>STRATEGICO 2026–2027+</div>
+    </div>
+    <div class="header-right">
+      <div class="last-updated" id="last-updated-label"></div>
+      <div class="view-toggle">
+        <button class="view-btn active" onclick="setView('calendar')" id="btn-cal">📅 Calendario</button>
+        <button class="view-btn" onclick="setView('list')" id="btn-list">☰ Lista</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <span class="filter-label">Anno</span>
+  <div class="filter-group" id="fg-year">
+    <button class="filter-btn active" data-val="all">Tutti</button>
+    <button class="filter-btn" data-val="2026">2026</button>
+    <button class="filter-btn" data-val="2027">2027</button>
+  </div>
+  <div class="filter-sep"></div>
+  <span class="filter-label">Sezione</span>
+  <div class="filter-group" id="fg-sez">
+    <button class="filter-btn active" data-val="all">Tutte</button>
+    <button class="filter-btn" data-val="A">A — Media Partnership</button>
+    <button class="filter-btn" data-val="B">B — Networking</button>
+    <button class="filter-btn" data-val="C">C — Posizionamento</button>
+  </div>
+  <div class="filter-sep"></div>
+  <span class="filter-label">Budget</span>
+  <div class="filter-group" id="fg-budget">
+    <button class="filter-btn active" data-val="all">Tutti</button>
+    <button class="filter-btn" data-val="ok">✅ Entro €600</button>
+    <button class="filter-btn" data-val="over">⚠️ Supera €600</button>
+  </div>
+  <div class="filter-sep"></div>
+  <span class="filter-label">Priorità</span>
+  <div class="filter-group" id="fg-prio">
+    <button class="filter-btn active" data-val="all">Tutte</button>
+    <button class="filter-btn" data-val="Alto">Alta</button>
+    <button class="filter-btn" data-val="Medio">Media</button>
+    <button class="filter-btn" data-val="Basso">Bassa</button>
+  </div>
+  <div class="filter-sep"></div>
+  <span class="filter-label">Area</span>
+  <div class="filter-group" id="fg-area">
+    <button class="filter-btn active" data-val="all">Tutte</button>
+    <button class="filter-btn" data-val="mena">🌙 MENA</button>
+    <button class="filter-btn" data-val="italy">🇮🇹 Italia</button>
+    <button class="filter-btn" data-val="japan">🗾 Giappone</button>
+  </div>
+  <div class="filter-row-break"></div>
+  <span class="filter-label">Settore</span>
+  <div class="filter-group" id="fg-settore">
+    <button class="filter-btn active" data-val="all">Tutti</button>
+    <button class="filter-btn" data-val="adv">📢 Advertising</button>
+    <button class="filter-btn" data-val="tech" data-sc="tech">💻 Tech</button>
+    <button class="filter-btn" data-val="cinema" data-sc="cinema">🎬 Cinema</button>
+    <button class="filter-btn" data-val="fashion" data-sc="fashion">👗 Fashion/Luxury</button>
+    <button class="filter-btn" data-val="design" data-sc="design">🎨 Design</button>
+    <button class="filter-btn" data-val="hosp" data-sc="hosp">🏨 Hospitality</button>
+    <button class="filter-btn" data-val="art" data-sc="art">🖼️ Arte</button>
+    <button class="filter-btn" data-val="branded" data-sc="branded">📹 Branded</button>
+  </div>
+  <div class="filter-sep"></div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" type="text" id="search" placeholder="Nome, città, settore...">
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar" id="stats-bar"></div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span class="legend-title">Settori:</span>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--sector-adv)"></div>Advertising</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--sector-tech)"></div>Tech</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--sector-cinema)"></div>Cinema</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--sector-fashion)"></div>Fashion/Luxury</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--sector-design)"></div>Design</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--sector-hosp)"></div>Hospitality/Travel</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--sector-branded)"></div>Branded Content</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--sector-music)"></div>Musica/Cultura</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--sector-art)"></div>Arte Contemporanea</div>
+</div>
+
+<!-- DEADLINE MODAL -->
+<div class="deadline-modal-overlay" id="deadline-modal" onclick="if(event.target===this)closeDeadlineModal()">
+  <div class="deadline-modal-box">
+    <div class="deadline-modal-header">
+      <span class="deadline-modal-title">⏰ Scadenza imminente</span>
+      <button class="deadline-modal-close" onclick="closeDeadlineModal()">✕</button>
+    </div>
+    <div class="deadline-modal-body" id="deadline-modal-body"></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+
+  <!-- CALENDAR VIEW -->
+  <div class="calendar-view active" id="calendar-view">
+    <div class="cal-nav">
+      <div class="cal-title" id="cal-title"></div>
+      <div class="cal-controls">
+        <button class="cal-arrow" onclick="changeMonth(-1)">&#8249;</button>
+        <button class="cal-arrow" onclick="changeMonth(1)">&#8250;</button>
+        <button class="cal-today-btn" onclick="goToday()" title="Torna al mese corrente">Oggi</button>
+        <div class="cal-jump">
+          <select id="sel-month" onchange="jumpTo()">
+            <option value="0">Gennaio</option><option value="1">Febbraio</option><option value="2">Marzo</option>
+            <option value="3">Aprile</option><option value="4">Maggio</option><option value="5">Giugno</option>
+            <option value="6">Luglio</option><option value="7">Agosto</option><option value="8">Settembre</option>
+            <option value="9">Ottobre</option><option value="10">Novembre</option><option value="11">Dicembre</option>
+          </select>
+          <select id="sel-year" onchange="jumpTo()">
+            <option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="cal-grid">
+      <div class="cal-weekdays">
+        <div class="cal-wd">Lun</div><div class="cal-wd">Mar</div><div class="cal-wd">Mer</div>
+        <div class="cal-wd">Gio</div><div class="cal-wd">Ven</div><div class="cal-wd">Sab</div><div class="cal-wd">Dom</div>
+      </div>
+      <div class="cal-days" id="cal-days"></div>
+    </div>
+  </div>
+
+  <!-- LIST VIEW -->
+  <div class="list-view" id="list-view"></div>
+
+  <!-- SIDE PANEL -->
+  <div class="side-panel" id="side-panel">
+    <div class="panel-header">
+      <div class="panel-date" id="panel-date"></div>
+      <div class="panel-count" id="panel-count"></div>
+      <button class="panel-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="panel-body" id="panel-body"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// EVENTS DATABASE — aggiornato automaticamente
+// Ultima revisione: Giugno 2026
+// ═══════════════════════════════════════════════════════════
+const EVENTS = [
+
+// ─── SEZIONE A: MEDIA PARTNERSHIP ────────────────────────
+
+{id:1,s:"A",nome:"Cannes Lions International Festival of Creativity",
+ ds:"2026-06-22",de:"2026-06-26",anno:2026,luogo:"Cannes, Francia",
+ settore:"Advertising",sc:"adv",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Il più importante festival mondiale della creatività pubblicitaria. 15.000+ partecipanti da 90+ paesi. Premia le campagne più innovative e riunisce CMO, creative director e brand globali (WPP, Publicis, Google, Meta, Ogilvy).",
+ valore:"Massima concentrazione mondiale di potenziali clienti. L'accredito stampa è gratuito. Opportunità di mostrare il portfolio Wow a decision maker di primo livello. ROI altissimo.",
+ modalita:"Media partnership (aftermovie festival) + Accredito stampa + Networking",
+ costo:"Pass Delegate €3.500+ / Accredito Press GRATUITO (su domanda)",
+ mp_detail:"ALTO POTENZIALE. Proporre un 'Festival Aftermovie' in stile cinematografico in cambio di accrediti full + visibilità canale ufficiale.",
+ contatti:{email:"press@canneslions.com",link:"canneslions.com/press-accreditation",note:"Scadenza accrediti: Aprile"},
+ script:"Proporre aftermovie esclusivo con visione artistica del festival. Leva: il video diventa asset riutilizzabile per anni.",
+ deadline:"2026-04-01"},
+
+{id:2,s:"A",nome:"Web Summit",
+ ds:"2026-11-02",de:"2026-11-05",anno:2026,luogo:"Lisbona, Portogallo",
+ settore:"Tech",sc:"tech",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Una delle più grandi conferenze tech al mondo. 70.000+ partecipanti, 1.000+ speaker. Startup, scale-up, VC, CMO tech. Hub internazionale per innovazione e digital business.",
+ valore:"Startup e brand tech con forti bisogni di video per fundraising, lancio prodotti, eventi. L'accredito stampa è realistico per un'agenzia con portfolio solido.",
+ modalita:"Accredito stampa / Media partnership",
+ costo:"Pass standard €1.395 / Press Pass GRATUITO (su domanda)",
+ mp_detail:"ALTO POTENZIALE. Video recap emozionale dell'evento con focus sulle startup più interessanti. ROI per l'organizzatore: contenuto virale.",
+ contatti:{email:"press@websummit.com",link:"websummit.com/media-press",note:"Richiedere accredito 3-4 mesi prima"},
+ script:"Proporre video recap emotivo con focus sulle storie umane dell'innovazione. Portare link a lavori simili.",
+ deadline:"2026-07-01"},
+
+{id:3,s:"A",nome:"D&AD Festival",
+ ds:"2026-04-28",de:"2026-05-01",anno:2026,luogo:"Londra, UK",
+ settore:"Advertising",sc:"adv",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Festival internazionale del design e della pubblicità. 5.000+ professionisti creativi, agenzie globali, brand. Premio D&AD Pencil tra i più ambiti nel settore creativo.",
+ valore:"Accesso diretto a creative director e brand manager di agenzie tier-1. Comunità molto aperta alla collaborazione con produttori video di qualità.",
+ modalita:"Accredito stampa / Media partnership / Networking",
+ costo:"Pass Professional £895+ / Press accreditation su domanda",
+ mp_detail:"ALTO POTENZIALE. Festival molto visivo: un aftermovie di qualità ha enorme valore per gli organizzatori.",
+ contatti:{email:"press@dandad.org",link:"dandad.org/en/d-ad-festival",note:"Contattare press office 2-3 mesi prima"},
+ script:"Il livello qualitativo del showreel è la nostra credenziale principale. Festival di creativi: devono vedere la qualità prima di tutto.",
+ deadline:"2026-02-15"},
+
+{id:4,s:"A",nome:"SXSW (South by Southwest)",
+ ds:"2027-03-07",de:"2027-03-16",anno:2027,luogo:"Austin, Texas, USA",
+ settore:"Tech/Cultura",sc:"tech",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Mega-festival interdisciplinare: musica, cinema, tech, innovazione. 300.000+ partecipanti. Speaker da tutto il mondo: CEO, artisti, filmmaker, brand manager.",
+ valore:"Convergenza unica di settori tutti rilevanti per Wow Tapes. Aziende tech cercano contenuti video emozionali. Settore music/entertainment offre possibilità di portfolio molto visibili.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Platinum Badge $1.895+ / Press Badge GRATUITO (su domanda)",
+ mp_detail:"ALTO POTENZIALE. SXSW ha tradizione forte di collaborazioni con filmmaker indipendenti. Proporre documentario breve sull'innovazione.",
+ contatti:{email:"press@sxsw.com",link:"sxsw.com/press",note:"Accrediti press: apertura domande Dicembre anno precedente"},
+ script:"Proporre embedded filmmaker del festival — un cortometraggio documentaristico sull'innovazione vista dal basso.",
+ deadline:"2026-12-01"},
+
+{id:5,s:"A",nome:"Slush",
+ ds:"2026-11-18",de:"2026-11-19",anno:2026,luogo:"Helsinki, Finlandia",
+ settore:"Tech/Startup",sc:"tech",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Il più importante evento europeo per startup e venture capital. 13.000+ partecipanti, 4.000+ startup, 2.000+ investitori. Estetica dark e originale.",
+ valore:"Startup con forte bisogno di video per pitch. L'estetica 'dark' di Slush si adatta perfettamente allo stile Wow Tapes.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Startup Pass €500 / Investor Pass €1.200+ / Press Pass GRATUITO",
+ mp_detail:"ALTO POTENZIALE. Proporre un aftermovie dall'estetica cinematografica dark, in linea con il brand del festival.",
+ contatti:{email:"press@slush.org",link:"slush.org/media",note:"Applicazioni press: 3-4 mesi prima"},
+ script:"Enfatizzare il match estetico: lo stile cinematografico dark di Wow Tapes è perfetto per Slush.",
+ deadline:"2026-08-01"},
+
+{id:6,s:"A",nome:"Fuorisalone / Salone del Mobile",
+ ds:"2026-04-21",de:"2026-04-26",anno:2026,luogo:"Milano, Italia",
+ settore:"Design/Luxury",sc:"design",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Il più importante evento mondiale del design e dell'arredo. 300.000+ visitatori, 2.000+ espositori. Milano si trasforma in un enorme museo del design contemporaneo.",
+ valore:"Brand luxury, design house, architetti: tutti bisognosi di video premium. Evento vicino (Roma-Milano). Possibilità di incontrare brand internazionali nel momento più creativo.",
+ modalita:"Media partnership / Accredito stampa / Networking",
+ costo:"Accredito stampa GRATUITO / Pass visitatore €30–80",
+ mp_detail:"ALTISSIMO POTENZIALE. Ogni brand ha bisogno di documentare la propria installazione. Proporre pacchetti video per singoli brand.",
+ contatti:{email:"press@salonemilano.it",link:"salonemilano.it/en/press",note:"Accrediti aprono 2 mesi prima"},
+ script:"Approccio duale: 1) proposta per aftermovie generale; 2) contatto diretto ai brand esposti per video installazioni.",
+ deadline:"2026-02-14"},
+
+{id:7,s:"A",nome:"OMR Digital Marketing Festival",
+ ds:"2026-05-19",de:"2026-05-20",anno:2026,luogo:"Amburgo, Germania",
+ settore:"Marketing/Tech",sc:"branded",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Il più grande festival europeo di digital marketing. 70.000+ partecipanti, 800+ speaker, 1.000+ espositori. Hub per CMO, growth marketer, tech company e agenzie creative digitali.",
+ valore:"Enorme concentrazione di aziende con budget marketing da investire in video. Mercato tedesco e DACH con alto budget ma poco penetrato da agenzie italiane.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Conference Pass €1.295 / Expo free / Press su domanda",
+ mp_detail:"ALTO POTENZIALE. Festival dinamico con forte bisogno di contenuti video. Proporre aftermovie o serie di clip dai palchi principali.",
+ contatti:{email:"press@omr.com",link:"omr.com/en/press",note:"Team press molto attivo. Contattare 2 mesi prima."},
+ script:"Enfatizzare l'energia visiva del festival: enormi show, palchi LED, folla. Wow Tapes può catturare questa energia in modo unico.",
+ deadline:"2026-03-19"},
+
+{id:8,s:"A",nome:"Mostra del Cinema di Venezia",
+ ds:"2026-09-02",de:"2026-09-12",anno:2026,luogo:"Venezia, Italia",
+ settore:"Cinema/Luxury",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Uno dei tre grandi festival cinematografici mondiali. Leone d'Oro tra i premi più ambiti. Forte presenza di brand luxury come sponsor (Maserati, Campari, Lavazza).",
+ valore:"Evento simbolo dell'eccellenza italiana. Brand luxury sponsor con enormi budget contenuti. Un aftermovie della Mostra è asset di enorme valore. Logistica ottimale dall'Italia.",
+ modalita:"Accredito stampa / Media partnership",
+ costo:"Accredito stampa GRATUITO (media accreditati) / Industry Badge €150-250",
+ mp_detail:"ALTO POTENZIALE. La Biennale è ente pubblico aperto a partnership creative. Un aftermovie artistico della Mostra avrebbe grandissima visibilità.",
+ contatti:{email:"ufficiostampa@labiennale.org",link:"labiennale.org/it/cinema/press",note:"Apertura domande: Maggio/Giugno"},
+ script:"Proporre aftermovie artistico — non reportage ma un film sul festival. Leva: siamo italiani, conosciamo l'estetica che la Biennale cerca.",
+ deadline:"2026-05-01"},
+
+{id:9,s:"A",nome:"Clio Awards",
+ ds:"2026-09-22",de:"2026-09-24",anno:2026,luogo:"New York, USA",
+ settore:"Advertising",sc:"adv",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Uno dei più prestigiosi award show mondiali per la creatività pubblicitaria. Riunisce top creative director, CMO e produttori delle principali agenzie e brand globali.",
+ valore:"Networking ad altissimo livello con decision maker della pubblicità globale. Un aftermovie ha grande valore per organizzatori e vincitori.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Pass Industry $895 / Accredito press su domanda",
+ mp_detail:"ALTO POTENZIALE. Proporre mini-documentari sui creativi vincitori — storie umane dietro le campagne.",
+ contatti:{email:"press@clioawards.com",link:"clioawards.com",note:"Contattare 3 mesi prima per media accreditation"},
+ script:"Mini-documentari sui creativi vincitori. Formato shareable e ad alto impatto per i social degli organizzatori.",
+ deadline:"2026-06-22"},
+
+{id:10,s:"A",nome:"Sónar Barcelona",
+ ds:"2026-06-18",de:"2026-06-20",anno:2026,luogo:"Barcellona, Spagna",
+ settore:"Musica/Tech/Cultura",sc:"music",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Il festival internazionale più importante al mondo che unisce musica avanzata, creatività e tecnologia. 140.000+ partecipanti in 3 giorni. Sónar+D è la conferenza creativa annessa.",
+ valore:"Punto di incontro unico tra musica, arte digitale, tech e brand creativity. Brand come Apple, Google, Netflix sponsorizzano Sónar. Pubblico di creativi, artisti e innovatori.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Pass weekend €200+ / Press accreditation GRATUITO su domanda",
+ mp_detail:"ALTO POTENZIALE. Un aftermovie di Sónar in stile Wow avrebbe elevatissima visibilità nel mondo creativo internazionale.",
+ contatti:{email:"press@sonar.es",link:"sonar.es/en/info/press",note:"Accrediti press: apertura 3-4 mesi prima"},
+ script:"Proporre un aftermovie visivamente potente che cattura l'energia unica del festival. Angolo: dove la musica incontra l'arte digitale.",
+ deadline:"2026-03-18"},
+
+{id:11,s:"A",nome:"Short Shorts Film Festival Asia (Tokyo)",
+ ds:"2026-06-11",de:"2026-06-23",anno:2026,luogo:"Tokyo, Giappone",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Uno dei principali festival asiatici dedicati al cortometraggio. Con riconoscimento dall'Academy Awards. Più di 200 film da 40+ paesi. Hub per il cortometraggio in Asia.",
+ valore:"Il mercato giapponese è enormemente ricco per la produzione video. Un cortometraggio selezionato qui ha visibilità Asia-wide. Ottimo per espandere il portfolio in contesti asiatici.",
+ modalita:"Iscrizione lavori / Accredito professionale",
+ costo:"Iscrizione film: $50-80 / Industry Badge: [da verificare su sito]",
+ mp_detail:"MEDIO POTENZIALE. Festival aperto a partnership con produttori internazionali.",
+ contatti:{email:"info@shortshorts.org",link:"shortshorts.org/ssff2026",note:"Iscrizioni film: apertura Novembre/Dicembre anno precedente"},
+ script:"Iscrivere un cortometraggio o branded short. Tokyo è la porta per il mercato creativo giapponese e asiatico.",
+ deadline:"2026-02-01"},
+
+{id:12,s:"A",nome:"Brand Film Festival London",
+ ds:"2026-10-14",de:"2026-10-15",anno:2026,luogo:"Londra, UK",
+ settore:"Branded Content",sc:"branded",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Festival dedicato esclusivamente ai brand film. Award ceremony, screening, networking tra brand e produttori. Nicchia perfettamente allineata con il core business di Wow Tapes.",
+ valore:"Pubblico 100% target: brand che investono in video, produttori, agenzie creative. Possibilità concreta di vincere un award e rafforzare la credibilità internazionale.",
+ modalita:"Iscrizione lavori al concorso / Partecipante / Media partnership",
+ costo:"Entry fee per lavori £150-300 / Delegate Pass £395 / Press su domanda",
+ mp_detail:"ALTO POTENZIALE. Festival piccolo e specializzato: molto più facile proporre una media partnership.",
+ contatti:{email:"info@brandfilmfestival.com",link:"brandfilmfestival.com",note:"Verificare date esatte 2026 sul sito"},
+ script:"Duplice approccio: 1) iscrivere un lavoro; 2) proporsi come official video partner del festival.",
+ deadline:"2026-08-14"},
+
+{id:13,s:"A",nome:"Annecy International Animation Film Festival",
+ ds:"2026-06-09",de:"2026-06-14",anno:2026,luogo:"Annecy, Francia",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il principale festival mondiale dedicato al cinema d'animazione. 15.000+ accreditati, 3.000+ film. Mercato MIFA per co-produzioni. Brand creativi e studi internazionali presenti.",
+ valore:"L'animazione è un settore in forte crescita per branded content. Netflix, Disney, Amazon presenti con team di acquisizione. Portfolio con motion graphics o branded animation ha grande appeal.",
+ modalita:"Accredito professionale / Media partnership / Iscrizione lavori",
+ costo:"MIFA Badge €400 / Professional Badge €150 / Press su domanda",
+ mp_detail:"MEDIO-ALTO POTENZIALE. Proporre un video documentario 'dietro le quinte' del festival con focus sui creator.",
+ contatti:{email:"info@annecyfestival.com",link:"annecyfestival.com/en/press",note:"Accrediti: apertura Marzo/Aprile"},
+ script:"Angolo: il festival più magico del cinema. Proporre un aftermovie che cattura la magia dell'animazione 'dal vivo'.",
+ deadline:"2026-03-09"},
+
+{id:14,s:"A",nome:"Spikes Asia",
+ ds:"2026-10-06",de:"2026-10-08",anno:2026,luogo:"Singapore",
+ settore:"Advertising",sc:"adv",prio:"Medio",mp:true,budget:"over",
+ obiettivo:"Il principale festival della creatività pubblicitaria in Asia-Pacifico. Agenzie regionali e internazionali, brand leader del mercato asiatico.",
+ valore:"Accesso al mercato asiatico: brand e agenzie con forti budget. Presenza italiana/europea ha un appeal esotico e qualitativo percepito come premium.",
+ modalita:"Accredito stampa / Media partnership",
+ costo:"Delegate Pass $1.200+ / Press accreditation su domanda",
+ mp_detail:"MEDIO-ALTO POTENZIALE. Proporre un video dal taglio internazionale che valorizzi il punto di vista europeo sul mercato creativo asiatico.",
+ contatti:{email:"press@spikes.asia",link:"spikes.asia",note:"Verificare su sito ufficiale date accrediti 2026"},
+ script:"Posizionarsi come 'occhio europeo' sull'innovazione creativa asiatica.",
+ deadline:"2026-07-06"},
+
+{id:15,s:"A",nome:"Milano Fashion Week Donna P/E 2027",
+ ds:"2026-09-17",de:"2026-09-23",anno:2026,luogo:"Milano, Italia",
+ settore:"Fashion/Luxury",sc:"fashion",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Una delle quattro Fashion Week più importanti al mondo. Sfilate di tutti i principali brand italiani e internazionali. Presenza globale di buyer, press, influencer, creative director.",
+ valore:"I brand fashion hanno budget enormi per contenuti video. Accredito media permette di costruire relazioni dirette con gli uffici comunicazione dei brand.",
+ modalita:"Accredito stampa / Media partnership con singoli brand",
+ costo:"Accredito media GRATUITO per media accreditati",
+ mp_detail:"ALTO POTENZIALE. Proporre a brand emergenti un video dello show con taglio cinematografico.",
+ contatti:{email:"press@cameramoda.it",link:"cameramoda.it/en/press-office",note:"Camera Nazionale della Moda Italiana. Contattare 2 mesi prima."},
+ script:"Non puntare su Gucci o Prada: target i brand mid-tier che vogliono elevarsi visivamente.",
+ deadline:"2026-07-17"},
+
+// ─── SEZIONE B: NETWORKING & ACQUISIZIONE ─────────────────
+
+{id:16,s:"B",nome:"CES — Consumer Electronics Show",
+ ds:"2027-01-05",de:"2027-01-08",anno:2027,luogo:"Las Vegas, USA",
+ settore:"Tech",sc:"tech",prio:"Alto",mp:false,budget:"over",
+ obiettivo:"La più grande fiera mondiale di elettronica di consumo e innovazione tech. 180.000+ visitatori, 4.500+ espositori. Launch di prodotti, brand tech di ogni dimensione.",
+ valore:"Brand tech che lanciano prodotti a CES hanno bisogno di video di lancio, recap eventi, contenuti per social. Possibilità di incontrare CMO di brand tech globali.",
+ modalita:"Networking / Accredito stampa",
+ costo:"All Access Badge $1.100+ / Media Badge GRATUITO (su domanda)",
+ mp_detail:"MEDIO POTENZIALE. Evento enorme con molti video producer già presenti. Meglio usarlo per networking e acquisizione clienti diretti.",
+ contatti:{email:"mediainfo@ces.tech",link:"ces.tech/news/media-information",note:"CES Media Badge: application apre Settembre anno precedente"},
+ script:"Presentarsi agli stand dei brand con tablet e showreel. Obiettivo: 5-10 incontri con CMO o Head of Marketing di brand tech.",
+ deadline:"2026-09-01"},
+
+{id:17,s:"B",nome:"Tokyo Game Show",
+ ds:"2026-09-24",de:"2026-09-27",anno:2026,luogo:"Makuhari Messe, Chiba, Giappone",
+ settore:"Tech/Gaming",sc:"tech",prio:"Medio",mp:true,budget:"over",
+ obiettivo:"La più grande fiera mondiale dell'industria videoludica. 250.000+ visitatori, tutti i principali publisher e sviluppatori. Sony, Nintendo, Capcom, Bandai Namco presenti con stand enormi.",
+ valore:"L'industria gaming è uno dei settori più avanzati per produzione video e contenuti creativi. Brand gaming con budget enormi per video e marketing. Espansione nel mercato giapponese.",
+ modalita:"Accredito stampa / Media partnership",
+ costo:"Industry Badge ¥3.000-5.000 / Press Badge su domanda",
+ mp_detail:"MEDIO-ALTO POTENZIALE. Ogni publisher ha bisogno di video emozionali per i propri titoli. Proporre un aftermovie del TGS con focus sull'energia del gaming.",
+ contatti:{email:"tgs-contact@cesa.or.jp",link:"tgs.cesa.or.jp/en/press.html",note:"CESA gestisce l'evento. Accrediti press: apertura Giugno/Luglio"},
+ script:"Angolo: il gaming come forma d'arte contemporanea. Un aftermovie del TGS con questo posizionamento differenzia Wow da tutti i video gaming tradizionali.",
+ deadline:"2026-06-24"},
+
+{id:18,s:"B",nome:"Tokyo International Film Festival",
+ ds:"2026-10-28",de:"2026-11-06",anno:2026,luogo:"Tokyo, Giappone",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"over",
+ obiettivo:"Uno dei principali festival cinematografici asiatici. Film internazionali in competizione, mercato Asian Project Market, presenza di broadcaster e produttori giapponesi.",
+ valore:"La porta del cinema giapponese e asiatico per le coproduzioni internazionali. Presenza di broadcaster NHK, Fuji TV. Mercato giapponese poco penetrato da agenzie europee.",
+ modalita:"Accredito stampa / Industry Badge",
+ costo:"Industry Badge ¥15.000+ / Press su domanda",
+ mp_detail:"MEDIO POTENZIALE. Proporre un video del festival con focus sulla cultura cinematografica giapponese.",
+ contatti:{email:"press@tiff-jp.net",link:"tiff-jp.net/en/press",note:"Contattare ufficio stampa da Luglio/Agosto"},
+ script:"Posizionarsi come produzione europea con interesse genuino per il cinema asiatico. Portare sottotitoli in giapponese per il portfolio.",
+ deadline:"2026-07-28"},
+
+{id:19,s:"B",nome:"Designart Tokyo",
+ ds:"2026-10-17",de:"2026-10-26",anno:2026,luogo:"Tokyo, Giappone",
+ settore:"Design/Luxury",sc:"design",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il più importante festival di design, arte e architettura di Tokyo. Installazioni in tutta la città, showroom, gallerie. Simile al FuoriSalone milanese nel formato.",
+ valore:"Brand giapponesi e internazionali del design e del lusso presenti con installazioni. Il mercato giapponese per il design di lusso è enorme. Formato simile al Salone: ogni brand ha bisogno di video.",
+ modalita:"Accredito stampa / Media partnership / Networking",
+ costo:"Accredito professionale GRATUITO su registrazione / Press su domanda",
+ mp_detail:"ALTO POTENZIALE. Come per il Salone del Mobile: proporre video delle installazioni ai singoli brand.",
+ contatti:{email:"info@designart.jp",link:"designart.jp/en/press",note:"Verificare date esatte 2026 — il festival si tiene annualmente in ottobre"},
+ script:"Come per il Salone: approccio diretto ai brand esposti. Tokyo aggiunge il valore del mercato asiatico e del lusso giapponese.",
+ deadline:"2026-08-17"},
+
+{id:20,s:"B",nome:"ITB Berlin",
+ ds:"2026-03-08",de:"2026-03-12",anno:2026,luogo:"Berlino, Germania",
+ settore:"Hospitality/Travel",sc:"hosp",prio:"Alto",mp:false,budget:"ok",
+ obiettivo:"La più grande fiera mondiale del turismo. 180.000+ visitatori, 10.000+ espositori da 180 paesi. Hotel, tour operator, destinazioni, DMO, compagnie aeree.",
+ valore:"Il settore travel è uno dei più video-intensivi. ITB è il luogo dove incontrare hotel, resort e DMO in tre giorni. Target ideale per video emozionali di destinazione.",
+ modalita:"Networking / Accredito stampa",
+ costo:"Trade Visitor €35-50 / Press GRATUITO",
+ mp_detail:"BASSO per media partnership evento, ALTO per acquisizione clienti diretti (hotel, resort, DMO).",
+ contatti:{email:"press@messe-berlin.de",link:"itb.com/en/press",note:"Accrediti: apertura Novembre/Dicembre anno precedente"},
+ script:"Girare l'expo con portfolio fisico e digitale. Target: luxury hotel brand, DMO nazionali, catene alberghiere internazionali.",
+ deadline:"2025-12-01"},
+
+{id:21,s:"B",nome:"WTM London — World Travel Market",
+ ds:"2026-11-04",de:"2026-11-06",anno:2026,luogo:"Londra, UK",
+ settore:"Hospitality/Travel",sc:"hosp",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Il principale evento mondiale per il settore travel & tourism. 50.000+ visitatori professionali, 5.000+ espositori. Forte presenza di buyer internazionali.",
+ valore:"Forte presenza di luxury resort e destinazioni emergenti (Africa, Asia) che cercano contenuti internazionali di qualità.",
+ modalita:"Networking / Accredito stampa",
+ costo:"Trade Visitor GRATUITO (registrazione online) / Press GRATUITO",
+ mp_detail:"BASSO per evento in sé, ALTO per clienti individuali.",
+ contatti:{email:"press@reedexhibitions.co.uk",link:"wtm.com/london/en-gb/media.html",note:"Registrazione media online, generalmente gratuita"},
+ script:"Focus su luxury resorts e destinazioni emergenti. Portare portfolio con video di destinazioni di alto livello.",
+ deadline:"2026-09-04"},
+
+{id:22,s:"B",nome:"Dmexco",
+ ds:"2026-09-17",de:"2026-09-18",anno:2026,luogo:"Colonia, Germania",
+ settore:"Marketing/Tech",sc:"branded",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"La principale fiera europea per digital marketing e tecnologia pubblicitaria. 40.000+ visitatori, 1.000+ espositori. CMO, DTC brand, agenzie media, adtech company.",
+ valore:"Mercato DACH ad alto budget: brand tedeschi spendono molto in contenuti premium. La qualità italiana del video ha forte appeal nei mercati nordeuropei.",
+ modalita:"Networking / Accredito stampa",
+ costo:"Conference Pass €599 / Expo GRATUITO / Press su domanda",
+ mp_detail:"MEDIO POTENZIALE per clienti diretti.",
+ contatti:{email:"pr@dmexco.com",link:"dmexco.com/press",note:"Accrediti press apertura solitamente Giugno/Luglio"},
+ script:"Portare portfolio con almeno un lavoro per brand tedesco o europeo. Presentarsi come agenzia italiana che comprende il mercato internazionale.",
+ deadline:"2026-07-17"},
+
+{id:23,s:"B",nome:"Art Basel Basel",
+ ds:"2026-06-12",de:"2026-06-15",anno:2026,luogo:"Basilea, Svizzera",
+ settore:"Arte/Luxury",sc:"art",prio:"Medio",mp:false,budget:"over",
+ obiettivo:"La più importante fiera d'arte contemporanea del mondo. 93.000+ visitatori, 280+ gallerie, collezionisti e brand luxury globali. Punto d'incontro tra arte, soldi e comunicazione.",
+ valore:"Brand luxury che usano l'arte per posizionamento hanno budget enormi per contenuti video premium. Connessioni con fondazioni culturali e gallerie internazionali.",
+ modalita:"Networking / Accredito stampa",
+ costo:"VIP Day €300+ / Press su domanda",
+ mp_detail:"MEDIO POTENZIALE. Proporre a brand sponsor un video branded 'arte e lusso'.",
+ contatti:{email:"press@artbasel.com",link:"artbasel.com/press",note:"Accrediti press: apertura Marzo/Aprile"},
+ script:"Angolo: il confine tra arte contemporanea e branded video. Presentarsi ai brand sponsor con un portfolio di lavori in contesti culturali di alto livello.",
+ deadline:"2026-04-12"},
+
+{id:24,s:"B",nome:"Frieze London",
+ ds:"2026-10-09",de:"2026-10-13",anno:2026,luogo:"Londra, UK",
+ settore:"Arte/Luxury",sc:"art",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Una delle principali fiere d'arte contemporanea. 160+ gallerie internazionali, collezionisti, brand luxury, fondazioni culturali.",
+ valore:"Brand luxury sponsor con budget enormi per contenuti premium. Gallerie e fondazioni cercano documentazione video di alta qualità.",
+ modalita:"Networking / Accredito stampa",
+ costo:"Day Ticket £45-65 / Press su domanda",
+ mp_detail:"MEDIO POTENZIALE. Proporre a singoli brand sponsor video branded sul loro coinvolgimento con l'arte.",
+ contatti:{email:"press@frieze.com",link:"frieze.com/article/frieze-press",note:"Accrediti press: apertura Agosto/Settembre"},
+ script:"Video che connette arte contemporanea e brand — tema caldo per i luxury brand che usano l'arte per posizionamento.",
+ deadline:"2026-08-09"},
+
+{id:25,s:"B",nome:"Art Basel Miami Beach",
+ ds:"2026-12-04",de:"2026-12-07",anno:2026,luogo:"Miami, Florida, USA",
+ settore:"Arte/Luxury",sc:"art",prio:"Medio",mp:false,budget:"over",
+ obiettivo:"La versione americana di Art Basel. 75.000+ visitatori, 250+ gallerie. Dicembre a Miami: clima + arte + lusso + brand activation. Enorme presenza di sponsor luxury.",
+ valore:"Il mercato americano del luxury art sponsorship è gigantesco. Brand come UBS, BMW, Audemars Piguet presenti con grandi attivazioni. Periodo natalizio: budget marketing alto.",
+ modalita:"Networking / Accredito stampa",
+ costo:"VIP Preview su invito / Press su domanda",
+ mp_detail:"MEDIO POTENZIALE. I brand sponsor cercano contenuti video delle loro attivazioni.",
+ contatti:{email:"press@artbasel.com",link:"artbasel.com/press",note:"Stesso ufficio stampa di Art Basel Basel"},
+ script:"Posizionarsi come video producer specializzato in luxury brand activation nel contesto dell'arte contemporanea.",
+ deadline:"2026-09-04"},
+
+{id:26,s:"B",nome:"Eurosonic Noorderslag",
+ ds:"2026-01-14",de:"2026-01-17",anno:2026,luogo:"Groningen, Olanda",
+ settore:"Musica/Media",sc:"music",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il principale showcase festival europeo per la musica emergente. 4.000+ industry professionals, 350+ concerti, 300+ band. Punto d'incontro tra label, media e brand nel settore musica.",
+ valore:"Brand nel settore musica e media che cercano contenuti video per i loro artisti. Network europeo di media e label. Ottimo per espandersi nel settore musicale europeo.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Industry Badge €350 / Press su domanda (spesso gratuito)",
+ mp_detail:"ALTO POTENZIALE. Un video aftermovie del festival nel settore music industry ha grande visibilità.",
+ contatti:{email:"press@eurosonic-noorderslag.nl",link:"eurosonic-noorderslag.nl/press",note:"Accrediti: apertura Ottobre/Novembre"},
+ script:"Proporre un aftermovie visivamente potente che cattura l'energia dei concerti. Il settore music è il mercato originale del video emozionale.",
+ deadline:"2025-11-14"},
+
+{id:27,s:"B",nome:"Advertising Week New York",
+ ds:"2026-10-05",de:"2026-10-08",anno:2026,luogo:"New York, USA",
+ settore:"Advertising",sc:"adv",prio:"Medio",mp:false,budget:"over",
+ obiettivo:"Una delle principali settimane dell'advertising mondiale. 100+ eventi, 900+ speaker, migliaia di professionisti del settore pubblicitario americano.",
+ valore:"Accesso al mercato americano: CMO e brand manager di aziende Fortune 500. Piattaforma per lanciare Wow Tapes nel mercato USA.",
+ modalita:"Networking / Accredito stampa",
+ costo:"Full Pass $1.299+ / Day Pass $499 / Press su domanda",
+ mp_detail:"MEDIO POTENZIALE.",
+ contatti:{email:"media@advertisingweek.com",link:"advertisingweek.com/new-york",note:"Verificare date esatte 2026"},
+ script:"Approccio americano: diretto, con ROI chiaro. Showreel + business card con QR code. Obiettivo: 10 conversazioni qualificate in 4 giorni.",
+ deadline:"2026-07-05"},
+
+{id:28,s:"B",nome:"FITUR Madrid",
+ ds:"2026-01-21",de:"2026-01-25",anno:2026,luogo:"Madrid, Spagna",
+ settore:"Hospitality/Travel",sc:"hosp",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Il principale evento internazionale del turismo per i mercati iberoamericani. 250.000+ visitatori, 10.000+ espositori. Focus su Spagna, Portogallo e America Latina.",
+ valore:"Destinazioni latine con forte bisogno di video emozionali. Mercato latinoamericano emergente con grandi budget per turismo di lusso.",
+ modalita:"Networking / Accredito stampa",
+ costo:"Visitatore professionale €25-40 / Press GRATUITO",
+ mp_detail:"BASSO per evento, ALTO per clienti travel individuali.",
+ contatti:{email:"fiturpress@ifema.es",link:"fitur.ifema.es/en/press",note:"Accrediti press: apertura Novembre anno precedente"},
+ script:"Focus su paesi latinoamericani e su operatori di turismo di lusso. Video emozionali destinazioni con taglio cinematografico.",
+ deadline:"2025-11-21"},
+
+{id:29,s:"B",nome:"Cannes Film Festival — Marché du Film",
+ ds:"2026-05-12",de:"2026-05-23",anno:2026,luogo:"Cannes, Francia",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Il Marché du Film è il mercato commerciale del Festival: 12.000+ professionisti del cinema, produttori, distributor, finanziatori da tutto il mondo.",
+ valore:"Dove si fanno gli affari del cinema mondiale. Connessioni con produttori, fondazioni e brand che finanziano film. Accesso a Netflix, Amazon, Apple.",
+ modalita:"Marché du Film Badge / Accredito stampa",
+ costo:"Marché du Film Badge €450 / Press su domanda",
+ mp_detail:"BASSO per festival generale, MEDIO per specifici progetti al Marché.",
+ contatti:{email:"press@festival-cannes.fr",link:"festival-cannes.com/en/press",note:"Accrediti press: domande Febbraio/Marzo"},
+ script:"Partecipare con un progetto specifico (branded documentary) per avere leva nelle conversazioni con produttori e finanziatori.",
+ deadline:"2026-03-01"},
+
+{id:30,s:"B",nome:"Dubai Design Week",
+ ds:"2026-11-09",de:"2026-11-14",anno:2026,luogo:"Dubai, UAE",
+ settore:"Design/Luxury",sc:"design",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il principale festival di design del Medio Oriente e dell'Africa. 50.000+ visitatori, designer, brand, collezionisti. Hub per il mercato creativo del MENA.",
+ valore:"Il mercato del Golfo è in enorme crescita per i contenuti di lusso. Brand luxury arabici e internazionali con budget enormi. Una base europea è percepita come valore aggiunto di qualità.",
+ modalita:"Media partnership / Accredito stampa / Networking",
+ costo:"Accredito visitatore GRATUITO / Press su domanda",
+ mp_detail:"ALTO POTENZIALE. Mercato meno saturo di video producer europei di qualità. Proporre video per i brand esposti.",
+ contatti:{email:"press@dubaidesignweek.ae",link:"dubaidesignweek.ae/media",note:"Verificare date esatte 2026. Evento annualmente a Novembre."},
+ script:"Posizionarsi come agenzia europea di qualità in un mercato che ricerca fortemente contenuti premium occidentali.",
+ deadline:"2026-08-09"},
+
+// ─── SEZIONE C: POSIZIONAMENTO & VETRINA ──────────────────
+
+{id:31,s:"C",nome:"Biennale di Venezia Arte 2026",
+ ds:"2026-05-09",de:"2026-11-22",anno:2026,luogo:"Venezia, Italia",
+ settore:"Arte/Cultura",sc:"art",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"La più importante biennale d'arte contemporanea al mondo. 300.000+ visitatori nei 7 mesi. Padiglioni nazionali, esposizioni tematiche, eventi collaterali. La 61ª edizione si tiene nel 2026.",
+ valore:"I brand che sponsorizzano la Biennale (Rolex, Swatch, UBS, Hermès) hanno budget enormi. Un video documentario sulla Biennale è contenuto di altissimo livello culturale. Evento in casa.",
+ modalita:"Accredito stampa / Media partnership con brand sponsor",
+ costo:"Accredito media GRATUITO per media accreditati / Biglietto pubblico €30",
+ mp_detail:"ALTISSIMO POTENZIALE. La Biennale accoglie partnership creative di alto livello. Un aftermovie della vernissage o un mini-doc sui padiglioni sarebbe un portfolio pezzo eccezionale.",
+ contatti:{email:"ufficiostampa@labiennale.org",link:"labiennale.org/it/arte/press",note:"Apertura domande: Gennaio/Febbraio. Vernissage: Aprile 18-20."},
+ script:"Presentarsi come agenzia italiana specializzata nel racconto dell'arte contemporanea. Proposta: documentario breve sui padiglioni più interessanti, da offrire alla Biennale + ai brand sponsor.",
+ deadline:"2026-02-18"},
+
+{id:32,s:"C",nome:"Giffoni Film Festival",
+ ds:"2026-07-09",de:"2026-07-19",anno:2026,luogo:"Giffoni Valle Piana (SA), Italia",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il più importante festival cinematografico per ragazzi del mondo. 100.000+ giovani giurati da 60+ paesi. Fortissima presenza media e brand che comunicano con le nuove generazioni.",
+ valore:"Brand che comunicano con Gen Z presenti come sponsor. Netflix, Amazon, Apple, Rai presenti con attivazioni importanti. Festival molto aperto alle partnership creative.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Accredito media GRATUITO / Industry Badge [da verificare]",
+ mp_detail:"ALTO POTENZIALE. Festival italiano molto accessibile per proporre una media partnership. Un aftermovie di qualità avrebbe grande visibilità sui social dei brand presenti.",
+ contatti:{email:"press@giffoniff.it",link:"giffonifilmfestival.it/en/press",note:"Contattare ufficio stampa da Marzo/Aprile"},
+ script:"Presentarsi come agenzia italiana con visione giovane e contemporanea. Il Giffoni è aperto e informale: approccio diretto e propositivo funziona molto bene.",
+ deadline:"2026-04-09"},
+
+{id:33,s:"C",nome:"Torino Film Festival",
+ ds:"2026-11-21",de:"2026-12-01",anno:2026,luogo:"Torino, Italia",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Uno dei principali festival cinematografici italiani. Focus su cinema indipendente, documentari, film di genere. 50.000+ spettatori, 200+ film.",
+ valore:"Hub del cinema italiano indipendente e internazionale. Brand sponsor (Lavazza, Stellantis) presenti. Festival molto aperto alla collaborazione con produttori creativi.",
+ modalita:"Accredito stampa / Media partnership / Iscrizione lavori",
+ costo:"Accredito stampa GRATUITO / Biglietti pubblico €5-10",
+ mp_detail:"ALTO POTENZIALE per festival italiano. Proporre un aftermovie con stile cinematografico in linea con la vocazione del festival.",
+ contatti:{email:"press@torinofilmfest.org",link:"torinofilmfest.org/en/press",note:"Contattare ufficio stampa da Agosto/Settembre"},
+ script:"Festival italiano: approccio diretto e relazionale. Portare portfolio con lavori dal carattere cinematografico forte.",
+ deadline:"2026-09-21"},
+
+{id:34,s:"C",nome:"Far East Film Festival",
+ ds:"2026-04-24",de:"2026-05-02",anno:2026,luogo:"Udine, Italia",
+ settore:"Cinema",sc:"cinema",prio:"Basso",mp:false,budget:"ok",
+ obiettivo:"Il principale festival europeo dedicato al cinema popolare asiatico. 50.000+ spettatori, 80+ film. Hub per chi lavora con il mercato del cinema asiatico.",
+ valore:"Festival italiano con forte orientamento asiatico: perfetto per costruire connessioni con il mercato cinema giapponese, coreano e cinese. Utile se si punta all'espansione in Asia.",
+ modalita:"Accredito stampa / Networking",
+ costo:"Accredito press GRATUITO / Industry Badge [da verificare]",
+ mp_detail:"BASSO per media partnership.",
+ contatti:{email:"info@fareastfilm.com",link:"fareastfilm.com/press",note:"Apertura accrediti: Febbraio/Marzo"},
+ script:"Festival di nicchia ma utile per costruire relazioni con il cinema asiatico se si sta pianificando espansione in Giappone o Corea.",
+ deadline:"2026-02-24"},
+
+{id:35,s:"C",nome:"Berlinale — Berlin International Film Festival",
+ ds:"2026-02-12",de:"2026-02-22",anno:2026,luogo:"Berlino, Germania",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Uno dei tre grandi festival cinematografici mondiali. 20.000+ accreditati, 400+ film. Forte focus su cinema d'autore europeo e documentari. EFM (European Film Market) in parallelo.",
+ valore:"Posizionamento nel cinema europeo d'autore. Connessioni con produttori europei e broadcaster. Accredito stampa accessibile.",
+ modalita:"Accredito stampa / Industry Badge (EFM)",
+ costo:"Industry Badge €200 / Press GRATUITO (per media accreditati)",
+ mp_detail:"BASSO POTENZIALE per media partnership, MEDIO per connessioni nel cinema europeo.",
+ contatti:{email:"press@berlinale.de",link:"berlinale.de/en/press.html",note:"Accrediti press: domande apertura Novembre/Dicembre"},
+ script:"Partecipare con focus sull'EFM per connessioni con produttori europei. Portfolio di branded documentary come biglietto da visita.",
+ deadline:"2025-12-01"},
+
+{id:36,s:"C",nome:"LIA — London International Awards",
+ ds:"2026-10-19",de:"2026-10-22",anno:2026,luogo:"Las Vegas/Londra",
+ settore:"Advertising",sc:"adv",prio:"Alto",mp:false,budget:"ok",
+ obiettivo:"Uno dei premi internazionali più rispettati nel settore pubblicitario. Forte focus su craft e produzione. Giurati: top creative director del mondo.",
+ valore:"Iscrivere lavori di Wow Tapes al concorso: visibilità internazionale. Un riconoscimento nel branded content o video craft rafforza enormemente la credibilità.",
+ modalita:"Iscrizione lavori al concorso",
+ costo:"Entry fee $150-300 per categoria",
+ mp_detail:"NON APPLICABILE. Obiettivo: riconoscimento e credenziali.",
+ contatti:{email:"info@liaawards.com",link:"liaawards.com",note:"Scadenza iscrizioni: Maggio/Giugno"},
+ script:"Non un evento di networking ma di credenziali. Iscrivere il lavoro migliore dell'anno. Un LIA shortlist vale anni di presentazioni.",
+ deadline:"2026-06-01"},
+
+{id:37,s:"C",nome:"Festa del Cinema di Roma",
+ ds:"2026-10-15",de:"2026-10-25",anno:2026,luogo:"Roma, Italia",
+ settore:"Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Il principale festival cinematografico romano. Film internazionali, documentari, eventi speciali. Casa di Wow Tapes: presenza quasi obbligatoria per posizionamento locale.",
+ valore:"Evento in casa: costi minimi, relazioni locali da coltivare. Presenza di broadcaster RAI, Mediaset, Sky. Connessioni con il cinema italiano.",
+ modalita:"Accredito stampa / Networking / Media partnership",
+ costo:"Accredito stampa GRATUITO / Biglietti pubblico €5-15",
+ mp_detail:"ALTO POTENZIALE. Evento locale: più facile proporre partnership. Il video della Festa del Cinema sarebbe un portfolio pezzo eccellente.",
+ contatti:{email:"ufficiostampa@romacinemafest.it",link:"romacinemafest.it/it/press",note:"Apertura accrediti: Agosto/Settembre"},
+ script:"Contatto diretto con l'ufficio stampa della Fondazione. Proporre un aftermovie artistico della Festa. Leva: siamo romani, conosciamo la città.",
+ deadline:"2026-08-15"},
+
+{id:38,s:"C",nome:"IDFA — International Documentary Film Festival Amsterdam",
+ ds:"2026-11-13",de:"2026-11-23",anno:2026,luogo:"Amsterdam, Olanda",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Il più importante festival mondiale del documentario. 3.000+ professionisti, 300+ film, Forum per co-produzioni internazionali.",
+ valore:"Posizionamento nel mondo del branded documentary. Connessioni con broadcaster e fondazioni che finanziano documentari.",
+ modalita:"Accredito professionale / Networking",
+ costo:"Industry accreditation €75-150 / Press su domanda",
+ mp_detail:"BASSO per media partnership, ALTO per posizionamento nel segmento documentary.",
+ contatti:{email:"press@idfa.nl",link:"idfa.nl/en/industry",note:"Accrediti: apertura Agosto/Settembre"},
+ script:"Presentarsi come produzione specializzata in branded documentary e corporate storytelling.",
+ deadline:"2026-09-13"},
+
+{id:39,s:"C",nome:"Sundance Film Festival 2027",
+ ds:"2027-01-21",de:"2027-01-31",anno:2027,luogo:"Boulder, Colorado, USA",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Il più importante festival di cinema indipendente del mondo. Film americani e internazionali, documentari, serie. Branded documentary sempre più presenti.",
+ valore:"Il festival che lancia filmmaker indipendenti sulla scena mondiale. Connessioni con produttori indie americani.",
+ modalita:"Accredito stampa / Industry Badge",
+ costo:"Industry Badge $300-500 / Press su domanda",
+ mp_detail:"BASSO per media partnership, ALTO per posizionamento internazionale.",
+ contatti:{email:"press@sundance.org",link:"sundance.org/press",note:"Accrediti press: domande apertura Ottobre/Novembre"},
+ script:"Presentarsi con un progetto di branded documentary in sviluppo.",
+ deadline:"2026-10-22"},
+
+{id:40,s:"C",nome:"Clermont-Ferrand International Short Film Festival",
+ ds:"2026-02-01",de:"2026-02-08",anno:2026,luogo:"Clermont-Ferrand, Francia",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Il più importante festival mondiale dedicato al cortometraggio. 170.000 spettatori, 4.000+ professionisti. Il mercato del cortometraggio per eccellenza.",
+ valore:"Perfetto per posizionare Wow Tapes nel segmento short film. Possibilità di presentare lavori e costruire rete internazionale.",
+ modalita:"Iscrizione lavori / Accredito professionale / Networking",
+ costo:"Professional Accreditation €50-100 / Iscrizione film €15-30",
+ mp_detail:"BASSO per media partnership, ALTO per posizionamento short film.",
+ contatti:{email:"pro@clermont-filmfest.com",link:"clermont-filmfest.com/en",note:"Iscrizioni film: apertura Settembre/Ottobre anno precedente"},
+ script:"Iscrivere un cortometraggio o branded short. Presentarsi come agenzia creativa con forte competenza nel formato breve.",
+ deadline:"2025-10-01"},
+
+{id:41,s:"C",nome:"Lumière Festival — Lyon",
+ ds:"2026-10-10",de:"2026-10-18",anno:2026,luogo:"Lione, Francia",
+ settore:"Cinema",sc:"cinema",prio:"Basso",mp:false,budget:"ok",
+ obiettivo:"Celebra il cinema delle origini e il patrimonio cinematografico mondiale. 170.000+ spettatori. Dedicato al cinema classico e agli autori storici.",
+ valore:"Festival unico per posizionamento: i brand luxury e culturali sponsorizzano eventi di heritage cinematografico. Connessioni con enti culturali e fondazioni francesi.",
+ modalita:"Accredito stampa / Networking",
+ costo:"Accredito press GRATUITO / Biglietti pubblico €5-12",
+ mp_detail:"BASSO per media partnership diretta.",
+ contatti:{email:"contact@institut-lumiere.org",link:"festival-lumiere.org/fr/presse",note:"Verificare date esatte 2026"},
+ script:"Festival culturale di nicchia. Utile per connessioni con il mondo del cinema francese e dell'heritage brand.",
+ deadline:"2026-08-10"},
+
+{id:42,s:"C",nome:"IFFR — International Film Festival Rotterdam",
+ ds:"2026-01-22",de:"2026-02-02",anno:2026,luogo:"Rotterdam, Olanda",
+ settore:"Cinema",sc:"cinema",prio:"Basso",mp:false,budget:"ok",
+ obiettivo:"Uno dei principali festival europei di cinema indipendente. Focus su film sperimentali e d'avanguardia. CineMart: il mercato per coproduzioni.",
+ valore:"Hub del cinema europeo indipendente. Connessioni con produttori e finanziatori europei per coproduzioni di branded documentary.",
+ modalita:"Accredito professionale / Networking",
+ costo:"Industry Badge €100-150 / Press su domanda",
+ mp_detail:"BASSO per media partnership.",
+ contatti:{email:"press@iffr.com",link:"iffr.com/en/professionals",note:"Accrediti: apertura Ottobre/Novembre"},
+ script:"Utile per connessioni con il cinema europeo sperimentale e con i produttori che lavorano con branded content di qualità.",
+ deadline:"2025-11-22"},
+
+{id:43,s:"A",nome:"Cannes Lions 2027",
+ ds:"2027-06-14",de:"2027-06-18",anno:2027,luogo:"Cannes, Francia",
+ settore:"Advertising",sc:"adv",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Edizione 2027 del più importante festival mondiale della creatività. Con le relazioni costruite nel 2026, la seconda partecipazione diventa più operativa e orientata alla conversione di clienti.",
+ valore:"Follow-up dei contatti del 2026. I brand con cui si è interagito a Cannes 2026 sono ora potenziali clienti attivi. L'accredito stampa con portfolio MENA e internazionale già costruito rafforza enormemente il positioning. ROI potenzialmente superiore al 2026.",
+ modalita:"Media partnership / Accredito stampa / Networking avanzato",
+ costo:"Press GRATUITO — Pass Delegate €3.500+ (⚠️ Supera €600)",
+ mp_detail:"ALTISSIMO POTENZIALE 2027. Tornare con il portfolio costruito nel 2026 e proporre una collaborazione più strutturata con Lions Festivals.",
+ contatti:{email:"press@canneslions.com",link:"canneslions.com/press-accreditation",note:"Accrediti 2027: apertura solitamente Marzo/Aprile 2027"},
+ script:"Tornare con portfolio 2026 completo. La continuità è un segnale di professionalità: siamo stati qui nel 2026, abbiamo prodotto X video, ora proponiamo una partnership media più strutturata.",
+ deadline:"2027-04-01"},
+
+{id:44,s:"C",nome:"Salone del Mobile 2027 / FuoriSalone",
+ ds:"2027-04-06",de:"2027-04-11",anno:2027,luogo:"Milano, Italia",
+ settore:"Design/Luxury",sc:"design",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Edizione 2027 del principale evento mondiale del design. Con relazioni costruite nel 2026, seconda partecipazione con obiettivi di conversione.",
+ valore:"I brand incontrati nel 2026 diventano potenziali clienti nel 2027. Evento annuale imperdibile per un'agenzia che lavora con il lusso.",
+ modalita:"Media partnership / Networking / Clienti diretti",
+ costo:"Accredito stampa GRATUITO",
+ mp_detail:"ALTISSIMO POTENZIALE costruito sull'esperienza 2026.",
+ contatti:{email:"press@salonemilano.it",link:"salonemilano.it/en/press",note:"Accrediti aprono 2 mesi prima"},
+ script:"Tornare con il video del Salone 2026 come proof of concept. Contattare in anticipo i brand incontrati nel 2026.",
+ deadline:"2027-02-06"},
+
+{id:45,s:"C",nome:"Japan Media Arts Festival 2027",
+ ds:"2027-02-19",de:"2027-03-01",anno:2027,luogo:"Tokyo, Giappone",
+ settore:"Arte/Media",sc:"art",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Il principale festival giapponese per arte digitale, animazione, manga e media. Organizzato dall'Agenzia per gli Affari Culturali del Governo Giapponese. 4.000+ opere iscritte ogni anno.",
+ valore:"Porta di accesso all'ecosistema culturale e creativo giapponese. Connessioni con artisti digitali, broadcaster NHK, brand tech giapponesi (Sony, Panasonic).",
+ modalita:"Iscrizione lavori / Accredito professionale",
+ costo:"Iscrizione lavori GRATUITA / Industry Badge [da verificare]",
+ mp_detail:"BASSO per media partnership, MEDIO per posizionamento nel mercato creativo giapponese.",
+ contatti:{email:"jmaf@bunka.go.jp",link:"j-mediaarts.jp/en",note:"Ufficio stampa Agenzia Affari Culturali Giappone — Iscrizioni aprono Aprile/Maggio"},
+ script:"Iscrivere un lavoro di video art o branded content. Il riconoscimento dal governo giapponese è una credenziale unica per il mercato asiatico.",
+ deadline:"2026-06-01"},
+
+{id:46,s:"C",nome:"Web Summit 2027",
+ ds:"2027-11-01",de:"2027-11-04",anno:2027,luogo:"Lisbona, Portogallo",
+ settore:"Tech",sc:"tech",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Edizione 2027 del Web Summit. Con i contatti del 2026, seconda partecipazione con obiettivi di conversione clienti già coltivati.",
+ valore:"Follow-up dei contatti del 2026. Proposta media partnership più forte basata su track record costruito.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Pass €1.395+ / Press GRATUITO",
+ mp_detail:"ALTO POTENZIALE con track record dell'edizione 2026.",
+ contatti:{email:"press@websummit.com",link:"websummit.com/media-press",note:"Richiedere accredito Luglio/Agosto 2027"},
+ script:"Tornare con il video dell'edizione 2026 come portfolio. Dimostrazione pratica del tipo di contenuto offerto.",
+ deadline:"2027-07-01"},
+
+{id:47,s:"A",nome:"SXSW Sydney",
+ ds:"2026-10-17",de:"2026-10-26",anno:2026,luogo:"Sydney, Australia",
+ settore:"Tech/Cultura/Musica",sc:"tech",prio:"Medio",mp:true,budget:"over",
+ obiettivo:"Versione australiana di SXSW. Musica, tech, screen content. 50.000+ partecipanti. Hub per il mercato creativo australiano e dell'Asia-Pacifico.",
+ valore:"Mercato australiano e APAC con forte domanda di contenuti video di qualità. La qualità europea di Wow Tapes è percepita come premium. SXSW è brand aperto alle media partnership.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Conference Pass AUD $800+ / Press su domanda",
+ mp_detail:"ALTO POTENZIALE. SXSW Sydney è più accessibile di SXSW Austin per media partnership.",
+ contatti:{email:"press@sxswsydney.com",link:"sxswsydney.com/media",note:"Verificare date esatte 2026"},
+ script:"Proporre un video recap emozionale con focus sull'energia del mercato creativo australiano.",
+ deadline:"2026-07-17"},
+
+{id:48,s:"B",nome:"Paris Fashion Week AW27",
+ ds:"2026-09-29",de:"2026-10-07",anno:2026,luogo:"Parigi, Francia",
+ settore:"Fashion/Luxury",sc:"fashion",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Una delle quattro Fashion Week più importanti al mondo. Sfilate dei principali brand francesi: Chanel, Dior, Louis Vuitton, Givenchy, Balenciaga.",
+ valore:"Brand fashion francesi (LVMH, Kering) come potenziali clienti ideali per Wow Tapes.",
+ modalita:"Accredito stampa / Networking",
+ costo:"Accredito media su domanda tramite Fédération de la Haute Couture",
+ mp_detail:"MEDIO POTENZIALE. Meglio puntare su brand individuali che sull'evento generale.",
+ contatti:{email:"press@fhcm.paris",link:"fhcm.paris/en",note:"Fédération de la Haute Couture et de la Mode gestisce gli accrediti"},
+ script:"Come per Milano: puntare sui brand emergenti del calendario con budget flessibili.",
+ deadline:"2026-07-29"},
+
+{id:49,s:"C",nome:"Ischia Global Film & Music Festival",
+ ds:"2026-07-09",de:"2026-07-16",anno:2026,luogo:"Ischia, Italia",
+ settore:"Cinema/Musica",sc:"cinema",prio:"Basso",mp:true,budget:"ok",
+ obiettivo:"Festival cinematografico e musicale sull'isola di Ischia. Presenza di star internazionali, registi, produttori. Atmosfera esclusiva e luxury. Piccolo ma molto selezionato.",
+ valore:"Festival di nicchia con forte appeal luxury. Sponsor del calibro di Ferrari, Bulgari. Networking esclusivo in un contesto paradisiaco. Accessibile dall'Italia.",
+ modalita:"Accredito stampa / Media partnership",
+ costo:"Accredito press su domanda / Biglietti eventi da €50+",
+ mp_detail:"MEDIO POTENZIALE. Festival piccolo molto aperto alla collaborazione con produttori italiani di qualità.",
+ contatti:{email:"info@ischiafilm.it",link:"ischiafilm.it",note:"Contattare direttamente la direzione del festival"},
+ script:"Festival italiano in location esclusiva: il video del festival stesso sarebbe un contenuto aspirazionale di grande impatto per i social dei brand sponsor.",
+ deadline:"2026-04-09"},
+
+{id:50,s:"C",nome:"Short Film Corner — Festival de Cannes",
+ ds:"2026-05-12",de:"2026-05-23",anno:2026,luogo:"Cannes, Francia",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Il mercato del cortometraggio annesso al Festival di Cannes. 2.000+ film iscritti, 3.000+ professionisti. La vetrina internazionale per eccellenza nel mondo del corto.",
+ valore:"Iscrivere un lavoro di Wow Tapes vale come biglietto da visita internazionale. Presenza al festival di Cannes con accesso alla Croisette e agli eventi.",
+ modalita:"Iscrizione film / Accredito professionale",
+ costo:"Iscrizione film €60 / Professional Badge €150-250",
+ mp_detail:"BASSO per media partnership, ALTO per posizionamento e visibilità.",
+ contatti:{email:"shortfilmcorner@festival-cannes.fr",link:"festival-cannes.com/en/short-film-corner",note:"Iscrizioni: apertura Febbraio/Marzo"},
+ script:"Iscrivere un branded short o cortometraggio creativo. La presenza al Short Film Corner è una credenziale internazionale.",
+ deadline:"2026-03-01"},
+
+// ─── SEZIONE MENA — MEDIO ORIENTE & NORD AFRICA ──────────
+// Mercato strategico per Wow Tapes: forti budget, luxury/tech/hospitality/cultura
+
+{id:51,s:"A",nome:"Art Dubai",
+ ds:"2026-03-18",de:"2026-03-21",anno:2026,luogo:"Madinat Jumeirah, Dubai, UAE",
+ settore:"Arte/Luxury",sc:"art",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"La principale fiera d'arte contemporanea del Medio Oriente. 100+ gallerie da 40+ paesi, collezionisti, fondazioni culturali, brand luxury. Parte della Dubai Art Week. Istituzioni del Golfo (Louvre Abu Dhabi, Qatar Museums) molto presenti.",
+ valore:"Brand luxury e istituzioni culturali del Golfo con budget enormi per video premium. Il mercato UAE apprezza fortemente la qualità europea. Wow Tapes ha già esperienza diretta in questo mercato.",
+ modalita:"Media partnership / Accredito stampa / Networking con brand sponsor",
+ costo:"Accredito stampa GRATUITO su domanda / Biglietto pubblico AED 80-150",
+ mp_detail:"ALTISSIMO POTENZIALE. Art Dubai è molto aperto alle partnership creative. Un aftermovie di alta qualità delle installazioni e degli eventi collaterali ha enorme valore per l'organizzatore e per i brand sponsor (Rolex, BMW, ecc.).",
+ contatti:{email:"press@artdubai.ae",link:"artdubai.ae/press",note:"Accrediti press: apertura Gennaio/Febbraio. Contattare anche il team marketing di Art Dubai per media partnership."},
+ script:"Presentarsi come agenzia europea con esperienza diretta nel mercato del Golfo. Proporre un aftermovie con focus sugli artisti arabi emergenti — contenuto ad alto valore culturale per Dubai e per gli sponsor.",
+ deadline:"2026-01-18"},
+
+{id:52,s:"A",nome:"GITEX Global",
+ ds:"2026-10-13",de:"2026-10-17",anno:2026,luogo:"Dubai World Trade Centre, UAE",
+ settore:"Tech",sc:"tech",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Il più grande evento tech del Medio Oriente e uno dei più grandi al mondo. 180.000+ visitatori, 6.000+ espositori da 180 paesi. Startup, corporate tech, AI, governi. GITEX IMPACT e North Star Dubai in parallelo.",
+ valore:"Hub globale per tech company che operano nel Golfo e in Africa. Enormi budget per comunicazione video. Accredito media gratuito e accessibile.",
+ modalita:"Media partnership / Accredito stampa / Networking",
+ costo:"Visitor Pass AED 200-500 / Press GRATUITO su domanda",
+ mp_detail:"ALTISSIMO POTENZIALE. GITEX ha bisogno di contenuti video di qualità. Proporre un aftermovie emozionale con focus sulle startup più innovative e sulle tech company del Golfo.",
+ contatti:{email:"press@gitex.com",link:"gitex.com/press",note:"DWTC gestisce l'evento. Accrediti media: apertura Luglio/Agosto."},
+ script:"Angolo: il futuro della tecnologia visto dalla capitale dell'innovazione del Medio Oriente. Un video che posiziona Dubai come hub tech globale — narrativa che il governo UAE supporta attivamente.",
+ deadline:"2026-07-13"},
+
+{id:53,s:"A",nome:"Arabian Travel Market (ATM)",
+ ds:"2026-05-05",de:"2026-05-08",anno:2026,luogo:"Dubai World Trade Centre, UAE",
+ settore:"Hospitality/Travel",sc:"hosp",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Il principale evento internazionale del turismo per la regione MENA. 40.000+ professionisti, 2.500+ espositori. Hotel, DMO, compagnie aeree, tour operator di lusso. Focus su luxury travel e hospitality del Golfo.",
+ valore:"Tutti i grandi hotel e resort del Golfo (Four Seasons, Aman, Rosewood, Jumeirah Group) presenti. Budget enormi per video emozionali di destinazione. Wow Tapes ha già esperienza in questo settore: track record diretto da usare come leva.",
+ modalita:"Media partnership / Accredito stampa / Networking diretto con brand hotel",
+ costo:"Trade Visitor GRATUITO (registrazione online) / Press GRATUITO",
+ mp_detail:"ALTISSIMO POTENZIALE. Il settore hospitality del Golfo investe cifre enormi in video di destinazione. Proporre a singoli resort un video emozionale della loro presenza all'ATM.",
+ contatti:{email:"press@rxglobal.com",link:"arabiantravelmarket.com/en/media-press",note:"RX Global gestisce l'evento. Registrazione media generalmente aperta 2 mesi prima."},
+ script:"Presentarsi con portfolio che include video di luxury resort e destinazioni. Il mercato del Golfo compra la qualità italiana: enfatizzare l'estetica visiva e il savoir-faire europeo.",
+ deadline:"2026-03-05"},
+
+{id:54,s:"A",nome:"LEAP Conference",
+ ds:"2026-02-09",de:"2026-02-12",anno:2026,luogo:"Riyadh Exhibition and Convention Center, Arabia Saudita",
+ settore:"Tech",sc:"tech",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Il più grande evento tecnologico dell'Arabia Saudita e uno dei più grandi al mondo. 200.000+ visitatori, 1.000+ speaker. Organizzato sotto Vision 2030. AI, robotica, metaverso, fintech.",
+ valore:"Il Governo Saudita investe centinaia di miliardi in tech e comunicazione. Le aziende presenti cercano video di altissima qualità per posizionarsi sul mercato Vision 2030. Mercato pochissimo penetrato da agenzie europee creative.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Visitor Pass GRATUITO (registrazione) / Press su domanda",
+ mp_detail:"ALTISSIMO POTENZIALE. LEAP è organizzato dallo Stato Saudita con budget di comunicazione enormi. Proporre un aftermovie che racconta l'innovazione saudita attraverso un occhio cinematografico europeo.",
+ contatti:{email:"media@leap.sa",link:"leap.sa/en/media",note:"MCN Saudi Arabia gestisce le PR. Accrediti media: apertura Novembre/Dicembre."},
+ script:"Leva principale: la prospettiva europea sull'innovazione saudita ha un appeal enorme per il governo e per i brand. Un video che racconta Vision 2030 attraverso le storie umane dei protagonisti.",
+ deadline:"2025-12-09"},
+
+{id:55,s:"B",nome:"Future Investment Initiative — FII",
+ ds:"2026-10-27",de:"2026-10-29",anno:2026,luogo:"Ritz-Carlton, Riyadh, Arabia Saudita",
+ settore:"Finance/Luxury",sc:"fashion",prio:"Alto",mp:false,budget:"over",
+ obiettivo:"Il 'Davos del Medio Oriente'. L'evento più esclusivo dell'Arabia Saudita: CEO globali, capi di stato, fondi sovrani, top investor. Organizzato da FII Institute (PIF Saudi Arabia). 6.000+ delegati.",
+ valore:"Accesso ai decision maker più potenti al mondo: CEO Fortune 500, ministri, head of sovereign wealth funds. I brand presenti cercano produttori video di eccellenza per comunicare i loro investimenti nel Golfo.",
+ modalita:"Accredito stampa (molto selettivo) / Networking tramite partner",
+ costo:"Delegate Pass: su invito esclusivo / Press su application molto selettiva",
+ mp_detail:"BASSO per media partnership evento (molto chiuso), ALTISSIMO per networking con decision maker che possono portare commissioni enormi.",
+ contatti:{email:"media@fii-institute.org",link:"fii-institute.org",note:"Accrediti media estremamente selettivi. Approccio consigliato: tramite contatto già presente come delegato."},
+ script:"Non tentare approccio diretto: entrare tramite un contatto già presente come delegato. Una volta dentro, il networking vale più di qualsiasi altro evento al mondo.",
+ deadline:"2026-08-27"},
+
+{id:56,s:"A",nome:"Red Sea International Film Festival",
+ ds:"2026-11-29",de:"2026-12-08",anno:2026,luogo:"Jeddah, Arabia Saudita",
+ settore:"Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Il principale festival cinematografico dell'Arabia Saudita. Lanciato nel 2021, già uno degli eventi cinema più importanti del Medio Oriente. Film internazionali, premi, industry program. Budget statale enorme.",
+ valore:"Il governo saudita sta investendo miliardi nell'industria cinematografica. Un'agenzia europea che offre un aftermovie di qualità è esattamente la collaborazione che cercano per legittimarsi a livello internazionale.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Industry Badge GRATUITO (su application) / Press GRATUITO",
+ mp_detail:"ALTISSIMO POTENZIALE. Il festival ha budget enorme e cerca fortemente partnership con produttori internazionali di qualità. Opportunità unica e ancora poco competitiva.",
+ contatti:{email:"press@rsiff.com",link:"rsiff.com/en/press",note:"Red Sea Film Foundation. Accrediti: apertura Agosto/Settembre."},
+ script:"Presentarsi come agenzia europea con portfolio cinematografico forte. Il RSIFF vuole essere credibile a livello internazionale: Wow Tapes può raccontare il festival con uno sguardo europeo autorevole.",
+ deadline:"2026-09-01"},
+
+{id:57,s:"B",nome:"INDEX Design Exhibition Dubai",
+ ds:"2026-05-19",de:"2026-05-22",anno:2026,luogo:"Dubai World Trade Centre, UAE",
+ settore:"Design/Luxury",sc:"design",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il principale evento del settore interior design e architettura per la regione MENA. 50.000+ visitatori, 2.000+ brand internazionali di arredo, illuminazione, materiali. Equivalente del Salone del Mobile per il mercato del Golfo.",
+ valore:"Brand europei del design (molti già clienti o potenziali) con stand enormi. Architetti e interior designer del Golfo con budget altissimi. Stessa logica del Salone del Mobile ma a Dubai.",
+ modalita:"Media partnership / Accredito stampa / Networking",
+ costo:"Trade Visitor GRATUITO (registrazione) / Press GRATUITO",
+ mp_detail:"ALTO POTENZIALE. Come per il Salone: ogni brand ha bisogno di un video della propria installazione. Il mercato del Golfo paga molto bene per contenuti premium.",
+ contatti:{email:"index@informa.com",link:"indexexhibition.com/en/press",note:"Informa Markets gestisce l'evento. Verificare date esatte 2026."},
+ script:"Approccio identico al Salone del Mobile: contatto diretto ai brand esposti per video delle installazioni. Dubai + design italiano = combinazione molto richiesta.",
+ deadline:"2026-03-19"},
+
+{id:58,s:"B",nome:"Abu Dhabi Art",
+ ds:"2026-11-19",de:"2026-11-23",anno:2026,luogo:"Manarat Al Saadiyat, Abu Dhabi, UAE",
+ settore:"Arte/Luxury",sc:"art",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"La principale fiera d'arte contemporanea di Abu Dhabi. Organizzata dal Department of Culture and Tourism. 60+ gallerie internazionali. Louvre Abu Dhabi e Guggenheim Abu Dhabi (in costruzione) sponsor istituzionali.",
+ valore:"Department of Culture and Tourism di Abu Dhabi ha budget enormi per contenuti culturali. Istituzioni come Louvre Abu Dhabi cercano produttori video di qualità internazionale per documentare la scena culturale.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Accredito media su domanda / Biglietto pubblico AED 60",
+ mp_detail:"ALTO POTENZIALE. Abu Dhabi investe in istituzioni culturali di primo livello mondiale. Un aftermovie della fiera in collaborazione con il DCT Abu Dhabi aprirebbe porte enormi.",
+ contatti:{email:"press@abudhabiart.ae",link:"abudhabiart.ae/press",note:"Department of Culture and Tourism Abu Dhabi. Contattare ufficio media 3 mesi prima."},
+ script:"Posizionarsi come agenzia culturale europea — lo stesso profilo delle istituzioni con cui Abu Dhabi vuole collaborare. Un video che racconta la scena artistica emergente del Golfo.",
+ deadline:"2026-09-19"},
+
+{id:59,s:"B",nome:"Cityscape Global Dubai",
+ ds:"2026-10-14",de:"2026-10-16",anno:2026,luogo:"Dubai World Trade Centre, UAE",
+ settore:"Design/Luxury",sc:"design",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Il principale evento globale per il real estate e la property development. 30.000+ professionisti, developer di lusso, architetti, brand interior. Enormi stand con video e render di progetti luxury.",
+ valore:"I developer di lusso del Golfo (Emaar, DAMAC, Aldar) hanno budget enormi per video di presentazione dei loro progetti. Un contatto diretto con i loro marketing director vale commissioni potenzialmente ricorrenti.",
+ modalita:"Networking / Accredito stampa",
+ costo:"Trade Visitor GRATUITO (registrazione) / Press GRATUITO",
+ mp_detail:"BASSO per media partnership evento, ALTO per acquisizione clienti real estate luxury.",
+ contatti:{email:"press@cityscape.com",link:"cityscape.com/en/media",note:"Informa Markets. Verificare date esatte 2026."},
+ script:"Target: marketing director di Emaar, DAMAC, Meraas, Aldar. Proporre video emozionali di progetto con taglio cinematografico — qualcosa di molto diverso dai render tradizionali.",
+ deadline:"2026-08-14"},
+
+{id:60,s:"B",nome:"Ajyal Film Festival — Doha Film Institute",
+ ds:"2026-11-25",de:"2026-11-30",anno:2026,luogo:"Doha, Qatar",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Festival cinematografico del Qatar organizzato dal Doha Film Institute. Focus su co-produzioni internazionali. DFI ha un fondo di co-produzione attivo. Qatar Museums Authority sponsor principale.",
+ valore:"Il Doha Film Institute finanzia film indipendenti da tutto il mondo: potenziale fonte di finanziamento per branded documentary e short film. Qatar Museums Authority cerca produttori di qualità.",
+ modalita:"Accredito professionale / Networking / Iscrizione lavori",
+ costo:"Industry Badge su application / Press su domanda",
+ mp_detail:"MEDIO POTENZIALE per media partnership, ALTO per co-produzione e finanziamento tramite DFI Grants.",
+ contatti:{email:"press@dohafilminstitute.com",link:"dohafilminstitute.com/programs/ajyal",note:"Doha Film Institute. Verificare date esatte 2026."},
+ script:"Presentarsi come produzione europea interessata a co-produzioni MENA. Il DFI è una fonte concreta di finanziamento per progetti con angolo culturale del Golfo.",
+ deadline:"2026-09-25"},
+
+{id:61,s:"B",nome:"Saudi Design Week",
+ ds:"2026-11-10",de:"2026-11-14",anno:2026,luogo:"Riyadh, Arabia Saudita",
+ settore:"Design/Luxury",sc:"design",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il principale evento design dell'Arabia Saudita. Installazioni, talk, workshop. Fortemente spinto dal governo saudita nell'ambito di Vision 2030 per sviluppare la scena creativa locale.",
+ valore:"Arabia Saudita sta costruendo una scena design e creativa ex novo con fondi pubblici enormi. I brand cercano contenuti video per documentare questa trasformazione culturale storica.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Accredito GRATUITO (registrazione) / Press su domanda",
+ mp_detail:"ALTO POTENZIALE. Festival giovane con grandi budget e forte necessità di contenuti video di qualità. Meno competizione rispetto a Dubai.",
+ contatti:{email:"info@saudidesignweek.com",link:"saudidesignweek.com",note:"Verificare date esatte 2026 su sito ufficiale. Evento in rapida crescita."},
+ script:"Angolo: la nascita di una nuova scena creativa nel cuore dell'Arabia Saudita. Un video che racconta questo momento storico ha enorme valore narrativo e mediatico.",
+ deadline:"2026-09-10"},
+
+{id:62,s:"B",nome:"Arab Luxury World",
+ ds:"2026-05-12",de:"2026-05-13",anno:2026,luogo:"Dubai, UAE",
+ settore:"Fashion/Luxury",sc:"fashion",prio:"Alto",mp:false,budget:"over",
+ obiettivo:"Il principale summit del lusso per la regione MENA. CMO e CEO dei più importanti brand luxury globali e regionali. Focus su strategie luxury per il mercato del Golfo e del Medio Oriente.",
+ valore:"Accesso diretto ai CMO dei brand luxury che operano nel Golfo. Budget per contenuti video altissimi. Il mercato del lusso MENA cresce più velocemente di qualsiasi altro al mondo.",
+ modalita:"Networking / Partecipante",
+ costo:"Delegate Pass AED 3.000-5.000+ / Press su application",
+ mp_detail:"BASSO per media partnership evento, ALTISSIMO per acquisizione clienti luxury diretti.",
+ contatti:{email:"info@arabluxuryworld.com",link:"arabluxuryworld.com",note:"Verificare date e formato 2026."},
+ script:"Presentarsi con portfolio luxury di altissimo livello. Il mercato del Golfo compra la qualità e il savoir-faire europeo: enfatizzare la base italiana di Wow Tapes come valore aggiunto.",
+ deadline:"2026-03-12"},
+
+{id:63,s:"C",nome:"Cairo International Film Festival",
+ ds:"2026-11-12",de:"2026-11-21",anno:2026,luogo:"Il Cairo, Egitto",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Uno dei più antichi festival cinematografici africani e arabi. Fondato nel 1976. Competizione internazionale, film arabi e africani. Hub del cinema nel Nord Africa e nel mondo arabo.",
+ valore:"Il mercato cinema del Nord Africa è in forte crescita. Connessioni con produttori egiziani, marocchini e tunisini. Possibilità di co-produzioni Europa-Africa. Festival storico con forte legittimità.",
+ modalita:"Accredito stampa / Media partnership / Networking",
+ costo:"Industry Badge [da verificare su sito] / Press su domanda",
+ mp_detail:"MEDIO POTENZIALE. Budget più limitati rispetto al Golfo, ma ottimo per connessioni nel cinema arabo e africano.",
+ contatti:{email:"press@cairofilmfest.org",link:"cairofilmfest.org/en/press",note:"Verificare date esatte 2026. Generalmente si tiene a Novembre."},
+ script:"Presentarsi come produzione europea con interesse per il cinema e la cultura araba. Cairo è la porta per il mercato creativo nordafricano.",
+ deadline:"2026-09-12"},
+
+{id:64,s:"A",nome:"GITEX Global 2027",
+ ds:"2027-10-12",de:"2027-10-16",anno:2027,luogo:"Dubai World Trade Centre, UAE",
+ settore:"Tech",sc:"tech",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Edizione 2027 di GITEX Global. Con relazioni costruite nel 2026, seconda partecipazione con obiettivi di conversione clienti MENA.",
+ valore:"Follow-up dei contatti del 2026. Proposta media partnership più forte con portfolio MENA costruito.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO su domanda",
+ mp_detail:"ALTISSIMO POTENZIALE con track record dell'edizione 2026.",
+ contatti:{email:"press@gitex.com",link:"gitex.com/press",note:"Richiedere accredito Luglio 2027"},
+ script:"Tornare con il video del GITEX 2026 come portfolio MENA. I contatti dell'anno precedente diventano clienti.",
+ deadline:"2027-07-12"},
+
+{id:65,s:"A",nome:"LEAP 2027",
+ ds:"2027-02-08",de:"2027-02-11",anno:2027,luogo:"Riyadh, Arabia Saudita",
+ settore:"Tech",sc:"tech",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Edizione 2027 della principale conferenza tech saudita. Con Vision 2030 in piena esecuzione, evento in costante crescita.",
+ valore:"Relazioni costruite nel 2026 maturano in commissioni concrete nel 2027. Il mercato saudita lavora per relazioni a lungo termine: la continuità premia.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO",
+ mp_detail:"ALTISSIMO POTENZIALE con track record 2026.",
+ contatti:{email:"media@leap.sa",link:"leap.sa/en/media",note:"Accrediti media: apertura Novembre/Dicembre 2026"},
+ script:"Tornare con il portfolio 2026. Il governo saudita ama i partner internazionali affidabili e ricorrenti: la fedeltà viene premiata con contratti più importanti.",
+ deadline:"2026-11-08"},
+
+{id:66,s:"A",nome:"Gulfood Dubai",
+ ds:"2027-02-17",de:"2027-02-21",anno:2027,luogo:"Dubai, UAE",
+ settore:"Hospitality",sc:"hosp",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"La più grande fiera mondiale del settore food & beverage e hospitality. Organizzata dal Dubai World Trade Centre, riunisce oltre 5.000 espositori da 120+ paesi e 100.000+ visitatori professionali. Un appuntamento imperdibile per l'industria F&B, hotel, ristoranti e food tech.",
+ valore:"Massima concentrazione di buyer, brand manager e decision maker del settore hospitality e food a livello globale. Wow Tapes può produrre contenuti per brand alimentari, catene alberghiere, startup F&B e organizzatori di eventi — mercato enorme in cui la video produzione di qualità è richiestissima.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO (su domanda) — Pass Trade [da confermare su sito ufficiale]",
+ mp_detail:"ALTO POTENZIALE. Il Dubai World Trade Centre ha strutture per media partnership. Proporre un video atmosferico dell'evento in cambio di full media access e visibilità sui canali ufficiali.",
+ contatti:{email:"media@gulfood.com",link:"gulfood.com/media",note:"Verifica su sito ufficiale per accrediti 2027"},
+ script:"We are Wow Tapes, a Rome-based international video production agency. We'd love to create a cinematic event highlight for Gulfood 2027 — capturing the energy, innovation and atmosphere of the world's largest food & hospitality expo in our signature visual style. In exchange, we propose a media partnership: press accreditation and visibility on your official channels. We'd be happy to share our portfolio.",
+ deadline:"2026-12-01"},
+
+{id:67,s:"B",nome:"The Big 5 Global Dubai",
+ ds:"2026-11-24",de:"2026-11-27",anno:2026,luogo:"Dubai, UAE",
+ settore:"Design",sc:"design",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Una delle più grandi fiere internazionali per l'industria delle costruzioni, architettura e design. Organizzata a Dubai con oltre 60.000 visitatori e 3.000+ espositori da tutto il mondo. Copre design di interni, materiali, tecnologia per l'edilizia, luxury fit-out e hospitality design.",
+ valore:"I clienti Wow Tapes nel lusso, hospitality e architettura sono fortemente rappresentati. Brand di luxury interiors, sviluppatori immobiliari di alto livello (come quelli del mercato emiratino) necessitano di video di rappresentanza di alta qualità.",
+ modalita:"Media partnership / Accredito stampa / Partecipante",
+ costo:"Press GRATUITO — Visitor GRATUITO (registrazione online) ✅",
+ mp_detail:"DA VALUTARE. Evento B2B con strutture media. Contattare per proporre video highlights del padiglione o dell'evento generale.",
+ contatti:{email:"marketing@thebig5.ae",link:"thebig5.ae/press",note:"Registrazione visitatori gratuita online — team marketing per media partnership"},
+ script:"Wow Tapes produce video emozionali ad alto impatto per il settore architettura, design e luxury real estate. Saremmo felici di immortalare l'atmosfera e l'innovazione di The Big 5 Global 2026 — in cambio di accredito media e visibilità. Il nostro stile visivo distintivo valorizza l'eccellenza del design.",
+ deadline:"2026-09-15"},
+
+{id:68,s:"A",nome:"Dubai International Boat Show",
+ ds:"2027-02-25",de:"2027-03-01",anno:2027,luogo:"Dubai Marina, UAE",
+ settore:"Luxury",sc:"fashion",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Il principale salone nautico del Medio Oriente, dedicato a yacht, superyacht, marine technology e ultra-luxury lifestyle. Attira acquirenti HNWI (High Net Worth Individuals), broker nautici, brand di lusso marini e costruttori di yacht da tutto il mondo. Circa 26.000 visitatori.",
+ valore:"Il segmento ultra-luxury è esattamente il tipo di cliente che commissiona video di rappresentanza di alto livello. Presenza di brand luxury, concessionari, charter company e organizzatori di eventi esclusivi — tutti potenziali clienti per Wow Tapes.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO — Pass Standard ~AED 100 (≈€25) ✅",
+ mp_detail:"ALTO POTENZIALE. Gli espositori di lusso e gli organizzatori hanno budget elevati per contenuti. Proporre un video cinematic del salone come showreel ufficiale.",
+ contatti:{email:"press@dubaiboatshow.com",link:"dubaiboatshow.com/media",note:"Verificare date esatte e accrediti 2027 su sito ufficiale"},
+ script:"Wow Tapes creates premium cinematic content for ultra-luxury brands and events worldwide. The Dubai International Boat Show is the perfect stage for our visual storytelling — we'd love to produce an official cinematic highlight in exchange for media accreditation and co-promotion on your channels.",
+ deadline:"2026-12-15"},
+
+{id:69,s:"A",nome:"The Hotel Show Dubai",
+ ds:"2026-09-08",de:"2026-09-10",anno:2026,luogo:"Dubai, UAE",
+ settore:"Hospitality",sc:"hosp",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"La principale fiera B2B per il settore hospitality del Medio Oriente. Focus su hotel technology, interior design per hotel, F&B professionale, spa & wellness. Oltre 10.000 visitatori professionali e 350+ brand espositore. Organizzata dall'IIR Middle East al Dubai World Trade Centre.",
+ valore:"Clienti diretti per Wow Tapes: catene alberghiere internazionali (Marriott, Hilton, IHG), luxury hotel boutique, developer immobiliari MENA. Tutti con bisogno di video per branding, marketing, lancio di nuove proprietà. Il mercato hospitality MENA ha uno dei budget marketing più alti al mondo.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO — Visitor GRATUITO (registrazione professionale) ✅",
+ mp_detail:"ALTO POTENZIALE. Contattare IIR Middle East per proposta video partnership. L'evento ha un ufficio media attivo.",
+ contatti:{email:"mediaenquiries@iirme.com",link:"thehotelshow.com/media",note:"Accrediti professionali gratuiti — richiedere badge media"},
+ script:"Siamo Wow Tapes, agenzia di produzione video internazionale con base a Roma. Lavoriamo con i principali brand dell'hospitality nel mercato MENA. Proponiamo di produrre un video emozionale di The Hotel Show Dubai 2026 in cambio di accredito stampa e visibilità — un asset di comunicazione di valore per la vostra prossima edizione.",
+ deadline:"2026-06-30"},
+
+{id:70,s:"C",nome:"Festival International du Film de Marrakech (FIFM)",
+ ds:"2026-11-27",de:"2026-12-05",anno:2026,luogo:"Marrakech, Marocco",
+ settore:"Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Uno dei festival cinematografici più prestigiosi del continente africano e del mondo arabo. Fondato nel 2001, accoglie star internazionali, giurie di alto profilo e proiezioni in location iconiche come la Piazza Jemaa el-Fna. Circa 50.000 spettatori, forte presenza internazionale.",
+ valore:"Posizionamento di Wow Tapes come partner creativo nel mercato cinema africano e MENA. Forte concentrazione di registi, produttori e attori internazionali. Opportunità di proporre video di documentazione del festival in uno scenario visivamente straordinario — Marrakech offre materiale visivo eccezionale.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO (accredito professionale) ✅",
+ mp_detail:"ALTO POTENZIALE. Il festival è sempre alla ricerca di partner per la documentazione cinematografica dell'evento. Marrakech = location visiva unica che valorizza il nostro stile.",
+ contatti:{email:"presse@festivalmarrakech.info",link:"festivalmarrakech.info/accreditation",note:"Accrediti stampa: verifica apertura Settembre/Ottobre"},
+ script:"Wow Tapes est une agence de production vidéo internationale basée à Rome. Nous proposons de réaliser un film artistique et émotionnel du Festival International du Film de Marrakech 2026 — capturant l'énergie unique de l'événement dans nos décors iconiques. En échange, nous demandons une accréditation presse et une visibilité sur vos canaux officiels.",
+ deadline:"2026-09-15"},
+
+{id:71,s:"A",nome:"Doha Jewellery & Watches Exhibition (DJWE)",
+ ds:"2027-02-10",de:"2027-02-15",anno:2027,luogo:"Doha, Qatar",
+ settore:"Luxury",sc:"fashion",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"La più importante fiera di gioielleria e orologeria del Medio Oriente, organizzata da Qatar Tourism e Katara Cultural Village. Espone maison internazionali di alta gioielleria (Cartier, Bulgari, Rolex, ecc.) con un pubblico ultra-HNWI. Circa 25.000 visitatori, fortissimo focus luxury.",
+ valore:"Il segmento ultra-luxury gioielleria richiede video di altissimo livello per campagne, brand storytelling e documentazione eventi. Presenza di clienti con budget elevatissimi. Wow Tapes può offrire video cinematic per singoli brand/maison o per l'evento intero — mercato con ROI elevatissimo.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO (su domanda a Qatar Tourism) ✅",
+ mp_detail:"ALTISSIMO POTENZIALE. Evento luxury di primo piano con forte attenzione all'immagine. Qatar Tourism è un interlocutore strutturato per le partnership media.",
+ contatti:{email:"media@qatartourism.com",link:"djwe.qa/media",note:"Contattare Qatar Tourism per media partnership — risposta rapida"},
+ script:"Wow Tapes produces ultra-premium cinematic content for the world's most prestigious luxury brands. We would be honoured to create an official visual highlight of DJWE 2027, capturing the elegance and exclusivity of the event in our signature cinematic style. We propose a media partnership: press accreditation in exchange for a bespoke highlight film for Qatar Tourism and the exhibiting maisons.",
+ deadline:"2026-11-01"},
+
+{id:72,s:"B",nome:"Beautyworld Middle East Dubai",
+ ds:"2027-04-27",de:"2027-04-29",anno:2027,luogo:"Dubai, UAE",
+ settore:"Luxury",sc:"fashion",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"La più grande fiera internazionale per beauty, wellness, profumeria e cosmesi del Medio Oriente. Organizzata da Messe Frankfurt al Dubai World Trade Centre. Oltre 1.800 espositori da 60+ paesi e 40.000+ visitatori professionali. Include brand di beauty luxury, spa, nail art, hair, estetica.",
+ valore:"Forte presenza di brand luxury beauty (profumerie arabe di lusso, brand internazionali) alla ricerca di partner creativi per video di prodotto, brand film e contenuti digital. Mercato beauty MENA in fortissima crescita — i brand investono molto in visual content.",
+ modalita:"Media partnership / Accredito stampa / Partecipante",
+ costo:"Press GRATUITO — Visitor GRATUITO (registrazione professionale) ✅",
+ mp_detail:"DA VALUTARE. Messe Frankfurt ha un team media strutturato. Proporre video dell'evento o collaborazione con espositori luxury.",
+ contatti:{email:"beautyworld@uae.messefrankfurt.com",link:"beautyworldme.com/press",note:"Messe Frankfurt Middle East — ufficio stampa per media accreditation"},
+ script:"Wow Tapes è una video production agency internazionale specializzata in contenuti ad alto impatto visivo per brand di lusso e beauty. Proponiamo di produrre un video highlight di Beautyworld Middle East 2027 in cambio di accredito stampa e visibilità — un asset di comunicazione premium per la vostra edizione.",
+ deadline:"2027-01-15"},
+
+// ─── NUOVI EVENTI: GAP MENSILI + EVENTI CHIAVE MANCANTI ──
+
+{id:74,s:"A",nome:"Tribeca Film Festival",
+ ds:"2026-06-10",de:"2026-06-21",anno:2026,luogo:"New York, USA",
+ settore:"Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Uno dei festival cinematografici più influenti degli Stati Uniti, fondato da Robert De Niro nel 2002. 500+ film in concorso, forte presenza di produttori indipendenti, streamer (Netflix, Amazon, Apple) e distribuiti internazionali. Forte focus su cortometraggi e documentari.",
+ valore:"Accesso diretto al mercato americano del cinema indipendente. Presenza massiccia di streamer e distributor con budget per contenuti video originali. Il mercato dei cortometraggi americano è il più grande al mondo — Wow Tapes può posizionarsi come partner europeo di qualità.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO (su domanda) — Badge Industry [da confermare su sito ufficiale]",
+ mp_detail:"ALTO POTENZIALE. Il Tribeca ha un ufficio media ben strutturato. Proporre un aftermovie artistico del festival in cambio di full press access e co-promozione.",
+ contatti:{email:"press@tribecafilm.com",link:"tribecafilm.com/press",note:"Accrediti stampa: apertura solitamente Aprile"},
+ script:"Wow Tapes is a Rome-based international video production agency specializing in high-impact visual storytelling. We'd love to create a cinematic highlight of Tribeca Film Festival 2026 — capturing the energy and spirit of independent cinema. We propose a media partnership: press accreditation in exchange for a bespoke festival film.",
+ deadline:"2026-04-10"},
+
+{id:76,s:"A",nome:"Locarno Film Festival",
+ ds:"2026-08-05",de:"2026-08-15",anno:2026,luogo:"Locarno, Svizzera",
+ settore:"Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Uno dei festival cinematografici più antichi e prestigiosi del mondo (fondato nel 1946), famoso per le proiezioni in Piazza Grande con 8.000 spettatori a sera. Focus su cinema d'autore, sperimentale e indipendente internazionale. Forte presenza di co-produttori europei.",
+ valore:"Il Locarno è visivamente spettacolare — le proiezioni in Piazza Grande al tramonto sono materiale visivo eccezionale per un aftermovie cinematografico. Festival europeo di altissimo profilo, con forti connessioni con il mercato italiano. Perfetto per il portfolio di Wow Tapes.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Accredito stampa GRATUITO ✅",
+ mp_detail:"ALTISSIMO POTENZIALE. Il Locarno ha una lunga tradizione di collaborazioni con filmmaker. La Piazza Grande è una location unica che Wow Tapes può valorizzare al massimo con il suo stile visivo.",
+ contatti:{email:"media@pardo.ch",link:"pardo.ch/en/accreditation",note:"Scadenza accrediti stampa: solitamente Maggio/Giugno"},
+ script:"Wow Tapes è un'agenzia di produzione video italiana specializzata in cinema d'autore e visual storytelling. Proponiamo di realizzare un aftermovie artistico del Locarno Film Festival 2026 — le proiezioni in Piazza Grande offrono un materiale visivo unico al mondo. In cambio chiediamo accredito stampa e visibilità sui canali ufficiali.",
+ deadline:"2026-05-15"},
+
+{id:77,s:"C",nome:"Sarajevo Film Festival",
+ ds:"2026-08-14",de:"2026-08-22",anno:2026,luogo:"Sarajevo, Bosnia-Erzegovina",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il più importante festival cinematografico dell'Europa sud-orientale. 80.000+ spettatori, 200+ film da tutto il mondo, forte focus su cinema dei Balcani e dell'Europa dell'Est. Hub per co-produzioni europee e punto di incontro tra cinema orientale e occidentale.",
+ valore:"Evento emergente con costi accessibili e apertura alle partnership creative. Il mercato balcanico è un mercato emergente interessante per Wow Tapes. Festival visivamente ricco con location uniche nel centro storico di Sarajevo.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Accredito stampa GRATUITO ✅",
+ mp_detail:"BUON POTENZIALE. Festival aperto a partnership con agenzie creative europee. La location storica di Sarajevo offre materiale visivo eccezionale.",
+ contatti:{email:"press@sff.ba",link:"sff.ba/en/press",note:"Accrediti: apertura solitamente Giugno"},
+ script:"Wow Tapes is a Rome-based European video production agency. We create artistic event films that capture the unique atmosphere of film festivals. We'd be honoured to document Sarajevo Film Festival 2026 through our cinematic lens — in exchange for press accreditation and co-promotion.",
+ deadline:"2026-06-01"},
+
+{id:78,s:"A",nome:"Dubai Lynx International Festival of Creativity",
+ ds:"2027-03-08",de:"2027-03-10",anno:2027,luogo:"Dubai, UAE",
+ settore:"Advertising",sc:"adv",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Il principale festival della creatività pubblicitaria per il mercato MENA — la versione 'Cannes Lions' del Medio Oriente. Organizzato da Lions Festivals a Dubai, riunisce CMO, creative director e brand manager di tutta la regione MENA e Asia. 3.000+ delegati.",
+ valore:"Accesso diretto ai decision maker del settore advertising MENA — il mercato più ricco al mondo per budget comunicazione. Wow Tapes può proporre la propria expertise video come asset complementare alla strategia creativa degli agenti MENA. Connessione diretta con Lions Festivals = relazione privilegiata con Cannes Lions.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO (su domanda a Lions Festivals) ✅",
+ mp_detail:"ALTISSIMO POTENZIALE MENA. Dubai Lynx è il gateway per tutto il settore advertising della regione. Un aftermovie di Dubai Lynx aprirebbe le porte ai brand del Golfo. Contattare Lions Festivals Dubai.",
+ contatti:{email:"media@dubailynx.com",link:"dubailynx.com/press",note:"Accrediti media: apertura solitamente Dicembre/Gennaio"},
+ script:"Wow Tapes produces high-impact cinematic content for the world's leading creative brands. As a media partner, we'd love to create an official aftermovie of Dubai Lynx 2027 — documenting the creativity and energy of the MENA advertising industry. We propose a press accreditation in exchange for a premium festival highlight film.",
+ deadline:"2026-12-01"},
+
+{id:79,s:"B",nome:"Eurobest Festival of Creativity",
+ ds:"2026-12-02",de:"2026-12-04",anno:2026,luogo:"Stoccolma, Svezia",
+ settore:"Advertising",sc:"adv",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il principale festival europeo della creatività pubblicitaria. Parte del network Lions Festivals, riunisce i migliori creativi europei per tre giorni di conferenze, workshop e premiazioni. 1.500+ delegati da tutta Europa, forte presenza scandinava e UK.",
+ valore:"Networking con agenzie creative europee e brand che operano nel mercato europeo. Budget marketing europeo elevato — ottimo mercato per Wow Tapes. Collegamento con il network Lions = visibilità verso Cannes Lions.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO (su domanda a Lions Festivals) ✅",
+ mp_detail:"BUON POTENZIALE. Stesso organizzatore di Cannes Lions — se costruiamo una relazione con Lions Festivals, Eurobest è il punto di ingresso più accessibile.",
+ contatti:{email:"media@eurobest.com",link:"eurobest.com/press",note:"Confermare sede e date esatte per 2026 su sito ufficiale"},
+ script:"Wow Tapes is a European creative video agency based in Rome. We'd love to document Eurobest 2026 with a cinematic festival highlight — showcasing the best of European creativity. We propose a media partnership: press accreditation in exchange for a premium aftermovie.",
+ deadline:"2026-09-01"},
+
+{id:80,s:"A",nome:"Spikes Asia Festival of Creativity",
+ ds:"2026-09-16",de:"2026-09-18",anno:2026,luogo:"Singapore",
+ settore:"Advertising",sc:"adv",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Il principale festival della creatività pubblicitaria per la regione Asia-Pacifico, parte del network Lions Festivals. Riunisce CMO e creative director da Giappone, Cina, India, Australia, Corea e tutto il Sud-Est asiatico. 2.000+ delegati.",
+ valore:"Gateway per il mercato advertising asiatico — enormi budget e forte domanda di video content di qualità europea. Connessione con i brand tech asiatici (Samsung, LG, Hyundai) e i luxury brand che operano in Asia. Posizionamento Wow Tapes come player internazionale.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO (su domanda a Lions Festivals) ✅",
+ mp_detail:"ALTO POTENZIALE. Stesso network di Cannes Lions — relazione con Lions Festivals apre le porte a tutti i festival del circuito. Proporre aftermovie ufficiale.",
+ contatti:{email:"media@spikes.asia",link:"spikes.asia/press",note:"Confermare date esatte 2026 — solitamente Settembre"},
+ script:"Wow Tapes creates cinematic content for the world's leading creative festivals. We'd be honoured to produce an official Spikes Asia 2026 highlight — capturing the energy and creativity of Asia-Pacific advertising in our signature visual style. We propose a media accreditation in exchange.",
+ deadline:"2026-06-15"},
+
+{id:81,s:"C",nome:"Edinburgh International Film Festival",
+ ds:"2026-08-12",de:"2026-08-19",anno:2026,luogo:"Edimburgo, UK",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il festival cinematografico più antico del mondo (fondato nel 1947), con focus su film britannici, europei e internazionali. 30.000+ spettatori. Forte attenzione ai cortometraggi e ai documentari. Hub per il mercato cinematografico UK e connessioni con broadcaster BBC e Channel 4.",
+ valore:"Il mercato cinematografico UK è secondo solo agli USA. Connessioni con BBC, Channel 4, BFI. Festival con forte vocazione per i cortometraggi — esattamente il target Wow Tapes. Edimburgo in agosto è visivamente straordinaria.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Accredito stampa GRATUITO ✅",
+ mp_detail:"BUON POTENZIALE. Festival storico con ufficio media attivo. Proporre documentazione cinematografica del festival come aftermovie.",
+ contatti:{email:"press@edfilmfest.org.uk",link:"edfilmfest.org.uk/accreditation",note:"Accrediti: apertura solitamente Giugno"},
+ script:"Wow Tapes is an international video production agency from Rome. We create cinematic event films that honour the craft of filmmaking. We'd love to produce an official highlight of Edinburgh International Film Festival 2026 — capturing the spirit of one of cinema's oldest festivals.",
+ deadline:"2026-06-01"},
+
+{id:82,s:"B",nome:"One Show — Annual Awards Gala",
+ ds:"2026-05-05",de:"2026-05-07",anno:2026,luogo:"New York, USA",
+ settore:"Advertising",sc:"adv",prio:"Medio",mp:false,budget:"over",
+ obiettivo:"Uno dei più prestigiosi premi mondiali di advertising e design, organizzato dal One Club for Creativity a New York. Premia campagne di advertising, design, branded content e film di marca. Forte presenza di agenzie americane, ma con rilevanza globale.",
+ valore:"Networking con agenzie americane e brand globali presenti alla cerimonia. Opportunità di conoscere potenziali clienti americani e di posizionarsi come agenzia internazionale di qualità nel mercato USA.",
+ modalita:"Partecipante / Networking",
+ costo:"Pass evento: ~$500-800 (⚠️ Supera €600) — verificare su sito ufficiale",
+ mp_detail:"DA VALUTARE. Evento di premiazione — partnership media meno standard. Valutare se vale il costo del viaggio.",
+ contatti:{email:"hello@oneclub.org",link:"oneclub.org/the-one-show",note:"Verifica date esatte e pass disponibili per agenzie internazionali"},
+ script:"Wow Tapes is a Rome-based international creative agency. We'd love to connect at The One Show and discuss how our video production services can support your clients' creative campaigns.",
+ deadline:"2026-03-01"},
+
+{id:73,s:"A",nome:"Watch & Jewellery Middle East Show Dubai",
+ ds:"2026-09-17",de:"2026-09-20",anno:2026,luogo:"Dubai, UAE",
+ settore:"Luxury",sc:"fashion",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Mostra internazionale di orologi e gioielleria di lusso a Dubai, focalizzata sul mercato MENA e Asia. Presenta brand di alta orologeria e gioielleria in un contesto B2B e B2C premium. Organizzata al Dubai World Trade Centre. Buyer professionali, collezionisti, rivenditori luxury.",
+ valore:"Clienti con altissima capacità di spesa in visual content luxury. I brand di orologeria e gioielleria svizzeri e italiani presenti sono esattamente il tipo di cliente che commissiona video di brand storytelling di qualità cinematografica. Mercato molto ricettivo alla comunicazione premium.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO — [verificare su sito ufficiale] ✅",
+ mp_detail:"ALTO POTENZIALE. Contattare l'ufficio stampa del DWTC (Dubai World Trade Centre) che gestisce molte fiere luxury dell'emirato.",
+ contatti:{email:"media@dwtc.com",link:"watchandjewellery.ae/media",note:"Contattare anche il DWTC per accrediti multi-evento Dubai"},
+ script:"Wow Tapes creates ultra-premium cinematic content for luxury watch and jewellery brands worldwide. We'd love to produce an official visual highlight of the Watch & Jewellery Middle East Show 2026 — a bespoke cinematic piece that captures the craftsmanship and exclusivity of your exhibitors. We propose a media accreditation in exchange for this premium asset.",
+ deadline:"2026-06-15"},
+
+// ─── 2027: COPERTURA MESI VUOTI ──────────────────────────
+
+{id:84,s:"A",nome:"Cannes Film Festival 2027",
+ ds:"2027-05-12",de:"2027-05-23",anno:2027,luogo:"Cannes, Francia",
+ settore:"Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"80ª edizione del Festival di Cannes 2027. Il più importante festival cinematografico al mondo — con la presenza di registri, produttori e distributor internazionali di primo piano. Con il portfolio costruito nel 2026 (Marché du Film + Short Film Corner), la seconda partecipazione diventa più mirata.",
+ valore:"Follow-up dei contatti del 2026. Short film producer e branded content agency con cui si è parlato a Cannes 2026 sono ora potenziali clienti attivi. Accredito stampa costruisce continuità e credibilità come media partner fisso del festival.",
+ modalita:"Media partnership / Accredito stampa / Marché du Film",
+ costo:"Press GRATUITO — Marché Badge [da confermare su sito ufficiale] ✅",
+ mp_detail:"ALTISSIMO POTENZIALE 2027. Con l'esperienza 2026, proposta media partnership più strutturata. Produrre un aftermovie del Marché o dei cortometraggi in concorso.",
+ contatti:{email:"press@festival-cannes.fr",link:"festival-cannes.com/en/press",note:"Accrediti 2027: apertura solitamente Febbraio/Marzo"},
+ script:"Tornare con il portfolio Cannes 2026. La continuità è il segnale di professionalità più forte: siamo presenti ogni anno, produciamo contenuti di qualità, proponiamo partnership strutturate.",
+ deadline:"2027-03-01"},
+
+{id:89,s:"A",nome:"Giffoni Film Festival 2027",
+ ds:"2027-07-08",de:"2027-07-18",anno:2027,luogo:"Giffoni Valle Piana (SA), Italia",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Edizione 2027 del festival internazionale dedicato ai giovani e alle famiglie. Con le relazioni costruite nel 2026, secondo anno di presenza con obiettivi di conversione — brand sponsor e organizzatori già incontrati.",
+ valore:"I brand sponsor (Samsung, Sky, RAI) incontrati nel 2026 sono potenziali clienti attivi. Il video prodotto per il Giffoni 2026 è il portfolio ideale per proporre una partnership ricorrente.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Accredito media GRATUITO ✅",
+ mp_detail:"ALTO POTENZIALE con track record 2026. Partnership ricorrente — proporre contratto annuale.",
+ contatti:{email:"press@giffonifilmfestival.it",link:"giffonifilmfestival.it/press",note:"Accrediti 2027: apertura solitamente Aprile/Maggio"},
+ script:"Tornare con il video del 2026. Proporre una partnership ricorrente pluriennale — il Giffoni è un festival fedele ai suoi partner di qualità.",
+ deadline:"2027-04-01"},
+
+{id:85,s:"A",nome:"Locarno Film Festival 2027",
+ ds:"2027-08-04",de:"2027-08-14",anno:2027,luogo:"Locarno, Svizzera",
+ settore:"Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"80ª edizione del Locarno Film Festival. Con le relazioni costruite nell'edizione 2026, seconda partecipazione orientata alla conversione dei contatti in clienti — produttori e brand sponsor che hanno visto il nostro video del festival.",
+ valore:"Il video prodotto per Locarno 2026 diventa il portfolio per proporre la partnership 2027. I brand sponsor (Parmigiani Fleurier, Manor) con cui si è interagito sono potenziali clienti per video di brand storytelling.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Accredito stampa GRATUITO ✅",
+ mp_detail:"ALTISSIMO POTENZIALE con track record 2026.",
+ contatti:{email:"media@pardo.ch",link:"pardo.ch/en/accreditation",note:"Accrediti 2027: apertura solitamente Aprile/Maggio"},
+ script:"Tornare con il video dell'edizione 2026 come proof of concept. La Piazza Grande è il nostro biglietto da visita visivo — nessun'altra agenzia la racconta come noi.",
+ deadline:"2027-04-15"},
+
+{id:86,s:"B",nome:"Tokyo International Film Festival 2027",
+ ds:"2027-09-22",de:"2027-10-01",anno:2027,luogo:"Tokyo, Giappone",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Una delle principali manifestazioni cinematografiche asiatiche, riconosciuta dalla FIAPF. Focus su cinema asiatico e internazionale, co-produzioni Giappone-Europa, animazione. 60.000+ spettatori. Ottima porta per il mercato cinematografico giapponese.",
+ valore:"Con le relazioni costruite in Giappone nel 2026 (Tokyo Game Show, Japan Media Arts Festival), il TIFF 2027 consolida la presenza nel mercato nipponico. Produttori giapponesi sempre più interessati a co-produzioni con partner europei.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Accredito stampa GRATUITO ✅",
+ mp_detail:"BUON POTENZIALE. Il TIFF ha un ufficio media ben strutturato e una lunga tradizione di partnership con media internazionali.",
+ contatti:{email:"press@tiff-jp.net",link:"tiff-jp.net/en/press",note:"Accrediti: apertura solitamente Luglio/Agosto"},
+ script:"Wow Tapes is a European creative agency with a growing presence in the Japanese market. We'd love to produce a cinematic highlight of Tokyo International Film Festival 2027, capturing the spirit of Asian cinema at one of its most prestigious stages.",
+ deadline:"2027-07-01"},
+
+{id:87,s:"C",nome:"Edinburgh International Film Festival 2027",
+ ds:"2027-08-11",de:"2027-08-19",anno:2027,luogo:"Edimburgo, UK",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"80ª edizione del festival cinematografico più antico del mondo. Con le relazioni costruite nel 2026, seconda partecipazione con obiettivi di consolidamento nel mercato cinematografico UK.",
+ valore:"Follow-up dei contatti BBC, Channel 4, BFI dell'edizione 2026. Il mercato UK del cinema indipendente è in crescita — la continuità di presenza rafforza il posizionamento.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Accredito stampa GRATUITO ✅",
+ mp_detail:"BUON POTENZIALE con track record 2026.",
+ contatti:{email:"press@edfilmfest.org.uk",link:"edfilmfest.org.uk/accreditation",note:"Accrediti 2027: apertura solitamente Maggio"},
+ script:"Tornare con il video dell'edizione 2026 come portfolio. Il mercato UK apprezza la continuità e il track record.",
+ deadline:"2027-05-01"},
+
+{id:88,s:"B",nome:"Art Basel Miami Beach 2027",
+ ds:"2027-12-03",de:"2027-12-07",anno:2027,luogo:"Miami, Florida, USA",
+ settore:"Arte/Cultura",sc:"art",prio:"Medio",mp:true,budget:"over",
+ obiettivo:"Edizione 2027 della principale fiera d'arte contemporanea delle Americhe. Con le relazioni costruite nell'edizione 2026, seconda partecipazione con obiettivi di conversione — galleristi, collezionisti e brand luxury americani già incontrati.",
+ valore:"Follow-up dei contatti del 2026. I brand luxury sponsor (UBS, BMW, Audemars Piguet) incontrati a Miami 2026 sono potenziali clienti attivi nel 2027. Il portfolio video del 2026 è la migliore presentazione possibile.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO — Badge VIP [da confermare su sito ufficiale]",
+ mp_detail:"ALTO POTENZIALE con track record 2026. Proporre continuità come media partner ufficiale.",
+ contatti:{email:"press.us@artbasel.com",link:"artbasel.com/miami-beach/press",note:"Accrediti 2027: apertura solitamente Settembre"},
+ script:"Tornare con il video di Art Basel Miami 2026. La continuità dimostra che non siamo visitatori occasionali ma media partner stabili — questo conta moltissimo nel mondo dell'arte.",
+ deadline:"2027-09-01"},
+
+// ─── NUOVI EVENTI GIUGNO 2026 ─────────────────────────────
+
+{id:90,s:"B",nome:"TIFF — Toronto International Film Festival 2026",
+ ds:"2026-09-10",de:"2026-09-20",anno:2026,luogo:"Toronto, Canada",
+ settore:"Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Il 51° TIFF (Toronto International Film Festival) è uno dei più importanti e influenti festival cinematografici del mondo. 10+ giorni di proiezioni, mercato (TIFF Market), industry program. Primo grande lancio dei film candidati agli Oscar. 5.000+ professionisti accreditati da tutto il mondo: produttori, distributor, streamer, registi.",
+ valore:"Il TIFF è la porta d'ingresso al mercato cinematografico nordamericano. Presenza di Netflix, Amazon, Apple, distributori europei e brand che finanziano branded documentary. Wow Tapes può posizionarsi come agenzia europea di branded content e video production in un festival che sempre più accoglie contenuti branded di qualità.",
+ modalita:"Accredito stampa / Media partnership / Industry Badge",
+ costo:"Industry Badge ~$300-500 / Press su domanda ✅",
+ mp_detail:"ALTO POTENZIALE. Il TIFF ha un ufficio media ben strutturato. Proporre un aftermovie artistico dell'atmosfera del festival — il vibrante mood di Toronto in settembre.",
+ contatti:{email:"press@tiff.net",link:"tiff.net/press",note:"Accrediti press: apertura solitamente Luglio/Agosto"},
+ script:"Wow Tapes is a Rome-based international creative video agency specializing in high-impact visual storytelling. We'd love to create a cinematic highlight of TIFF 2026 — capturing the energy of the world's most influential film festival. We propose a media partnership: press accreditation in exchange for a bespoke festival film.",
+ deadline:"2026-07-10"},
+
+{id:91,s:"A",nome:"Web Summit Vancouver 2026",
+ ds:"2026-05-11",de:"2026-05-14",anno:2026,luogo:"Vancouver, Canada",
+ settore:"Tech",sc:"tech",prio:"Alto",mp:true,budget:"over",
+ obiettivo:"Nuova edizione del Collision Conference rebranded come Web Summit Vancouver. 20.000+ partecipanti, tech executive, startup, investitori e media professionali. Focus su AI, SaaS, fintech, healthtech, sostenibilità. Prima edizione canadese del brand Web Summit.",
+ valore:"Web Summit è il brand tech più accessibile per media partnership — hanno già un modello consolidato di press accreditation. Startup e scale-up presenti sono i clienti ideali per video di lancio prodotto, pitch deck video e branded content per fundraising.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Conference Pass ~$1.000+ / Press GRATUITO (su domanda) ✅ per accredito",
+ mp_detail:"ALTO POTENZIALE. Stessa organizzazione di Web Summit Lisbona — se si costruisce il rapporto con il team media, si possono coprire entrambi gli eventi. Proporre aftermovie emozionale dell'energia di Vancouver.",
+ contatti:{email:"press@websummit.com",link:"websummit.com/media-press",note:"Stessa press office di Web Summit Lisbona — contattare anche per accreditamento Vancouver"},
+ script:"Wow Tapes is an international video production agency from Rome. We create cinematic highlights of tech events that capture human stories behind innovation. We'd love to partner with Web Summit Vancouver 2026 — producing an official aftermovie in exchange for press accreditation.",
+ deadline:"2026-02-15"},
+
+{id:92,s:"B",nome:"Collision Conference 2026",
+ ds:"2026-06-03",de:"2026-06-04",anno:2026,luogo:"Toronto, Canada",
+ settore:"Tech",sc:"tech",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Importante conferenza tech nord-americana (ex Collision ora rebranded, con alcune edizioni ancora autonome). Enercare Centre Toronto. Startup, scaleup, investitori, corporate tech. Focus su innovazione e business digitale. 20.000+ partecipanti.",
+ valore:"Hub per startup e scale-up nordamericane con fortissimo bisogno di video per fundraising e marketing. Ambiente informale e dinamico — perfetto per proposta video partnership diretta agli espositori.",
+ modalita:"Media partnership / Accredito stampa / Networking",
+ costo:"Startup Pass ~$300-500 / Press su domanda ✅",
+ mp_detail:"BUON POTENZIALE. Evento di dimensioni gestibili con ufficio media attivo. Proporre recap emozionale.",
+ contatti:{email:"press@collisionconf.com",link:"collisionconf.com/press",note:"Verificare disponibilità press pass 2026"},
+ script:"Wow Tapes creates cinematic content for tech events worldwide. We'd love to produce a highlight reel of Collision 2026 — capturing the energy and innovation of the North American startup ecosystem. We propose a media partnership in exchange for press accreditation.",
+ deadline:"2026-03-15"},
+
+{id:93,s:"B",nome:"Festival of Marketing — London 2026",
+ ds:"2026-10-14",de:"2026-10-14",anno:2026,luogo:"The Brewery, Londra, UK",
+ settore:"Marketing",sc:"branded",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Il principale festival annuale del marketing nel mercato UK, organizzato da Marketing Week. Tema 2026: 'Raise the Bar'. 5 palchi principali, masterclass, coaching sessions, fireside chat. Migliaia di marketer: CMO, brand manager, digital director di brand UK e internazionali.",
+ valore:"Alta concentrazione di CMO e brand manager con budget marketing da investire in video content. Il mercato UK è sofisticato e con alta domanda di branded content di qualità. Un'agenzia italiana con portfolio internazionale ha forte appeal esotico.",
+ modalita:"Networking / Partecipante",
+ costo:"Standard Pass ~£300-500 / Press su domanda ✅",
+ mp_detail:"MEDIO POTENZIALE per media partnership evento. Alto per acquisizione clienti diretti.",
+ contatti:{email:"info@marketingweek.com",link:"marketingweek.com/festival-of-marketing",note:"Marketing Week organizza l'evento — verificare press policy 2026"},
+ script:"Presentarsi come agenzia video italiana che lavora con brand internazionali. Il mercato UK apprezza lo stile europeo e il savoir-faire italiano nel visual content.",
+ deadline:"2026-08-01"},
+
+{id:94,s:"B",nome:"Content Marketing World 2026",
+ ds:"2026-10-05",de:"2026-10-07",anno:2026,luogo:"Denver, Colorado, USA",
+ settore:"Branded Content",sc:"branded",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"La più importante conferenza mondiale dedicata al content marketing, organizzata dal Content Marketing Institute. 3.400+ partecipanti da tutto il mondo. 100+ speaker. Focus su strategia di contenuto, storytelling e video marketing. Colorado Convention Center.",
+ valore:"Il pubblico è esattamente il target di Wow Tapes: marketer che investono in contenuti, brand manager, content strategist. Sessioni specifiche su video marketing e branded storytelling. Opportunità di posizionarsi come expertise di riferimento nel video branded.",
+ modalita:"Media partnership / Accredito stampa / Speaker slot",
+ costo:"Conference Pass ~$899+ / Press su domanda ✅",
+ mp_detail:"BUON POTENZIALE. CMI è molto aperto a partnership con produttori video. Proporre un aftermovie o contenuti video dell'evento.",
+ contatti:{email:"info@contentmarketinginstitute.com",link:"contentmarketingworld.com/press",note:"Content Marketing Institute. Speaker applications aprono con largo anticipo."},
+ script:"Wow Tapes is an international video production agency from Rome. We create branded content and event films for leading global brands. We'd love to produce an official video highlight of Content Marketing World 2026 — showcasing the event's energy and knowledge. We propose a media partnership in exchange for press accreditation.",
+ deadline:"2026-07-01"},
+
+{id:95,s:"C",nome:"Berlinale 2027 — Berlin International Film Festival",
+ ds:"2027-02-10",de:"2027-02-21",anno:2027,luogo:"Berlino, Germania",
+ settore:"Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"77ª edizione della Berlinale con importanti novità: primo giorno il 10 febbraio (mercoledì), cerimonia di premiazione il 19 febbraio, e prime due 'Audience Days' il 20-21 febbraio. European Film Market dal 10 al 16 febbraio. 20.000+ accreditati, 400+ film.",
+ valore:"Con le relazioni costruite nel 2026, seconda partecipazione orientata alla conversione. I produttori europei incontrati alla Berlinale 2026 sono potenziali clienti per branded documentary e corporate film. Il portfolio cinematografico di Wow Tapes si rafforza anno dopo anno.",
+ modalita:"Accredito stampa / Industry Badge (EFM)",
+ costo:"Industry Badge €200 / Press GRATUITO ✅",
+ mp_detail:"MEDIO POTENZIALE con track record 2026. Proporre un aftermovie dell'EFM — il mercato del cinema europeo come storia di network e collaborazione.",
+ contatti:{email:"press@berlinale.de",link:"berlinale.de/en/press.html",note:"Accrediti press 2027: domande apertura Novembre/Dicembre 2026"},
+ script:"Tornare con il portfolio 2026. La Berlinale 2027 introduce le prime Audience Days — una novità da raccontare come aftermovie.",
+ deadline:"2026-11-01"},
+
+{id:96,s:"C",nome:"Sundance Film Festival 2027 — Boulder",
+ ds:"2027-01-21",de:"2027-01-31",anno:2027,luogo:"Boulder, Colorado, USA",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:false,budget:"ok",
+ obiettivo:"Prima edizione del Sundance Film Festival nella nuova sede di Boulder, Colorado (dopo decenni a Park City, Utah). Festival del cinema indipendente americano più importante al mondo. Branded documentary in forte crescita. Venue: Boulder Theater, Chautauqua Auditorium, CU Boulder.",
+ valore:"Il cambio di sede genera curiosità e copertura mediatica straordinaria — un'opportunità per un aftermovie che documenti questa transizione storica. Connessioni con filmmaker indipendenti americani e streamer (Netflix, Amazon, Apple).",
+ modalita:"Accredito stampa / Industry Badge",
+ costo:"Industry Badge ~$400-600 / Press su domanda ✅",
+ mp_detail:"BUON POTENZIALE per l'anno della prima edizione a Boulder — narrativa unica del 'nuovo inizio' del festival.",
+ contatti:{email:"press@sundance.org",link:"sundance.org/press",note:"Accrediti press: domande apertura Ottobre/Novembre 2026"},
+ script:"Proporre un aftermovie della storica 'prima volta a Boulder' — il Sundance che si reinventa. Narrativa potente che interesserebbe sia agli organizzatori che ai media.",
+ deadline:"2026-10-01"},
+
+{id:97,s:"A",nome:"MWC Barcelona 2027 — Mobile World Congress",
+ ds:"2027-03-01",de:"2027-03-04",anno:2027,luogo:"Barcellona, Fira Gran Via, Spagna",
+ settore:"Tech",sc:"tech",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"21ª edizione del Mobile World Congress, il più grande evento mondiale per l'industria della connettività e del mobile tech. 105.000+ partecipanti, 2.900+ espositori, 1.700+ speaker. GSMA organizza. Tutti i principali brand tech globali: Samsung, Qualcomm, Ericsson, Nokia, Google, Meta.",
+ valore:"Brand tech con enormi budget per contenuti video di lancio prodotti e eventi. Accredito media è lo standard del settore. Il MWC è la vetrina globale delle innovazioni tech — un aftermovie di qualità ha enorme visibilità internazionale.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO (su domanda a GSMA) ✅",
+ mp_detail:"ALTO POTENZIALE. GSMA ha un team media molto strutturato. Proporre un aftermovie emozionale con focus sulle innovazioni più rilevanti — le storie umane dietro la tecnologia.",
+ contatti:{email:"media@gsma.com",link:"mwcbarcelona.com/media",note:"GSMA gestisce le PR. Accrediti media: apertura Novembre/Dicembre 2026"},
+ script:"Wow Tapes is a Rome-based international video production agency. We create cinematic content that brings technology to life through human stories. We'd love to produce an official aftermovie of MWC Barcelona 2027 — capturing the innovation and energy of the world's largest connectivity event.",
+ deadline:"2026-11-01"},
+
+{id:98,s:"C",nome:"TIFF — Toronto International Film Festival 2027",
+ ds:"2027-09-09",de:"2027-09-19",anno:2027,luogo:"Toronto, Canada",
+ settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"52ª edizione del TIFF. Con le relazioni costruite nel 2026, seconda partecipazione orientata alla conversione dei contatti in clienti — produttori, distributor, streamer e brand incontrati nel 2026.",
+ valore:"Follow-up dei contatti del 2026. Il portfolio del TIFF 2026 diventa la principale leva per proporre una partnership ricorrente. I brand sponsor che hanno visto il nostro lavoro sono potenziali clienti attivi.",
+ modalita:"Media partnership / Accredito stampa",
+ costo:"Press GRATUITO ✅",
+ mp_detail:"ALTO POTENZIALE con track record TIFF 2026. Proporre media partnership ricorrente pluriennale.",
+ contatti:{email:"press@tiff.net",link:"tiff.net/press",note:"Accrediti 2027: apertura solitamente Luglio/Agosto"},
+ script:"Tornare con il video TIFF 2026 come portfolio. La continuità di presenza dimostra serietà e professionalità — cruciale nel mercato nordamericano.",
+ deadline:"2027-07-01"}
+
+]; // END EVENTS
+
+// ═══════════════════════════════════════════════════════════
+// SECTOR COLORS MAP
+// ═══════════════════════════════════════════════════════════
+const SC_COLOR = {
+  adv:'var(--sector-adv)', tech:'var(--sector-tech)', cinema:'var(--sector-cinema)',
+  fashion:'var(--sector-fashion)', design:'var(--sector-design)', hosp:'var(--sector-hosp)',
+  branded:'var(--sector-branded)', music:'var(--sector-music)', art:'var(--sector-art)', other:'var(--sector-other)'
+};
+function scColor(sc){ return SC_COLOR[sc] || SC_COLOR.other; }
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+const _now = new Date();
+let view = 'calendar', cy = _now.getFullYear(), cm = _now.getMonth();
+let selDay = null;
+const expanded = new Set();
+let F = {year:'all',sez:'all',budget:'all',prio:'all',q:'',area:'all',settore:'all'};
+const MENA_KEYS = ['UAE','Dubai','Abu Dhabi','Riyadh','Arabia Saudita','Jeddah','Doha','Qatar','Il Cairo','Egitto','MENA','Marocco','Marrakech','Casablanca','Tunisi','Beirut','Amman'];
+const ITALY_KEYS = ['Italia','Roma','Milano','Venezia','Torino','Napoli','Udine','Ischia','Giffoni'];
+const JAPAN_KEYS = ['Giappone','Tokyo','Makuhari','Osaka','Kyoto'];
+const MN = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+const DN = ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'];
+
+// ═══════════════════════════════════════════════════════════
+// DEADLINE REMINDERS
+// ═══════════════════════════════════════════════════════════
+function initReminders(){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const soon = EVENTS.filter(e => {
+    if(!e.deadline) return false;
+    const d = new Date(e.deadline+'T00:00:00');
+    const diff = (d - today) / 86400000;
+    return diff >= 0 && diff <= 45;
+  }).sort((a,b) => a.deadline.localeCompare(b.deadline));
+
+  if(soon.length === 0) return;
+  const strip = document.getElementById('reminder-strip');
+  const items = document.getElementById('reminder-items');
+  strip.classList.add('show');
+  items.innerHTML = soon.slice(0,5).map(e => {
+    const d = new Date(e.deadline+'T00:00:00');
+    const diff = Math.round((d - today) / 86400000);
+    const label = diff === 0 ? 'OGGI' : diff === 1 ? 'domani' : `tra ${diff}gg`;
+    return `<span class="reminder-item reminder-item-link" onclick="openDeadlineModal(${e.id})"><strong>${e.nome.split(' — ')[0].split(',')[0]}</strong>: scadenza ${label}</span>`;
+  }).join('');
+}
+
+function openDeadlineModal(id){
+  const e = EVENTS.find(ev => ev.id === id);
+  if(!e) return;
+  expanded.add(id);
+  document.getElementById('deadline-modal-body').innerHTML = eventCard(e);
+  document.getElementById('deadline-modal').classList.add('open');
+  // auto-expand the card
+  const det = document.getElementById('deadline-modal-body').querySelector('.event-details');
+  if(det) det.style.display = 'block';
+}
+function closeDeadlineModal(){
+  document.getElementById('deadline-modal').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════════════════
+// FILTERING
+// ═══════════════════════════════════════════════════════════
+function filtered(){
+  return EVENTS.filter(e => {
+    if(F.year !== 'all' && e.anno !== +F.year) return false;
+    if(F.sez !== 'all' && e.s !== F.sez) return false;
+    if(F.budget !== 'all'){
+      if(F.budget === 'ok' && e.budget !== 'ok') return false;
+      if(F.budget === 'over' && e.budget !== 'over') return false;
+    }
+    if(F.prio !== 'all' && e.prio !== F.prio) return false;
+    if(F.settore !== 'all' && e.sc !== F.settore) return false;
+    if(F.q){
+      const q = F.q.toLowerCase();
+      if(!e.nome.toLowerCase().includes(q) && !e.luogo.toLowerCase().includes(q) &&
+         !e.settore.toLowerCase().includes(q)) return false;
+    }
+    if(F.area !== 'all'){
+      const loc = e.luogo;
+      if(F.area === 'mena' && !MENA_KEYS.some(k => loc.includes(k))) return false;
+      if(F.area === 'italy' && !ITALY_KEYS.some(k => loc.includes(k))) return false;
+      if(F.area === 'japan' && !JAPAN_KEYS.some(k => loc.includes(k))) return false;
+    }
+    return true;
+  });
+}
+
+function dayEvents(y,m,d){
+  const s = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  return filtered().filter(e => s >= e.ds && s <= e.de);
+}
+
+// ═══════════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════════
+function renderStats(){
+  const all = filtered();
+  const alto = all.filter(e=>e.prio==='Alto').length;
+  const mp = all.filter(e=>e.mp).length;
+  const ok = all.filter(e=>e.budget==='ok').length;
+  document.getElementById('stats-bar').innerHTML =
+    `<div class="stat-card"><div class="stat-num">${all.length}</div><div class="stat-label">eventi totali</div></div>
+     <div class="stat-card"><div class="stat-num">${alto}</div><div class="stat-label">priorità alta</div></div>
+     <div class="stat-card"><div class="stat-num">${mp}</div><div class="stat-label">media partnership</div></div>
+     <div class="stat-card"><div class="stat-num">${ok}</div><div class="stat-label">entro €600</div></div>`;
+  document.getElementById('last-updated-label').textContent = 'Aggiornato: Giugno 2026 — 98 eventi';
+}
+
+// ═══════════════════════════════════════════════════════════
+// CALENDAR
+// ═══════════════════════════════════════════════════════════
+function renderCal(){
+  document.getElementById('cal-title').textContent = `${MN[cm]} ${cy}`;
+  document.getElementById('sel-month').value = cm;
+  document.getElementById('sel-year').value = cy;
+  const firstDow = new Date(cy,cm,1).getDay();
+  const dim = new Date(cy,cm+1,0).getDate();
+  const offset = firstDow === 0 ? 6 : firstDow-1;
+  const prevDim = new Date(cy,cm,0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+  const total = Math.ceil((offset+dim)/7)*7;
+  const grid = document.getElementById('cal-days');
+  grid.innerHTML='';
+  for(let i=0;i<total;i++){
+    let d,m,y,other=false;
+    if(i<offset){d=prevDim-offset+i+1;m=cm-1;y=cy;if(m<0){m=11;y--;}other=true;}
+    else if(i<offset+dim){d=i-offset+1;m=cm;y=cy;}
+    else{d=i-offset-dim+1;m=cm+1;y=cy;if(m>11){m=0;y++;}other=true;}
+    const cell=document.createElement('div');
+    cell.className='cal-day'+(other?' other-month':'');
+    const dt=new Date(y,m,d);
+    if(dt.getTime()===today.getTime()) cell.classList.add('today');
+    if(selDay&&selDay.d===d&&selDay.m===m&&selDay.y===y) cell.classList.add('selected');
+    const evs=dayEvents(y,m,d);
+    if(evs.length) cell.classList.add('has-events');
+    const num=document.createElement('div');num.className='day-num';num.textContent=d;
+    cell.appendChild(num);
+    if(evs.length){
+      const dots=document.createElement('div');dots.className='day-dots';
+      evs.slice(0,4).forEach(e=>{const dot=document.createElement('div');dot.className='dot';dot.style.background=scColor(e.sc);dots.appendChild(dot);});
+      if(evs.length>4){const m2=document.createElement('span');m2.style.cssText='font-size:8px;color:var(--gray-400);font-weight:700';m2.textContent='+'+( evs.length-4);dots.appendChild(m2);}
+      cell.appendChild(dots);
+      const mini=document.createElement('div');mini.className='day-events-mini';
+      evs.slice(0,2).forEach(e=>{const p=document.createElement('div');p.className='mini-pill';p.style.background=scColor(e.sc);p.textContent=e.nome.length>16?e.nome.substring(0,14)+'…':e.nome;mini.appendChild(p);});
+      cell.appendChild(mini);
+    }
+    cell.addEventListener('click',()=>{selDay={d,m,y};renderCal();openPanel(y,m,d);});
+    grid.appendChild(cell);
+  }
+
+  // ── Empty month banner ─────────────────────────────────
+  const allMonthEvs = filtered().filter(e => {
+    const ds = new Date(e.ds+'T00:00:00'), de = new Date(e.de+'T00:00:00');
+    const mStart = new Date(cy,cm,1), mEnd = new Date(cy,cm+1,0);
+    return ds <= mEnd && de >= mStart;
+  });
+  let emptyBanner = document.getElementById('empty-month-banner');
+  if(!emptyBanner){
+    emptyBanner = document.createElement('div');
+    emptyBanner.id = 'empty-month-banner';
+    emptyBanner.style.cssText = 'display:none;text-align:center;padding:18px 16px;background:var(--gray-50,#f9fafb);border-radius:10px;margin:8px 0;border:1px dashed var(--gray-200,#e5e7eb);';
+    grid.parentNode.insertBefore(emptyBanner, grid.nextSibling);
+  }
+  if(allMonthEvs.length === 0 && F.area !== 'all'){
+    const totalFiltered = filtered().length;
+    // Find nearest month with events
+    let nearestLabel = '';
+    if(totalFiltered > 0){
+      const allEvs = filtered().sort((a,b)=>a.ds.localeCompare(b.ds));
+      const curStr = `${cy}-${String(cm+1).padStart(2,'0')}`;
+      // find next month
+      const next = allEvs.find(e => e.ds.substring(0,7) > curStr);
+      // find prev month
+      const prev = [...allEvs].reverse().find(e => e.de.substring(0,7) < curStr);
+      const nextLabel = next ? `→ ${MN[+next.ds.substring(5,7)-1]} ${next.ds.substring(0,4)}` : '';
+      const prevLabel = prev ? `← ${MN[+prev.de.substring(5,7)-1]} ${prev.de.substring(0,4)}` : '';
+      nearestLabel = `<br><span style="font-size:12px;color:#6b7280">${[prevLabel,nextLabel].filter(Boolean).join('&nbsp;&nbsp;&nbsp;')}</span>`;
+    }
+    const areaLabel = F.area==='mena'?'MENA':F.area==='italy'?'Italia':F.area==='japan'?'Giappone':F.area;
+    emptyBanner.innerHTML = `<div style="font-size:14px;color:#374151;font-weight:600">Nessun evento <em>${areaLabel}</em> in ${MN[cm]} ${cy}</div>
+      <div style="font-size:12px;color:#6b7280;margin-top:4px">${totalFiltered} eventi totali — usa le frecce per navigare ai mesi con eventi${nearestLabel}</div>`;
+    emptyBanner.style.display = 'block';
+    grid.style.opacity = '0.35';
+  } else {
+    emptyBanner.style.display = 'none';
+    grid.style.opacity = '1';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// PANEL
+// ═══════════════════════════════════════════════════════════
+function openPanel(y,m,d){
+  const evs=dayEvents(y,m,d);
+  const dt=new Date(y,m,d);
+  document.getElementById('panel-date').textContent=`${DN[dt.getDay()]} ${d} ${MN[m]} ${y}`;
+  document.getElementById('panel-count').textContent=evs.length===0?'Nessun evento':evs.length===1?'1 evento in corso':`${evs.length} eventi in corso`;
+  document.getElementById('panel-body').innerHTML=evs.length===0
+    ?'<div class="panel-empty">📅 Nessun evento in questo giorno.<br><small>Seleziona un giorno evidenziato per vedere gli eventi.</small></div>'
+    :evs.map(e=>eventCard(e)).join('');
+  document.getElementById('side-panel').classList.add('open');
+}
+function closePanel(){
+  document.getElementById('side-panel').classList.remove('open');
+  selDay=null;renderCal();
+}
+
+// ═══════════════════════════════════════════════════════════
+// EVENT CARD
+// ═══════════════════════════════════════════════════════════
+function fmtDate(ds,de){
+  const s=new Date(ds+'T00:00:00'),e=new Date(de+'T00:00:00');
+  const ms=MN[s.getMonth()].substring(0,3),me=MN[e.getMonth()].substring(0,3);
+  return ms===me?`${s.getDate()}–${e.getDate()} ${ms} ${s.getFullYear()}`:`${s.getDate()} ${ms}–${e.getDate()} ${me} ${s.getFullYear()}`;
+}
+function prioB(p){return p==='Alto'?'badge-alto':p==='Medio'?'badge-medio':'badge-basso';}
+function eventCard(e){
+  const exp=expanded.has(e.id);
+  const todayStr=new Date().toISOString().substring(0,10);
+  const isPast=e.de<todayStr;
+  const email=e.contatti.email&&!e.contatti.email.startsWith('[')?`<div>Email: <a class="contact-link" href="mailto:${e.contatti.email}">${e.contatti.email}</a></div>`:'';
+  const link=e.contatti.link?`<div>Link: <a class="contact-link" href="https://${e.contatti.link}" target="_blank">${e.contatti.link}</a></div>`:'';
+  const note=e.contatti.note?`<div style="font-size:11px;color:var(--gray-400);margin-top:4px">${e.contatti.note}</div>`:'';
+  const deadline=e.deadline?`<div class="deadline-badge">⏰ Scadenza application: ${new Date(e.deadline+'T00:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'})}</div>`:'';
+  return `
+<div class="event-card${exp?' expanded':''}${isPast?' past-event':''}" id="ec${e.id}">
+  <div class="event-header" onclick="toggleCard(${e.id})">
+    <div class="event-badges">
+      ${isPast?'<span class="badge badge-past">✓ Concluso</span>':''}
+      <span class="badge ${prioB(e.prio)}">${e.prio}</span>
+      <span class="badge ${e.budget==='ok'?'badge-ok':'badge-over'}">${e.budget==='ok'?'✅ ≤€600':'⚠️ >€600'}</span>
+      <span class="badge" style="background:#f3f4f6;color:#374151">${e.settore}</span>
+      ${e.mp?'<span class="badge badge-mp">MP</span>':''}
+      <span class="badge badge-sez">Sez.${e.s}</span>
+    </div>
+    <div class="ev-header-row">
+      <div class="event-name">${e.nome}</div>
+      <div class="chevron">${exp?'▲':'▼'}</div>
+    </div>
+    <div class="event-meta">
+      <span>📅 ${fmtDate(e.ds,e.de)}</span>
+      <span>📍 ${e.luogo}</span>
+    </div>
+    ${deadline}
+  </div>
+  <div class="event-details">
+    <div class="detail-inner">
+      <div class="dbox"><div class="dbox-label">Obiettivo evento</div><div class="dbox-content">${e.obiettivo}</div></div>
+      <div class="dbox"><div class="dbox-label">Valore per Wow Tapes</div><div class="dbox-content">${e.valore}</div></div>
+      <div class="dbox"><div class="dbox-label">Modalità partecipazione</div><div class="dbox-content">${e.modalita}</div></div>
+      <div class="dbox"><div class="dbox-label">Costo partecipazione</div><div class="dbox-content">${e.costo}</div></div>
+      <div class="dbox full"><div class="dbox-label">Contatti Press / Media</div><div class="dbox-content">${email}${link}${note}</div></div>
+      <div class="dbox full"><div class="dbox-label">Opportunità media partnership</div><div class="dbox-content">${e.mp_detail}</div></div>
+      <div class="dbox full"><div class="dbox-label">Script di approccio consigliato</div><div class="script-box">${e.script}</div></div>
+    </div>
+  </div>
+</div>`;
+}
+function toggleCard(id){
+  const el=document.getElementById(`ec${id}`);if(!el)return;
+  if(expanded.has(id)){expanded.delete(id);el.classList.remove('expanded');}
+  else{expanded.add(id);el.classList.add('expanded');}
+  el.querySelector('.chevron').textContent=expanded.has(id)?'▲':'▼';
+  const det=el.querySelector('.event-details');
+  if(det)det.style.display=expanded.has(id)?'block':'none';
+}
+
+// ═══════════════════════════════════════════════════════════
+// LIST VIEW
+// ═══════════════════════════════════════════════════════════
+function renderList(){
+  const all=filtered();
+  const lv=document.getElementById('list-view');
+  if(!all.length){lv.innerHTML='<div class="no-results">🔍 Nessun evento trovato.<br>Prova a modificare i filtri.</div>';return;}
+  const secs=[{k:'A',l:'SEZIONE A — MEDIA PARTNERSHIP AD ALTO POTENZIALE'},{k:'B',l:'SEZIONE B — NETWORKING E ACQUISIZIONE CLIENTI'},{k:'C',l:'SEZIONE C — POSIZIONAMENTO E VETRINA'}];
+  lv.innerHTML=secs.map(sec=>{
+    const evs=all.filter(e=>e.s===sec.k).sort((a,b)=>a.ds.localeCompare(b.ds));
+    if(!evs.length)return'';
+    return`<div class="sec-header"><span class="sec-title">${sec.l}</span><span class="sec-count">(${evs.length})</span></div><div class="sec-events">${evs.map(e=>eventCard(e)).join('')}</div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════
+// VIEW & NAV
+// ═══════════════════════════════════════════════════════════
+function setView(v){
+  view=v;
+  document.getElementById('calendar-view').classList.toggle('active',v==='calendar');
+  document.getElementById('list-view').classList.toggle('active',v==='list');
+  document.getElementById('btn-cal').classList.toggle('active',v==='calendar');
+  document.getElementById('btn-list').classList.toggle('active',v==='list');
+  if(v==='list')renderList();else renderCal();
+}
+function changeMonth(d){
+  cm+=d;if(cm>11){cm=0;cy++;}if(cm<0){cm=11;cy--;}
+  selDay=null;document.getElementById('side-panel').classList.remove('open');renderCal();
+}
+function jumpTo(){
+  cm=+document.getElementById('sel-month').value;
+  cy=+document.getElementById('sel-year').value;
+  selDay=null;document.getElementById('side-panel').classList.remove('open');renderCal();
+}
+function goToday(){
+  const n=new Date();cy=n.getFullYear();cm=n.getMonth();
+  selDay=null;document.getElementById('side-panel').classList.remove('open');renderCal();
+}
+
+// ═══════════════════════════════════════════════════════════
+// FILTERS SETUP
+// ═══════════════════════════════════════════════════════════
+[['fg-year','year'],['fg-sez','sez'],['fg-budget','budget'],['fg-prio','prio'],['fg-area','area'],['fg-settore','settore']].forEach(([gid,fk])=>{
+  document.getElementById(gid).querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.getElementById(gid).querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');F[fk]=btn.dataset.val;refresh();
+    });
+  });
+});
+document.getElementById('search').addEventListener('input',e=>{F.q=e.target.value;refresh();});
+
+function refresh(){
+  renderStats();
+  if(view==='calendar')renderCal();else renderList();
+  if(selDay)openPanel(selDay.y,selDay.m,selDay.d);
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+initReminders();
+renderStats();
+renderCal();
+</script>
+</body>
+</html>
