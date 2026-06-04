@@ -165,6 +165,56 @@ body{font-family:'Inter',sans-serif;background:var(--off-white);color:var(--blac
 .deadline-modal-close:hover{background:var(--gray-200)}
 .deadline-modal-body{padding:14px}
 
+/* ═══ STAT CARDS CLICCABILI (Funz. 2) ═══ */
+.stat-card{cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .1s}
+.stat-card:hover{border-color:#999;box-shadow:0 3px 12px rgba(0,0,0,.1);transform:translateY(-1px)}
+.stat-card.active{border-color:var(--black);box-shadow:0 0 0 2px var(--black);background:#f5f4f0}
+.stat-card.active .stat-num{color:var(--black)}
+.stat-card.active .stat-label{color:var(--black)}
+.stat-card-reset:hover{background:var(--gray-100)}
+
+/* ═══ RESET FILTRI (Funz. 4) ═══ */
+.reset-filters-btn{padding:4px 11px;border:1.5px solid var(--gray-200);border-radius:20px;background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--gray-600);transition:all .15s;white-space:nowrap;letter-spacing:.2px;display:none;align-items:center;gap:4px}
+.reset-filters-btn.visible{display:flex}
+.reset-filters-btn:hover{background:#fef2f2;border-color:#fca5a5;color:#dc2626}
+.filter-active-dot{width:6px;height:6px;border-radius:50%;background:#dc2626;flex-shrink:0}
+
+/* ═══ BANNER RICERCA INTELLIGENTE (Funz. 1) ═══ */
+.search-nav-bar{background:#f0f4ff;border-bottom:1px solid #c7d7fd;padding:7px 32px;display:none;align-items:center;gap:10px;font-size:12px;color:#1d4ed8;font-weight:600;flex-wrap:wrap}
+.search-nav-bar.visible{display:flex}
+.search-nav-count{font-weight:700}
+.search-nav-arrows{display:flex;gap:4px;margin-left:auto}
+.search-nav-btn{padding:3px 10px;border:1.5px solid #93c5fd;border-radius:6px;background:var(--white);cursor:pointer;font-size:11px;font-weight:700;color:#1d4ed8;transition:all .15s}
+.search-nav-btn:hover{background:#1d4ed8;color:var(--white);border-color:#1d4ed8}
+.search-nav-btn:disabled{opacity:.35;cursor:default}
+.search-no-results{color:#dc2626;background:#fef2f2;border-bottom:1px solid #fecaca;padding:7px 32px;display:none;font-size:12px;font-weight:600}
+.search-no-results.visible{display:block}
+
+/* ═══ VISTA ANNUALE (Funz. 3) ═══ */
+.annual-view{flex:1;padding:22px 32px;display:none}
+.annual-view.active{display:block}
+.annual-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:1100px){.annual-grid{grid-template-columns:repeat(3,1fr)}}
+.month-cell{background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--radius);overflow:hidden;transition:border-color .15s,box-shadow .15s;cursor:pointer}
+.month-cell:hover{border-color:#999;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.month-cell.has-events{border-color:#ccc}
+.month-cell-header{background:var(--black);color:var(--white);padding:8px 12px;display:flex;align-items:center;justify-content:space-between}
+.month-cell-name{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1.5px}
+.month-cell-count{font-size:10px;color:rgba(255,255,255,.5);font-weight:600}
+.month-cell-events{padding:8px 10px;min-height:64px}
+.month-mini-ev{display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid var(--gray-100)}
+.month-mini-ev:last-child{border-bottom:none}
+.month-mini-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.month-mini-name{font-size:10px;font-weight:600;color:var(--black);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.month-mini-date{font-size:9px;color:var(--gray-400);flex-shrink:0}
+.month-mini-more{font-size:10px;color:var(--gray-400);padding:3px 0;text-align:center}
+.month-cell-empty{font-size:11px;color:var(--gray-400);text-align:center;padding:12px 0}
+.annual-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.annual-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px}
+.annual-year-toggle{display:flex;gap:4px}
+.annual-year-btn{padding:5px 14px;border:1.5px solid var(--gray-200);border-radius:7px;background:var(--white);cursor:pointer;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:var(--gray-600);transition:all .15s}
+.annual-year-btn.active{background:var(--black);border-color:var(--black);color:var(--white)}
+
 /* ═══ SCROLL ═══ */
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -198,6 +248,7 @@ body{font-family:'Inter',sans-serif;background:var(--off-white);color:var(--blac
       <div class="view-toggle">
         <button class="view-btn active" onclick="setView('calendar')" id="btn-cal">📅 Calendario</button>
         <button class="view-btn" onclick="setView('list')" id="btn-list">☰ Lista</button>
+        <button class="view-btn" onclick="setView('annual')" id="btn-annual">📆 Anno</button>
       </div>
     </div>
   </div>
@@ -266,7 +317,20 @@ body{font-family:'Inter',sans-serif;background:var(--off-white);color:var(--blac
     <span class="search-icon">🔍</span>
     <input class="search-input" type="text" id="search" placeholder="Nome, città, settore...">
   </div>
+  <button class="reset-filters-btn" id="reset-filters-btn" onclick="resetFilters()">
+    <div class="filter-active-dot"></div>↺ Reset filtri
+  </button>
 </div>
+<!-- BANNER RICERCA INTELLIGENTE (Funz. 1) -->
+<div class="search-nav-bar" id="search-nav-bar">
+  <span>🔍</span>
+  <span class="search-nav-count" id="search-nav-count"></span>
+  <div class="search-nav-arrows">
+    <button class="search-nav-btn" id="search-prev-btn" onclick="searchNav(-1)">◀ Prec</button>
+    <button class="search-nav-btn" id="search-next-btn" onclick="searchNav(1)">Succ ▶</button>
+  </div>
+</div>
+<div class="search-no-results" id="search-no-results">🔍 Nessun evento trovato per questa ricerca.</div>
 
 <!-- STATS -->
 <div class="stats-bar" id="stats-bar"></div>
@@ -332,6 +396,18 @@ body{font-family:'Inter',sans-serif;background:var(--off-white);color:var(--blac
   <!-- LIST VIEW -->
   <div class="list-view" id="list-view"></div>
 
+  <!-- ANNUAL VIEW (Funz. 3) -->
+  <div class="annual-view" id="annual-view">
+    <div class="annual-header">
+      <div class="annual-title" id="annual-title">Vista Annuale</div>
+      <div class="annual-year-toggle" id="annual-year-toggle">
+        <button class="annual-year-btn active" data-year="2026" onclick="setAnnualYear(2026)">2026</button>
+        <button class="annual-year-btn" data-year="2027" onclick="setAnnualYear(2027)">2027</button>
+      </div>
+    </div>
+    <div class="annual-grid" id="annual-grid"></div>
+  </div>
+
   <!-- SIDE PANEL -->
   <div class="side-panel" id="side-panel">
     <div class="panel-header">
@@ -365,7 +441,7 @@ const EVENTS = [
  deadline:"2026-04-01"},
 
 {id:2,s:"A",nome:"Web Summit",
- ds:"2026-11-02",de:"2026-11-05",anno:2026,luogo:"Lisbona, Portogallo",
+ ds:"2026-11-09",de:"2026-11-12",anno:2026,luogo:"Lisbona, Portogallo",
  settore:"Tech",sc:"tech",prio:"Alto",mp:true,budget:"over",
  obiettivo:"Una delle più grandi conferenze tech al mondo. 70.000+ partecipanti, 1.000+ speaker. Startup, scale-up, VC, CMO tech. Hub internazionale per innovazione e digital business.",
  valore:"Startup e brand tech con forti bisogni di video per fundraising, lancio prodotti, eventi. L'accredito stampa è realistico per un'agenzia con portfolio solido.",
@@ -377,7 +453,7 @@ const EVENTS = [
  deadline:"2026-07-01"},
 
 {id:3,s:"A",nome:"D&AD Festival",
- ds:"2026-04-28",de:"2026-05-01",anno:2026,luogo:"Londra, UK",
+ ds:"2026-05-19",de:"2026-05-20",anno:2026,luogo:"Londra, UK",
  settore:"Advertising",sc:"adv",prio:"Alto",mp:true,budget:"over",
  obiettivo:"Festival internazionale del design e della pubblicità. 5.000+ professionisti creativi, agenzie globali, brand. Premio D&AD Pencil tra i più ambiti nel settore creativo.",
  valore:"Accesso diretto a creative director e brand manager di agenzie tier-1. Comunità molto aperta alla collaborazione con produttori video di qualità.",
@@ -396,7 +472,7 @@ const EVENTS = [
  modalita:"Media partnership / Accredito stampa",
  costo:"Platinum Badge $1.895+ / Press Badge GRATUITO (su domanda)",
  mp_detail:"ALTO POTENZIALE. SXSW ha tradizione forte di collaborazioni con filmmaker indipendenti. Proporre documentario breve sull'innovazione.",
- contatti:{email:"press@sxsw.com",link:"https://sxsw.com/press",note:"Accrediti press: apertura domande Dicembre anno precedente"},
+ contatti:{email:"press@sxsw.com",link:"https://sxsw.com/press-center/",note:"Accrediti press: apertura domande Dicembre anno precedente"},
  script:"Proporre embedded filmmaker del festival — un cortometraggio documentaristico sull'innovazione vista dal basso.",
  deadline:"2026-12-01"},
 
@@ -456,7 +532,7 @@ const EVENTS = [
  modalita:"Media partnership / Accredito stampa",
  costo:"Pass Industry $895 / Accredito press su domanda",
  mp_detail:"ALTO POTENZIALE. Proporre mini-documentari sui creativi vincitori — storie umane dietro le campagne.",
- contatti:{email:"press@clioawards.com",link:"https://clios.com/",note:"Contattare 3 mesi prima per media accreditation"},
+ contatti:{email:"press@clios.com",link:"https://clios.com/",note:"Contattare 3 mesi prima per media accreditation"},
  script:"Mini-documentari sui creativi vincitori. Formato shareable e ad alto impatto per i social degli organizzatori.",
  deadline:"2026-06-22"},
 
@@ -497,7 +573,7 @@ const EVENTS = [
  deadline:"2026-08-14"},
 
 {id:13,s:"A",nome:"Annecy International Animation Film Festival",ice:true,
- ds:"2026-06-09",de:"2026-06-14",anno:2026,luogo:"Annecy, Francia",
+ ds:"2026-06-21",de:"2026-06-27",anno:2026,luogo:"Annecy, Francia",
  settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
  obiettivo:"Il principale festival mondiale dedicato al cinema d'animazione. 15.000+ accreditati, 3.000+ film. Mercato MIFA per co-produzioni. Brand creativi e studi internazionali presenti.",
  valore:"L'animazione è un settore in forte crescita per branded content. Netflix, Disney, Amazon presenti con team di acquisizione. Portfolio con motion graphics o branded animation ha grande appeal.",
@@ -532,7 +608,7 @@ const EVENTS = [
  modalita:"Networking / Accredito stampa",
  costo:"All Access Badge $1.100+ / Media Badge GRATUITO (su domanda)",
  mp_detail:"MEDIO POTENZIALE. Evento enorme con molti video producer già presenti. Meglio usarlo per networking e acquisizione clienti diretti.",
- contatti:{email:"mediainfo@ces.tech",link:"https://ces.tech/news/media-information",note:"CES Media Badge: application apre Settembre anno precedente"},
+ contatti:{email:"mediainfo@ces.tech",link:"https://www.ces.tech/media-guides/",note:"CES Media Badge: application apre Settembre anno precedente"},
  script:"Presentarsi agli stand dei brand con tablet e showreel. Obiettivo: 5-10 incontri con CMO o Head of Marketing di brand tech.",
  deadline:"2026-09-01"},
 
@@ -719,7 +795,7 @@ const EVENTS = [
  deadline:"2026-02-18"},
 
 {id:32,s:"C",nome:"Giffoni Film Festival",
- ds:"2026-07-09",de:"2026-07-19",anno:2026,luogo:"Giffoni Valle Piana (SA), Italia",
+ ds:"2026-07-17",de:"2026-07-25",anno:2026,luogo:"Giffoni Valle Piana (SA), Italia",
  settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
  obiettivo:"Il più importante festival cinematografico per ragazzi del mondo. 100.000+ giovani giurati da 60+ paesi. Fortissima presenza media e brand che comunicano con le nuove generazioni.",
  valore:"Brand che comunicano con Gen Z presenti come sponsor. Netflix, Amazon, Apple, Rai presenti con attivazioni importanti. Festival molto aperto alle partnership creative.",
@@ -731,7 +807,7 @@ const EVENTS = [
  deadline:"2026-04-09"},
 
 {id:33,s:"C",nome:"Torino Film Festival",
- ds:"2026-11-21",de:"2026-12-01",anno:2026,luogo:"Torino, Italia",
+ ds:"2026-11-24",de:"2026-12-02",anno:2026,luogo:"Torino, Italia",
  settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
  obiettivo:"Uno dei principali festival cinematografici italiani. Focus su cinema indipendente, documentari, film di genere. 50.000+ spettatori, 200+ film.",
  valore:"Hub del cinema italiano indipendente e internazionale. Brand sponsor (Lavazza, Stellantis) presenti. Festival molto aperto alla collaborazione con produttori creativi.",
@@ -786,7 +862,7 @@ const EVENTS = [
  modalita:"Accredito stampa / Networking / Media partnership",
  costo:"Accredito stampa GRATUITO / Biglietti pubblico €5-15",
  mp_detail:"ALTO POTENZIALE. Evento locale: più facile proporre partnership. Il video della Festa del Cinema sarebbe un portfolio pezzo eccellente.",
- contatti:{email:"ufficiostampa@romacinemafest.it",link:"https://romacinemafest.it/it/press",note:"Apertura accrediti: Agosto/Settembre"},
+ contatti:{email:"ufficiostampa@romacinemafest.it",link:"https://www.romacinemafest.it/it/festa-cinema-roma/partecipa/accrediti/",note:"Apertura accrediti: Agosto/Settembre"},
  script:"Contatto diretto con l'ufficio stampa della Fondazione. Proporre un aftermovie artistico della Festa. Leva: siamo romani, conosciamo la città.",
  deadline:"2026-08-15"},
 
@@ -812,7 +888,7 @@ const EVENTS = [
  modalita:"Iscrizione lavori / Accredito professionale / Networking",
  costo:"Professional Accreditation €50-100 / Iscrizione film €15-30",
  mp_detail:"BASSO per media partnership, ALTO per posizionamento short film.",
- contatti:{email:"pro@clermont-filmfest.com",link:"https://www.lecourt-clermont.org/en/pros/press/",note:"Iscrizioni film: apertura Settembre/Ottobre anno precedente"},
+ contatti:{email:"pro@lecourt-clermont.org",link:"https://www.lecourt-clermont.org/en/pros/press/",note:"Iscrizioni film: apertura Settembre/Ottobre anno precedente"},
  script:"Iscrivere un cortometraggio o branded short. Presentarsi come agenzia creativa con forte competenza nel formato breve.",
  deadline:"2025-10-01"},
 
@@ -913,7 +989,7 @@ const EVENTS = [
  deadline:"2026-07-29"},
 
 {id:49,s:"C",nome:"Ischia Global Film & Music Festival",
- ds:"2026-07-09",de:"2026-07-16",anno:2026,luogo:"Ischia, Italia",
+ ds:"2026-07-12",de:"2026-07-19",anno:2026,luogo:"Ischia, Italia",
  settore:"Cinema/Musica",sc:"cinema",prio:"Basso",mp:true,budget:"ok",
  obiettivo:"Festival cinematografico e musicale sull'isola di Ischia. Presenza di star internazionali, registi, produttori. Atmosfera esclusiva e luxury. Piccolo ma molto selezionato.",
  valore:"Festival di nicchia con forte appeal luxury. Sponsor del calibro di Ferrari, Bulgari. Networking esclusivo in un contesto paradisiaco. Accessibile dall'Italia.",
@@ -1206,7 +1282,7 @@ const EVENTS = [
 // ─── NUOVI EVENTI: GAP MENSILI + EVENTI CHIAVE MANCANTI ──
 
 {id:74,s:"A",nome:"Tribeca Film Festival",
- ds:"2026-06-10",de:"2026-06-21",anno:2026,luogo:"New York, USA",
+ ds:"2026-06-03",de:"2026-06-14",anno:2026,luogo:"New York, USA",
  settore:"Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
  obiettivo:"Uno dei festival cinematografici più influenti degli Stati Uniti, fondato da Robert De Niro nel 2002. 500+ film in concorso, forte presenza di produttori indipendenti, streamer (Netflix, Amazon, Apple) e distribuiti internazionali. Forte focus su cortometraggi e documentari.",
  valore:"Accesso diretto al mercato americano del cinema indipendente. Presenza massiccia di streamer e distributor con budget per contenuti video originali. Il mercato dei cortometraggi americano è il più grande al mondo — Wow Tapes può posizionarsi come partner europeo di qualità.",
@@ -1230,7 +1306,7 @@ const EVENTS = [
  deadline:"2026-05-15"},
 
 {id:77,s:"C",nome:"Sarajevo Film Festival",
- ds:"2026-08-14",de:"2026-08-22",anno:2026,luogo:"Sarajevo, Bosnia-Erzegovina",
+ ds:"2026-08-14",de:"2026-08-21",anno:2026,luogo:"Sarajevo, Bosnia-Erzegovina",
  settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
  obiettivo:"Il più importante festival cinematografico dell'Europa sud-orientale. 80.000+ spettatori, 200+ film da tutto il mondo, forte focus su cinema dei Balcani e dell'Europa dell'Est. Hub per co-produzioni europee e punto di incontro tra cinema orientale e occidentale.",
  valore:"Evento emergente con costi accessibili e apertura alle partnership creative. Il mercato balcanico è un mercato emergente interessante per Wow Tapes. Festival visivamente ricco con location uniche nel centro storico di Sarajevo.",
@@ -1249,7 +1325,7 @@ const EVENTS = [
  modalita:"Media partnership / Accredito stampa",
  costo:"Press GRATUITO (su domanda a Lions Festivals) ✅",
  mp_detail:"ALTISSIMO POTENZIALE MENA. Dubai Lynx è il gateway per tutto il settore advertising della regione. Un aftermovie di Dubai Lynx aprirebbe le porte ai brand del Golfo. Contattare Lions Festivals Dubai.",
- contatti:{email:"media@dubailynx.com",link:"https://dubailynx.com/press",note:"Accrediti media: apertura solitamente Dicembre/Gennaio"},
+ contatti:{email:"press@dubailynx.com",link:"https://www.dubailynx.com/press-centre",note:"Accrediti media: apertura solitamente Dicembre/Gennaio"},
  script:"Wow Tapes produces high-impact cinematic content for the world's leading creative brands. As a media partner, we'd love to create an official aftermovie of Dubai Lynx 2027 — documenting the creativity and energy of the MENA advertising industry. We propose a press accreditation in exchange for a premium festival highlight film.",
  deadline:"2026-12-01"},
 
@@ -1278,7 +1354,7 @@ const EVENTS = [
  deadline:"2026-06-15"},
 
 {id:81,s:"C",nome:"Edinburgh International Film Festival",
- ds:"2026-08-12",de:"2026-08-19",anno:2026,luogo:"Edimburgo, UK",
+ ds:"2026-08-13",de:"2026-08-19",anno:2026,luogo:"Edimburgo, UK",
  settore:"Cinema",sc:"cinema",prio:"Medio",mp:true,budget:"ok",
  obiettivo:"Il festival cinematografico più antico del mondo (fondato nel 1947), con focus su film britannici, europei e internazionali. 30.000+ spettatori. Forte attenzione ai cortometraggi e ai documentari. Hub per il mercato cinematografico UK e connessioni con broadcaster BBC e Channel 4.",
  valore:"Il mercato cinematografico UK è secondo solo agli USA. Connessioni con BBC, Channel 4, BFI. Festival con forte vocazione per i cortometraggi — esattamente il target Wow Tapes. Edimburgo in agosto è visivamente straordinaria.",
@@ -1509,7 +1585,7 @@ const EVENTS = [
  modalita:"Media partnership / Accredito stampa",
  costo:"Press GRATUITO (su domanda a Lions Festivals) ✅",
  mp_detail:"ALTISSIMO POTENZIALE MENA. Dubai Lynx è il gateway per tutto il settore advertising della regione. Un aftermovie di Dubai Lynx aprirebbe le porte ai brand del Golfo. Proporre a Lions Festivals Dubai la produzione dell'aftermovie ufficiale.",
- contatti:{email:"media@dubailynx.com",link:"https://dubailynx.com/press",note:"Accrediti media: contattare Lions Festivals Dubai entro Luglio 2026"},
+ contatti:{email:"press@dubailynx.com",link:"https://www.dubailynx.com/press-centre",note:"Accrediti media: contattare Lions Festivals Dubai entro Luglio 2026"},
  script:"Wow Tapes produces high-impact cinematic content for the world's leading creative festivals. As a media partner, we'd love to create an official aftermovie of Dubai Lynx Creativity Week 2026 — documenting the creativity and energy of the MENA advertising industry. We propose a press accreditation in exchange for a premium festival highlight film in our signature visual style.",
  deadline:"2026-07-15"},
 
@@ -1624,6 +1700,115 @@ const EVENTS = [
  script:"Contattare info@miamarket.it: 'Siamo Wow Tapes, agenzia di produzione video con sede a Roma. Proponiamo la produzione del video aftermovie ufficiale del MIA 2026 in stile cinematografico, in cambio di accrediti professionali e visibilità sui canali del mercato. Il nostro portfolio: [link].'",
  deadline:"2026-09-01"}
 
+
+,{id:111,s:"A",nome:"London Fashion Week SS2027",
+ ds:"2026-09-17",de:"2026-09-21",anno:2026,luogo:"Londra, UK",
+ settore:"Fashion/Luxury",sc:"fashion",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Una delle Big Four delle Fashion Week mondiali. 5 giorni di sfilate, presentazioni e showroom nel cuore di Londra. Organizzata dal British Fashion Council (BFC). 250+ designer, 5.000+ accreditati da tutto il mondo. Mix unico di heritage britannico e avanguardia creativa — da Burberry a Vivienne Westwood, ai nuovi talenti emergenti.",
+ valore:"Londra è la fashion week più creativa e sperimentale — territorio ideale per il linguaggio visivo di Wow Tapes. Brand britannici e internazionali con forte domanda di video ad alto impatto. Il mercato fashion UK è tra i più avanzati per branded content. Accredito stampa gratuito con portfolio solido.",
+ modalita:"Accredito stampa / Media partnership con brand / Video backstage show",
+ costo:"Press Accreditation: GRATUITA su domanda al BFC ✅",
+ mp_detail:"ALTO POTENZIALE. Il BFC ha un programma di media partner attivo. Proporre un aftermovie della settimana oppure video capsule per 2-3 brand emergenti. I brand tier-2 hanno budget disponibili e cercano contenuti di qualità.",
+ contatti:{email:"press@britishfashioncouncil.co.uk",link:"https://www.londonfashionweek.co.uk/",note:"British Fashion Council — contattare almeno 2 mesi prima per accredito stampa. Modulo accrediti su londonfashionweek.co.uk. Scadenza tipica: luglio/agosto."},
+ script:"'Siamo Wow Tapes, agenzia di produzione video con base a Roma. Proponiamo la produzione di un aftermovie della LFW SS2027 con approccio cinematografico e stile editoriale — in cambio di accrediti press e visibilità sul nostro canale. Showreel: [link].'",
+ deadline:"2026-08-01"}
+
+,{id:112,s:"A",nome:"Berlin Fashion Week Luglio 2026",
+ ds:"2026-07-02",de:"2026-07-05",anno:2026,luogo:"Berlino, Germania",
+ settore:"Fashion/Luxury",sc:"fashion",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Appuntamento semi-annuale della moda tedesca e centro-europea, con focus su sostenibilità, streetwear e design contemporaneo. Include le fiere PREMIUM, SEEK e NEONYT. Meno esclusiva delle Big Four ma più accessibile per media partnership. 1.500+ brand, 60.000+ visitatori B2B. Ufficio stampa molto aperto alle collaborazioni.",
+ valore:"Berlino Fashion Week è più aperta e accessibile rispetto alle Big Four — possibilità reale di media partnership senza enormi portfolio pregressi. Brand emergenti europei con budget comunicazione in crescita. La scena fashion berlinese è molto attenta al video e ai contenuti creativi. Costo praticamente zero.",
+ modalita:"Accredito stampa / Media partnership con organizzatori o brand / Video evento",
+ costo:"Press Badge: GRATUITO su domanda ✅ / Ingresso fiere trade: gratuito con accredito industry",
+ mp_detail:"OTTIMO POTENZIALE per prima partnership. L'accesso è più facile che alle Big Four — ideale per costruire portfolio fashion. Contattare direttamente PREMIUM Group o i brand emergenti presenti.",
+ contatti:{email:"press@premiumexhibitions.com",link:"https://www.premiumexhibitions.com/",note:"PREMIUM Group organizza le principali fiere. Sito ufficiale Berlin Fashion Week: fashion-week-berlin.com. Contattare anche info@seek.berlin per il festival creativo SEEK."},
+ script:"'Siamo Wow Tapes, agenzia di produzione video con base a Roma. Proponiamo la produzione del video ufficiale di SEEK/PREMIUM Berlin Luglio 2026 — contenuto premium che valorizza l'energia creativa della settimana. In cambio chiediamo accredito e menzione sui canali. Portfolio: [link].'",
+ deadline:"2026-06-15"}
+
+,{id:113,s:"A",nome:"London Fashion Week AW2027",
+ ds:"2027-02-13",de:"2027-02-18",anno:2027,luogo:"Londra, UK",
+ settore:"Fashion/Luxury",sc:"fashion",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Edizione Autunno/Inverno 2027 della London Fashion Week. Organizzata dal British Fashion Council. Stessa struttura dell'edizione SS: 5 giorni di sfilate, presentazioni, eventi collaterali. Con la relazione costruita nell'edizione SS2027 di settembre 2026, questa è la seconda partecipazione — più strategica e con relazioni già attive.",
+ valore:"Continuità di presenza alla LFW rafforza il posizionamento di Wow Tapes nel mercato fashion UK. La seconda edizione consente di proporre rapporti commerciali basati su track record già stabilito. Ideal momento per convertire i contatti dell'edizione precedente in clienti paganti.",
+ modalita:"Accredito stampa / Media partnership consolidata / Commissioni dirette da brand",
+ costo:"Press Accreditation: GRATUITA ✅",
+ mp_detail:"ALTO POTENZIALE con track record dall'edizione SS2027. Con un portfolio LFW già costruito, la proposta a brand e organizzatori sarà molto più forte.",
+ contatti:{email:"press@britishfashioncouncil.co.uk",link:"https://www.londonfashionweek.co.uk/",note:"British Fashion Council. Accrediti AW2027: apertura tipicamente novembre/dicembre 2026."},
+ script:"'Abbiamo coperto la LFW SS2027 con grande successo. Siamo interessati a una collaborazione continuativa per l'edizione AW2027. Ecco il video prodotto nell'edizione precedente: [link].'",
+ deadline:"2026-12-15"}
+
+,{id:114,s:"A",nome:"Milano Fashion Week AW2027 — Donna",
+ ds:"2027-02-19",de:"2027-02-25",anno:2027,luogo:"Milano, Italia",
+ settore:"Fashion/Luxury",sc:"fashion",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Edizione Autunno/Inverno 2027 della Milano Fashion Week Donna. Organizzata da Camera Nazionale della Moda Italiana. La più importante settimana della moda italiana — Armani, Versace, Prada, Max Mara, Tod's e oltre 60 brand sfilano in 6 giorni. 40.000+ accreditati tra buyer, press e professionisti.",
+ valore:"Con la relazione costruita alla MFW di settembre 2026, Wow Tapes può presentarsi come partner confermato. Milano è a 3 ore da Roma — costi di trasferta minimi. La continuità di presenza alla Camera Nazionale della Moda apre porte a commissioni dirette dai brand.",
+ modalita:"Accredito stampa / Media partnership brand tier-2 / Video show capsule",
+ costo:"Accredito media GRATUITO per media accreditati ✅",
+ mp_detail:"ALTO POTENZIALE con track record MFW SS2027. Proporre video capsule a brand emergenti che vogliono elevarsi visivamente — target mid-tier non le mega-house.",
+ contatti:{email:"press@cameramoda.it",link:"https://cameramoda.it/en/press-office",note:"Camera Nazionale della Moda Italiana. Accrediti AW2027: apertura tipicamente dicembre 2026."},
+ script:"'Abbiamo coperto la MFW SS2027 con ottimi risultati. Siamo interessati a proseguire la collaborazione per l'edizione AW2027 e proporre video capsule ai brand. Portfolio: [link].'",
+ deadline:"2026-12-01"}
+
+,{id:115,s:"A",nome:"Berlin Fashion Week Gennaio 2027",
+ ds:"2027-01-14",de:"2027-01-17",anno:2027,luogo:"Berlino, Germania",
+ settore:"Fashion/Luxury",sc:"fashion",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Edizione invernale della Berlin Fashion Week — include PREMIUM, SEEK e NEONYT. Focus su sostenibilità e brand contemporanei europei. Con la relazione costruita nell'edizione luglio 2026, questa è la continuazione naturale della presenza Wow Tapes a Berlino.",
+ valore:"Track record dall'edizione luglio 2026 facilita accrediti e partnership. Berlino rimane il mercato più accessibile e aperto della moda europea. Brand sostenibili e contemporanei hanno forte domanda di contenuti video autentici.",
+ modalita:"Accredito stampa / Media partnership consolidata / Commissioni dirette",
+ costo:"Press Badge GRATUITO ✅",
+ mp_detail:"BUON POTENZIALE come seconda partecipazione. Portare il video prodotto a luglio 2026 come prova di lavoro.",
+ contatti:{email:"press@premiumexhibitions.com",link:"https://www.premiumexhibitions.com/",note:"Stessi contatti dell'edizione luglio 2026. Verificare date esatte su fashion-week-berlin.com verso settembre 2026."},
+ script:"'Abbiamo coperto la Berlin Fashion Week di luglio 2026 con ottimi risultati — ecco il video: [link]. Siamo interessati a collaborare anche per l'edizione di gennaio 2027.'",
+ deadline:"2026-11-01"},
+
+{id:116,s:"C",nome:"Taormina Film Festival 2026",
+ ds:"2026-06-10",de:"2026-06-14",anno:2026,luogo:"Taormina, Sicilia, Italia",
+ settore:"Cinema",sc:"cinema",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"72° edizione del festival cinematografico italiano tra i più antichi e scenografici al mondo. Proiezioni nel Teatro Antico greco su roccia a 250m sul Mar Ionio, con l'Etna sullo sfondo. Focus su cinema italiano e internazionale, cortometraggi (new Short Film Competition 2026). ~5.000 partecipanti. Madrina: Helen Mirren (Award 2026).",
+ valore:"Festival con altissimo potenziale visivo — ambientazione unica al mondo. Contenuto video di un evento qui sarebbe straordinario per il portfolio Wow Tapes. Clienti potenziali: produttori cinematografici italiani e internazionali, brand del lusso e del turismo siciliano. Nuova sezione cortometraggi apre canale diretto per la nostra community.",
+ modalita:"Media partnership (proposta video evento) / Accredito stampa",
+ costo:"Accredito press: gratuito su domanda / Pass standard: [da confermare — verificare su taorminafilmfest.it]",
+ mp_detail:"ALTO POTENZIALE. Scenografia unica = video straordinario. L'organizzazione sarebbe molto interessata a un aftermovie professionale. Contattare prima dell'inizio (giugno 2026).",
+ contatti:{email:"press@taorminafilmfest.it",link:"https://www.taorminafilmfest.it",note:"Verificare pagina accrediti stampa sul sito ufficiale"},
+ script:"Siamo Wow Tapes, agenzia di produzione video con base a Roma. Il Teatro Antico di Taormina è uno dei set più iconici al mondo — vorremmo immortalarlo con un video evento di alta qualità in puro stile Wow, da condividere su tutti i canali del festival. In cambio chiediamo accrediti stampa per il nostro team. Possiamo inviare portfolio e showreel su richiesta.",
+ deadline:"2026-06-07"},
+
+{id:117,s:"A",nome:"D&AD New Blood Festival 2026",
+ ds:"2026-06-29",de:"2026-07-01",anno:2026,luogo:"Londra, UK (Protein Studios, Shoreditch)",
+ settore:"Advertising/Design",sc:"adv",prio:"Alto",mp:true,budget:"ok",
+ obiettivo:"Festival dedicato ai giovani creativi emergenti organizzato da D&AD. 45+ università esposte, showcase vincitori New Blood Awards, talk da industry leader, portfolio review. Ingresso GRATUITO. ~3.000 partecipanti tra studenti, neolaureati e professionisti creativi junior. Cerimonia New Blood Awards: 30 giugno 2026.",
+ valore:"Accesso a una generazione di creativi che in 5 anni saranno i decision-maker di agenzie e brand. Costruire relazioni ora = vantaggio competitivo futuro. Le agenzie che partecipano come partner hanno visibilità enorme. Costo zero per partecipare. Perfetto per posizionare Wow Tapes come studio aspirazionale.",
+ modalita:"Media partnership (video del festival) / Partecipante / Networking",
+ costo:"Ingresso gratuito ✅",
+ mp_detail:"ALTISSIMO POTENZIALE. Evento molto visivo, giovani creativi appassionati di video. D&AD accetterebbe volentieri un aftermovie professionale. Contattare press@dandad.org prima di fine giugno.",
+ contatti:{email:"press@dandad.org",link:"https://www.dandad.org/events/new-blood-festival-2026",note:"Registrazione gratuita su dandad.org"},
+ script:"We are Wow Tapes, a Rome-based video production agency working internationally. We'd love to capture the energy of the New Blood Festival 2026 with a high-quality event video — showcasing the creativity of the next generation of talent. In exchange, we'd appreciate press accreditation for our team. We'll share our portfolio and showreel on request.",
+ deadline:"2026-06-20"},
+
+{id:118,s:"B",nome:"Adobe MAX 2026 — The Creativity Conference",
+ ds:"2026-11-10",de:"2026-11-12",anno:2026,luogo:"Miami Beach, Florida, USA (Miami Beach Convention Center)",
+ settore:"Tech/Creativity",sc:"tech",prio:"Alto",mp:false,budget:"over",
+ obiettivo:"La principale conferenza mondiale per i professionisti creativi Adobe. 10.000+ partecipanti tra designer, videomaker, fotografi, motion designer, art director. Lanci di nuovi prodotti Adobe, workshop, keynote di star del mondo creativo. Preconference: 8-9 novembre.",
+ valore:"Massima concentrazione di professionisti creativi che usano esattamente gli strumenti che usa Wow Tapes. Potenziale di partnership con Adobe stessa o con agenzie creative presenti. Networking con video producer, motion designer, content creator di livello mondiale.",
+ modalita:"Partecipante / Speaker / Networking",
+ costo:"Pass Standard: ~$1.495 / Pass Virtual: ~$299 ⚠️",
+ mp_detail:"DA VALUTARE. Adobe MAX non ha una tradizione di media partnership esterni, ma l'organizzazione ha un team comunicazione attivo. Possibile proporre video per il proprio canale YouTube o social.",
+ contatti:{email:"[verificare su adobe.com/max]",link:"https://www.adobe.com/max.html",note:"Preconference 8-9 novembre. Biglietti early bird disponibili da estate 2026"},
+ script:"We are Wow Tapes, a creative video production agency based in Rome. We specialize in capturing the energy and creativity of major industry events. We'd love to discuss how we could create a compelling event video for Adobe MAX 2026 in exchange for participation. Our work is available at [portfolio link].",
+ deadline:"2026-09-01"},
+
+{id:119,s:"C",nome:"ADFEST 2027 — Asia Pacific Advertising Festival",
+ ds:"2027-03-18",de:"2027-03-20",anno:2027,luogo:"Pattaya, Thailandia (Royal Cliff Hotels Group, PEACH)",
+ settore:"Advertising",sc:"adv",prio:"Medio",mp:true,budget:"ok",
+ obiettivo:"Il principale festival pubblicitario dell'Asia Pacifico. 30° anniversario nel 2027. 2.000+ delegati da 40+ paesi. Premia l'eccellenza creativa nel mercato APAC. Profilo: creative director, brand manager, head of production di agenzie asiatiche e internazionali. Organizzato da ADFEST Association.",
+ valore:"Accesso diretto al mercato pubblicitario asiatico in rapida crescita. Momento ideale per posizionare Wow Tapes come partner europeo di produzione per brand APAC. Il 30° anniversario sarà un evento extra-speciale con budget comunicazione più elevato del solito.",
+ modalita:"Media partnership (video festival) / Accredito stampa / Networking",
+ costo:"Pass Delegate: ~$1.200-1.500 ⚠️ / Accredito press: [da confermare — verificare su adfest.com] ✅ se gratuito",
+ mp_detail:"BUON POTENZIALE per il 30° anniversario. Proporre un aftermovie celebrativo 2027 in cambio di accrediti. Contattare il team ADFEST a partire da ottobre 2026.",
+ contatti:{email:"info@adfest.com",link:"https://www.adfest.com",note:"Apertura iscrizioni solitamente settembre-ottobre dell'anno precedente"},
+ script:"We are Wow Tapes, a Rome-based creative video production agency. For ADFEST's landmark 30th anniversary, we'd love to create a premium commemorative event film in pure Wow style — capturing the creativity and energy of the Asia Pacific's most celebrated advertising festival. In exchange, we'd appreciate press credentials for our team. Portfolio available on request.",
+ deadline:"2026-12-01"}
+
 ]; // END EVENTS
 
 // ═══════════════════════════════════════════════════════════
@@ -1641,9 +1826,12 @@ function scColor(sc){ return SC_COLOR[sc] || SC_COLOR.other; }
 // ═══════════════════════════════════════════════════════════
 const _now = new Date();
 let view = 'calendar', cy = _now.getFullYear(), cm = _now.getMonth();
+let annualYear = cy < 2026 ? 2026 : (cy > 2027 ? 2027 : cy); // anno corrente nella vista annuale
 let selDay = null;
 const expanded = new Set();
-let F = {year:'all',sez:'all',budget:'all',prio:'all',q:'',area:'all',settore:'all',ice:'all'};
+let F = {year:'all',sez:'all',budget:'all',prio:'all',q:'',area:'all',settore:'all',ice:'all',mp:'all'};
+// Stato ricerca intelligente
+let searchResults = [], searchIdx = 0;
 const MENA_KEYS = ['UAE','Dubai','Abu Dhabi','Riyadh','Arabia Saudita','Jeddah','Doha','Qatar','Il Cairo','Egitto','MENA','Marocco','Marrakech','Casablanca','Tunisi','Beirut','Amman'];
 const ITALY_KEYS = ['Italia','Roma','Milano','Venezia','Torino','Napoli','Udine','Ischia','Giffoni'];
 const JAPAN_KEYS = ['Giappone','Tokyo','Makuhari','Osaka','Kyoto'];
@@ -1702,6 +1890,7 @@ function filtered(){
     if(F.prio !== 'all' && e.prio !== F.prio) return false;
     if(F.settore !== 'all' && e.sc !== F.settore) return false;
     if(F.ice === 'ice' && !e.ice) return false;
+    if(F.mp === 'mp' && !e.mp) return false;
     if(F.q){
       const q = F.q.toLowerCase();
       const haystack = [
@@ -1730,17 +1919,65 @@ function dayEvents(y,m,d){
 // ═══════════════════════════════════════════════════════════
 // STATS
 // ═══════════════════════════════════════════════════════════
+// ── Schede statistiche cliccabili (Funz. 2) ─────────────────
 function renderStats(){
-  const all = filtered();
-  const alto = all.filter(e=>e.prio==='Alto').length;
-  const mp = all.filter(e=>e.mp).length;
-  const ok = all.filter(e=>e.budget==='ok').length;
+  const all = EVENTS.filter(e => {
+    // conteggio su tutti gli eventi (indipendente dal filtro attivo per mostrare totali reali)
+    return true;
+  });
+  const flt = filtered();
+  const alto = flt.filter(e=>e.prio==='Alto').length;
+  const mpCount = flt.filter(e=>e.mp).length;
+  const ok = flt.filter(e=>e.budget==='ok').length;
+
+  const isAltoActive = F.prio === 'Alto';
+  const isMpActive   = F.mp === 'mp';
+  const isOkActive   = F.budget === 'ok';
+  const isAllActive  = F.prio==='all' && F.mp==='all' && F.budget==='all' && F.sez==='all' && F.settore==='all' && F.area==='all' && F.ice==='all' && F.year==='all' && !F.q;
+
   document.getElementById('stats-bar').innerHTML =
-    `<div class="stat-card"><div class="stat-num">${all.length}</div><div class="stat-label">eventi totali</div></div>
-     <div class="stat-card"><div class="stat-num">${alto}</div><div class="stat-label">priorità alta</div></div>
-     <div class="stat-card"><div class="stat-num">${mp}</div><div class="stat-label">media partnership</div></div>
-     <div class="stat-card"><div class="stat-num">${ok}</div><div class="stat-label">entro €600</div></div>`;
-  document.getElementById('last-updated-label').textContent = `Aggiornato: 3 Giugno 2026 — ${all.length} eventi`;
+    `<div class="stat-card stat-card-reset${isAllActive?' active':''}" onclick="resetFilters()" title="Mostra tutti gli eventi">
+       <div class="stat-num">${flt.length}</div><div class="stat-label">eventi totali</div>
+     </div>
+     <div class="stat-card${isAltoActive?' active':''}" onclick="toggleStatFilter('prio','Alto')" title="Filtra per priorità alta">
+       <div class="stat-num">${alto}</div><div class="stat-label">priorità alta</div>
+     </div>
+     <div class="stat-card${isMpActive?' active':''}" onclick="toggleStatFilter('mp','mp')" title="Filtra per media partnership">
+       <div class="stat-num">${mpCount}</div><div class="stat-label">media partnership</div>
+     </div>
+     <div class="stat-card${isOkActive?' active':''}" onclick="toggleStatFilter('budget','ok')" title="Filtra entro €600">
+       <div class="stat-num">${ok}</div><div class="stat-label">entro €600</div>
+     </div>`;
+  document.getElementById('last-updated-label').textContent = `Aggiornato: 4 Giugno 2026 — ${flt.length} eventi`;
+  updateResetBtn();
+}
+
+// Toggle filtro da stat card
+function toggleStatFilter(key, val){
+  if(F[key] === val){ F[key] = 'all'; } // secondo click: disattiva
+  else { F[key] = val; }
+  // Sincronizza visualmente i filtri nella barra
+  syncFilterBar();
+  refresh();
+}
+
+// Sincronizza la barra filtri con lo stato F (per aggiornare i bottoni attivi)
+function syncFilterBar(){
+  const maps = [['fg-year','year'],['fg-sez','sez'],['fg-budget','budget'],['fg-prio','prio'],['fg-area','area'],['fg-settore','settore'],['fg-ice','ice']];
+  maps.forEach(([gid,fk])=>{
+    const g = document.getElementById(gid);
+    if(!g) return;
+    g.querySelectorAll('.filter-btn').forEach(b=>{
+      b.classList.toggle('active', b.dataset.val === F[fk]);
+    });
+  });
+}
+
+// Mostra/nasconde il pulsante reset
+function updateResetBtn(){
+  const hasFilters = F.prio!=='all'||F.mp!=='mp'||F.budget!=='all'||F.sez!=='all'||F.settore!=='all'||F.area!=='all'||F.ice!=='all'||F.year!=='all'||F.q;
+  const btn = document.getElementById('reset-filters-btn');
+  if(btn) btn.classList.toggle('visible', !!(hasFilters));
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1919,15 +2156,147 @@ function renderList(){
 }
 
 // ═══════════════════════════════════════════════════════════
+// RESET FILTRI (Funz. 4)
+// ═══════════════════════════════════════════════════════════
+function resetFilters(){
+  F = {year:'all',sez:'all',budget:'all',prio:'all',q:'',area:'all',settore:'all',ice:'all',mp:'all'};
+  const searchEl = document.getElementById('search');
+  if(searchEl) searchEl.value = '';
+  searchResults = []; searchIdx = 0;
+  hideSearchBanner();
+  syncFilterBar();
+  refresh();
+}
+
+// ═══════════════════════════════════════════════════════════
+// RICERCA INTELLIGENTE (Funz. 1)
+// ═══════════════════════════════════════════════════════════
+function searchNavigate(q){
+  if(!q){ hideSearchBanner(); return; }
+  const ql = q.toLowerCase();
+  // Cerca in tutti gli eventi (senza filtro attivo, solo il termine di ricerca)
+  const tempF = {...F, q: q};
+  searchResults = EVENTS.filter(e => {
+    const haystack = [
+      e.nome, e.luogo, e.settore, e.obiettivo||'', e.valore||'',
+      e.modalita||'', e.costo||'', e.mp_detail||'', e.script||'',
+      e.contatti?.note||'', e.contatti?.email||'',
+      e.ice ? 'ICE agenzia ice.it padiglione italia' : ''
+    ].join(' ').toLowerCase();
+    return haystack.includes(ql);
+  }).sort((a,b)=>a.ds.localeCompare(b.ds));
+
+  if(searchResults.length === 0){
+    document.getElementById('search-no-results').classList.add('visible');
+    document.getElementById('search-nav-bar').classList.remove('visible');
+    return;
+  }
+  document.getElementById('search-no-results').classList.remove('visible');
+  searchIdx = 0;
+  goToSearchResult();
+}
+
+function goToSearchResult(){
+  if(!searchResults.length) return;
+  const e = searchResults[searchIdx];
+  // Naviga al mese dell'evento
+  const d = new Date(e.ds+'T00:00:00');
+  cy = d.getFullYear(); cm = d.getMonth();
+  if(view === 'annual') annualYear = cy;
+  // Aggiorna banner
+  const bar = document.getElementById('search-nav-bar');
+  const cnt = document.getElementById('search-nav-count');
+  cnt.textContent = `${searchResults.length} evento${searchResults.length>1?'i':''} trovato${searchResults.length>1?'i':''} — "${searchResults[searchIdx].nome.split('—')[0].trim()}" (${searchIdx+1} di ${searchResults.length})`;
+  bar.classList.add('visible');
+  document.getElementById('search-prev-btn').disabled = searchIdx === 0;
+  document.getElementById('search-next-btn').disabled = searchIdx === searchResults.length - 1;
+  selDay = null;
+  renderCal();
+  renderStats();
+  if(view === 'annual') renderAnnual();
+}
+
+function searchNav(dir){
+  searchIdx = Math.max(0, Math.min(searchResults.length-1, searchIdx+dir));
+  goToSearchResult();
+}
+
+function hideSearchBanner(){
+  document.getElementById('search-nav-bar').classList.remove('visible');
+  document.getElementById('search-no-results').classList.remove('visible');
+  searchResults = []; searchIdx = 0;
+}
+
+// ═══════════════════════════════════════════════════════════
+// VISTA ANNUALE (Funz. 3)
+// ═══════════════════════════════════════════════════════════
+function setAnnualYear(y){
+  annualYear = y;
+  document.querySelectorAll('.annual-year-btn').forEach(b=>{
+    b.classList.toggle('active', +b.dataset.year === y);
+  });
+  renderAnnual();
+}
+
+function renderAnnual(){
+  const grid = document.getElementById('annual-grid');
+  const title = document.getElementById('annual-title');
+  if(!grid) return;
+  title.textContent = `Vista Annuale ${annualYear}`;
+  const fltAll = filtered();
+
+  grid.innerHTML = MN.map((monthName, mIdx) => {
+    const mStr = `${annualYear}-${String(mIdx+1).padStart(2,'0')}`;
+    // eventi che si sovrappongono con questo mese
+    const evs = fltAll.filter(e => {
+      if(e.anno !== annualYear) return false;
+      const eStart = e.ds.substring(0,7), eEnd = e.de.substring(0,7);
+      return eStart <= mStr && eEnd >= mStr;
+    }).sort((a,b)=>a.ds.localeCompare(b.ds));
+
+    const hasEvs = evs.length > 0;
+    const shown = evs.slice(0,4);
+    const more = evs.length - shown.length;
+
+    const evHtml = hasEvs ? shown.map(e=>{
+      const sd = new Date(e.ds+'T00:00:00');
+      return `<div class="month-mini-ev">
+        <div class="month-mini-dot" style="background:${scColor(e.sc)}"></div>
+        <div class="month-mini-name" title="${e.nome}">${e.nome.split('—')[0].trim()}</div>
+        <div class="month-mini-date">${sd.getDate()} ${MN[sd.getMonth()].substring(0,3)}</div>
+      </div>`;
+    }).join('') + (more>0?`<div class="month-mini-more">+${more} altri eventi</div>`:'')
+    : `<div class="month-cell-empty">Nessun evento</div>`;
+
+    return `<div class="month-cell${hasEvs?' has-events':''}" onclick="goToMonth(${mIdx},${annualYear})">
+      <div class="month-cell-header">
+        <span class="month-cell-name">${monthName}</span>
+        <span class="month-cell-count">${hasEvs?evs.length+' ev':''}</span>
+      </div>
+      <div class="month-cell-events">${evHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+function goToMonth(m, y){
+  cy = y; cm = m;
+  setView('calendar');
+}
+
+// ═══════════════════════════════════════════════════════════
 // VIEW & NAV
 // ═══════════════════════════════════════════════════════════
 function setView(v){
   view=v;
   document.getElementById('calendar-view').classList.toggle('active',v==='calendar');
   document.getElementById('list-view').classList.toggle('active',v==='list');
+  document.getElementById('annual-view').classList.toggle('active',v==='annual');
   document.getElementById('btn-cal').classList.toggle('active',v==='calendar');
   document.getElementById('btn-list').classList.toggle('active',v==='list');
-  if(v==='list')renderList();else renderCal();
+  document.getElementById('btn-annual').classList.toggle('active',v==='annual');
+  if(v==='list') renderList();
+  else if(v==='annual') renderAnnual();
+  else renderCal();
 }
 function changeMonth(d){
   cm+=d;if(cm>11){cm=0;cy++;}if(cm<0){cm=11;cy--;}
@@ -1954,12 +2323,19 @@ function goToday(){
     });
   });
 });
-document.getElementById('search').addEventListener('input',e=>{F.q=e.target.value;refresh();});
+document.getElementById('search').addEventListener('input',e=>{
+  F.q=e.target.value;
+  if(F.q) searchNavigate(F.q);
+  else hideSearchBanner();
+  refresh();
+});
 
 function refresh(){
   renderStats();
-  if(view==='calendar')renderCal();else renderList();
-  if(selDay)openPanel(selDay.y,selDay.m,selDay.d);
+  if(view==='calendar') renderCal();
+  else if(view==='annual') renderAnnual();
+  else renderList();
+  if(selDay) openPanel(selDay.y,selDay.m,selDay.d);
 }
 
 // ═══════════════════════════════════════════════════════════
